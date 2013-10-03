@@ -85,11 +85,11 @@ int main(void)
 	LED_Config();
     while (1)
     {
-        Delaynus(700000 / 2);    /* A short delay */
+        Delaynus(100000 / 2);    /* A short delay */
         GPIOD->ODR^=0xF000;
         //GPIOD -> BSRRL = GPIO_Pin_12 | GPIO_Pin_13;
 
-        Delaynus(200000 / 2);
+        Delaynus(100000 / 2);
        // GPIOD -> BSRRH = GPIO_Pin_12 | GPIO_Pin_13;
     }
 
