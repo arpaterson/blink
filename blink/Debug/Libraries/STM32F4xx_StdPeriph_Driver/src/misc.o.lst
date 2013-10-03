@@ -560,21 +560,21 @@
  339 004a 00BF     		.text
  340              	.Letext0:
  341              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 342              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 343              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 344              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 342              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
+ 343              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 344              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
 DEFINED SYMBOLS
                             *ABS*:00000000 misc.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccgvjUUF.s:19     .text.NVIC_PriorityGroupConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccgvjUUF.s:24     .text.NVIC_PriorityGroupConfig:00000000 NVIC_PriorityGroupConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccgvjUUF.s:59     .text.NVIC_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccgvjUUF.s:64     .text.NVIC_Init:00000000 NVIC_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccgvjUUF.s:182    .text.NVIC_SetVectorTable:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccgvjUUF.s:187    .text.NVIC_SetVectorTable:00000000 NVIC_SetVectorTable
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccgvjUUF.s:224    .text.NVIC_SystemLPConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccgvjUUF.s:229    .text.NVIC_SystemLPConfig:00000000 NVIC_SystemLPConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccgvjUUF.s:285    .text.SysTick_CLKSourceConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccgvjUUF.s:290    .text.SysTick_CLKSourceConfig:00000000 SysTick_CLKSourceConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc6ttNdS.s:19     .text.NVIC_PriorityGroupConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc6ttNdS.s:24     .text.NVIC_PriorityGroupConfig:00000000 NVIC_PriorityGroupConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc6ttNdS.s:59     .text.NVIC_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc6ttNdS.s:64     .text.NVIC_Init:00000000 NVIC_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc6ttNdS.s:182    .text.NVIC_SetVectorTable:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc6ttNdS.s:187    .text.NVIC_SetVectorTable:00000000 NVIC_SetVectorTable
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc6ttNdS.s:224    .text.NVIC_SystemLPConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc6ttNdS.s:229    .text.NVIC_SystemLPConfig:00000000 NVIC_SystemLPConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc6ttNdS.s:285    .text.SysTick_CLKSourceConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc6ttNdS.s:290    .text.SysTick_CLKSourceConfig:00000000 SysTick_CLKSourceConfig
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

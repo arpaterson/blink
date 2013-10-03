@@ -1606,45 +1606,45 @@
  951 0026 00BF     		.text
  952              	.Letext0:
  953              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 954              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 955              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 956              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 954              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 955              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 956              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_hash.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:19     .text.HASH_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:24     .text.HASH_DeInit:00000000 HASH_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:53     .text.HASH_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:58     .text.HASH_Init:00000000 HASH_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:146    .text.HASH_StructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:151    .text.HASH_StructInit:00000000 HASH_StructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:194    .text.HASH_Reset:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:199    .text.HASH_Reset:00000000 HASH_Reset
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:229    .text.HASH_SetLastWordValidBitsNbr:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:234    .text.HASH_SetLastWordValidBitsNbr:00000000 HASH_SetLastWordValidBitsNbr
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:279    .text.HASH_DataIn:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:284    .text.HASH_DataIn:00000000 HASH_DataIn
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:316    .text.HASH_GetInFIFOWordsNbr:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:321    .text.HASH_GetInFIFOWordsNbr:00000000 HASH_GetInFIFOWordsNbr
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:351    .text.HASH_GetDigest:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:356    .text.HASH_GetDigest:00000000 HASH_GetDigest
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:413    .text.HASH_StartDigest:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:418    .text.HASH_StartDigest:00000000 HASH_StartDigest
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:448    .text.HASH_SaveContext:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:453    .text.HASH_SaveContext:00000000 HASH_SaveContext
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:527    .text.HASH_RestoreContext:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:532    .text.HASH_RestoreContext:00000000 HASH_RestoreContext
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:614    .text.HASH_DMACmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:619    .text.HASH_DMACmd:00000000 HASH_DMACmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:670    .text.HASH_ITConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:675    .text.HASH_ITConfig:00000000 HASH_ITConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:732    .text.HASH_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:737    .text.HASH_GetFlagStatus:00000000 HASH_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:807    .text.HASH_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:812    .text.HASH_ClearFlag:00000000 HASH_ClearFlag
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:846    .text.HASH_GetITStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:851    .text.HASH_GetITStatus:00000000 HASH_GetITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:912    .text.HASH_ClearITPendingBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3z960N.s:917    .text.HASH_ClearITPendingBit:00000000 HASH_ClearITPendingBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:19     .text.HASH_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:24     .text.HASH_DeInit:00000000 HASH_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:53     .text.HASH_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:58     .text.HASH_Init:00000000 HASH_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:146    .text.HASH_StructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:151    .text.HASH_StructInit:00000000 HASH_StructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:194    .text.HASH_Reset:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:199    .text.HASH_Reset:00000000 HASH_Reset
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:229    .text.HASH_SetLastWordValidBitsNbr:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:234    .text.HASH_SetLastWordValidBitsNbr:00000000 HASH_SetLastWordValidBitsNbr
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:279    .text.HASH_DataIn:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:284    .text.HASH_DataIn:00000000 HASH_DataIn
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:316    .text.HASH_GetInFIFOWordsNbr:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:321    .text.HASH_GetInFIFOWordsNbr:00000000 HASH_GetInFIFOWordsNbr
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:351    .text.HASH_GetDigest:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:356    .text.HASH_GetDigest:00000000 HASH_GetDigest
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:413    .text.HASH_StartDigest:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:418    .text.HASH_StartDigest:00000000 HASH_StartDigest
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:448    .text.HASH_SaveContext:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:453    .text.HASH_SaveContext:00000000 HASH_SaveContext
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:527    .text.HASH_RestoreContext:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:532    .text.HASH_RestoreContext:00000000 HASH_RestoreContext
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:614    .text.HASH_DMACmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:619    .text.HASH_DMACmd:00000000 HASH_DMACmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:670    .text.HASH_ITConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:675    .text.HASH_ITConfig:00000000 HASH_ITConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:732    .text.HASH_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:737    .text.HASH_GetFlagStatus:00000000 HASH_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:807    .text.HASH_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:812    .text.HASH_ClearFlag:00000000 HASH_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:846    .text.HASH_GetITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:851    .text.HASH_GetITStatus:00000000 HASH_GetITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:912    .text.HASH_ClearITPendingBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPSLAVM.s:917    .text.HASH_ClearITPendingBit:00000000 HASH_ClearITPendingBit
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

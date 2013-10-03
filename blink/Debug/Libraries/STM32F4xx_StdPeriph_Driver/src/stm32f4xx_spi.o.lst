@@ -2976,61 +2976,61 @@
  1744              		.text
  1745              	.Letext0:
  1746              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 1747              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 1748              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 1749              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 1747              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 1748              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 1749              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_spi.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:19     .text.SPI_I2S_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:24     .text.SPI_I2S_DeInit:00000000 SPI_I2S_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:98     .text.SPI_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:103    .text.SPI_Init:00000000 SPI_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:205    .text.I2S_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:210    .text.I2S_Init:00000000 I2S_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:471    .text.SPI_StructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:476    .text.SPI_StructInit:00000000 SPI_StructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:539    .text.I2S_StructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:544    .text.I2S_StructInit:00000000 I2S_StructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:595    .text.SPI_Cmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:600    .text.SPI_Cmd:00000000 SPI_Cmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:652    .text.I2S_Cmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:657    .text.I2S_Cmd:00000000 I2S_Cmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:709    .text.SPI_DataSizeConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:714    .text.SPI_DataSizeConfig:00000000 SPI_DataSizeConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:760    .text.SPI_BiDirectionalLineConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:765    .text.SPI_BiDirectionalLineConfig:00000000 SPI_BiDirectionalLineConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:817    .text.SPI_NSSInternalSoftwareConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:822    .text.SPI_NSSInternalSoftwareConfig:00000000 SPI_NSSInternalSoftwareConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:875    .text.SPI_SSOutputCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:880    .text.SPI_SSOutputCmd:00000000 SPI_SSOutputCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:932    .text.SPI_TIModeCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:937    .text.SPI_TIModeCmd:00000000 SPI_TIModeCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:989    .text.I2S_FullDuplexConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:994    .text.I2S_FullDuplexConfig:00000000 I2S_FullDuplexConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1101   .text.SPI_I2S_ReceiveData:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1106   .text.SPI_I2S_ReceiveData:00000000 SPI_I2S_ReceiveData
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1138   .text.SPI_I2S_SendData:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1143   .text.SPI_I2S_SendData:00000000 SPI_I2S_SendData
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1176   .text.SPI_CalculateCRC:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1181   .text.SPI_CalculateCRC:00000000 SPI_CalculateCRC
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1233   .text.SPI_TransmitCRC:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1238   .text.SPI_TransmitCRC:00000000 SPI_TransmitCRC
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1273   .text.SPI_GetCRC:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1278   .text.SPI_GetCRC:00000000 SPI_GetCRC
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1328   .text.SPI_GetCRCPolynomial:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1333   .text.SPI_GetCRCPolynomial:00000000 SPI_GetCRCPolynomial
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1365   .text.SPI_I2S_DMACmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1370   .text.SPI_I2S_DMACmd:00000000 SPI_I2S_DMACmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1428   .text.SPI_I2S_ITConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1433   .text.SPI_I2S_ITConfig:00000000 SPI_I2S_ITConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1506   .text.SPI_I2S_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1511   .text.SPI_I2S_GetFlagStatus:00000000 SPI_I2S_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1564   .text.SPI_I2S_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1569   .text.SPI_I2S_ClearFlag:00000000 SPI_I2S_ClearFlag
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1604   .text.SPI_I2S_GetITStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1609   .text.SPI_I2S_GetITStatus:00000000 SPI_I2S_GetITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1696   .text.SPI_I2S_ClearITPendingBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccKDVn1.s:1701   .text.SPI_I2S_ClearITPendingBit:00000000 SPI_I2S_ClearITPendingBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:19     .text.SPI_I2S_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:24     .text.SPI_I2S_DeInit:00000000 SPI_I2S_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:98     .text.SPI_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:103    .text.SPI_Init:00000000 SPI_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:205    .text.I2S_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:210    .text.I2S_Init:00000000 I2S_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:471    .text.SPI_StructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:476    .text.SPI_StructInit:00000000 SPI_StructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:539    .text.I2S_StructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:544    .text.I2S_StructInit:00000000 I2S_StructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:595    .text.SPI_Cmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:600    .text.SPI_Cmd:00000000 SPI_Cmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:652    .text.I2S_Cmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:657    .text.I2S_Cmd:00000000 I2S_Cmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:709    .text.SPI_DataSizeConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:714    .text.SPI_DataSizeConfig:00000000 SPI_DataSizeConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:760    .text.SPI_BiDirectionalLineConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:765    .text.SPI_BiDirectionalLineConfig:00000000 SPI_BiDirectionalLineConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:817    .text.SPI_NSSInternalSoftwareConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:822    .text.SPI_NSSInternalSoftwareConfig:00000000 SPI_NSSInternalSoftwareConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:875    .text.SPI_SSOutputCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:880    .text.SPI_SSOutputCmd:00000000 SPI_SSOutputCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:932    .text.SPI_TIModeCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:937    .text.SPI_TIModeCmd:00000000 SPI_TIModeCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:989    .text.I2S_FullDuplexConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:994    .text.I2S_FullDuplexConfig:00000000 I2S_FullDuplexConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1101   .text.SPI_I2S_ReceiveData:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1106   .text.SPI_I2S_ReceiveData:00000000 SPI_I2S_ReceiveData
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1138   .text.SPI_I2S_SendData:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1143   .text.SPI_I2S_SendData:00000000 SPI_I2S_SendData
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1176   .text.SPI_CalculateCRC:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1181   .text.SPI_CalculateCRC:00000000 SPI_CalculateCRC
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1233   .text.SPI_TransmitCRC:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1238   .text.SPI_TransmitCRC:00000000 SPI_TransmitCRC
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1273   .text.SPI_GetCRC:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1278   .text.SPI_GetCRC:00000000 SPI_GetCRC
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1328   .text.SPI_GetCRCPolynomial:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1333   .text.SPI_GetCRCPolynomial:00000000 SPI_GetCRCPolynomial
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1365   .text.SPI_I2S_DMACmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1370   .text.SPI_I2S_DMACmd:00000000 SPI_I2S_DMACmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1428   .text.SPI_I2S_ITConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1433   .text.SPI_I2S_ITConfig:00000000 SPI_I2S_ITConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1506   .text.SPI_I2S_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1511   .text.SPI_I2S_GetFlagStatus:00000000 SPI_I2S_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1564   .text.SPI_I2S_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1569   .text.SPI_I2S_ClearFlag:00000000 SPI_I2S_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1604   .text.SPI_I2S_GetITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1609   .text.SPI_I2S_GetITStatus:00000000 SPI_I2S_GetITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1696   .text.SPI_I2S_ClearITPendingBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccog6lS.s:1701   .text.SPI_I2S_ClearITPendingBit:00000000 SPI_I2S_ClearITPendingBit
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

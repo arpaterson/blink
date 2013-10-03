@@ -244,48 +244,46 @@
  163              	.L8:
   86:../src/main.c ****     while (1)
   87:../src/main.c ****     {
-  88:../src/main.c ****         Delaynus(700000 / 2);    /* A short delay */
+  88:../src/main.c ****         Delaynus(100000 / 2);    /* A short delay */
  164              		.loc 1 88 0 discriminator 1
- 165 0008 45F23070 		movw	r0, #22320
- 166 000c C0F20500 		movt	r0, 5
- 167 0010 FFF7FEFF 		bl	Delaynus
+ 165 0008 4CF25030 		movw	r0, #50000
+ 166 000c FFF7FEFF 		bl	Delaynus
   89:../src/main.c ****         GPIOD->ODR^=0xF000;
- 168              		.loc 1 89 0 discriminator 1
- 169 0014 4FF44063 		mov	r3, #3072
- 170 0018 C4F20203 		movt	r3, 16386
- 171 001c 4FF44062 		mov	r2, #3072
- 172 0020 C4F20202 		movt	r2, 16386
- 173 0024 5269     		ldr	r2, [r2, #20]
- 174 0026 82F47042 		eor	r2, r2, #61440
- 175 002a 5A61     		str	r2, [r3, #20]
+ 167              		.loc 1 89 0 discriminator 1
+ 168 0010 4FF44063 		mov	r3, #3072
+ 169 0014 C4F20203 		movt	r3, 16386
+ 170 0018 4FF44062 		mov	r2, #3072
+ 171 001c C4F20202 		movt	r2, 16386
+ 172 0020 5269     		ldr	r2, [r2, #20]
+ 173 0022 82F47042 		eor	r2, r2, #61440
+ 174 0026 5A61     		str	r2, [r3, #20]
   90:../src/main.c ****         //GPIOD -> BSRRL = GPIO_Pin_12 | GPIO_Pin_13;
   91:../src/main.c **** 
-  92:../src/main.c ****         Delaynus(200000 / 2);
- 176              		.loc 1 92 0 discriminator 1
- 177 002c 48F2A060 		movw	r0, #34464
- 178 0030 C0F20100 		movt	r0, 1
- 179 0034 FFF7FEFF 		bl	Delaynus
+  92:../src/main.c ****         Delaynus(100000 / 2);
+ 175              		.loc 1 92 0 discriminator 1
+ 176 0028 4CF25030 		movw	r0, #50000
+ 177 002c FFF7FEFF 		bl	Delaynus
   93:../src/main.c ****        // GPIOD -> BSRRH = GPIO_Pin_12 | GPIO_Pin_13;
   94:../src/main.c ****     }
- 180              		.loc 1 94 0 discriminator 1
- 181 0038 E6E7     		b	.L8
- 182              		.cfi_endproc
- 183              	.LFE112:
- 185 003a 00BF     		.text
- 186              	.Letext0:
- 187              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 188              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 189              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 190              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 178              		.loc 1 94 0 discriminator 1
+ 179 0030 EAE7     		b	.L8
+ 180              		.cfi_endproc
+ 181              	.LFE112:
+ 183 0032 00BF     		.text
+ 184              	.Letext0:
+ 185              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 186              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 187              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 188              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:19     .text.Delaynus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:24     .text.Delaynus:00000000 Delaynus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:81     .text.LED_Config:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:86     .text.LED_Config:00000000 LED_Config
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccVoNLBg.s:19     .text.Delaynus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccVoNLBg.s:24     .text.Delaynus:00000000 Delaynus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccVoNLBg.s:81     .text.LED_Config:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccVoNLBg.s:86     .text.LED_Config:00000000 LED_Config
                             *COM*:00000008 GPIO_InitStructure
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:142    .text.main:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:147    .text.main:00000000 main
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccVoNLBg.s:142    .text.main:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccVoNLBg.s:147    .text.main:00000000 main
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

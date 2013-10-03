@@ -17,7 +17,7 @@ S_UPPER_DEPS += \
 startup_src/%.o: ../startup_src/%.S
 	@echo 'Building file: $<'
 	@echo 'Invoking: ARM Sourcery Windows GCC Assembler'
-	arm-none-eabi-gcc -x assembler-with-cpp -DUSE_STDPERIPH_DRIVER -DUSE_STM32F4_DISCOVERY -DHSE_VALUE=8000000 -I"C:\Users\Anthony.Paterson@opus.co\Documents\eclipse\STM32F4\Discovery\workspace\blink\src" -I"C:\Users\Anthony.Paterson@opus.co\Documents\eclipse\STM32F4\Discovery\workspace\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc" -I"C:\Users\Anthony.Paterson@opus.co\Documents\eclipse\STM32F4\Discovery\workspace\blink\Libraries\Device\STM32F4xx\Include" -I"C:\Users\Anthony.Paterson@opus.co\Documents\eclipse\STM32F4\Discovery\workspace\blink\Libraries\CMSIS\Include" -Wall -Wa,-adhlns="$@.lst" -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -mcpu=cortex-m4 -mthumb -g -gdwarf-2 -o "$@" "$<"
+	arm-none-eabi-gcc -x assembler-with-cpp -DUSE_STDPERIPH_DRIVER -DUSE_STM32F4_DISCOVERY -DHSE_VALUE=8000000 -I"C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\src" -I"C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc" -I"C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\Device\STM32F4xx\Include" -I"C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include" -Wall -Wa,-adhlns="$@.lst" -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -mcpu=cortex-m4 -mthumb -g -gdwarf-2 -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

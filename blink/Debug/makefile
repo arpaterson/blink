@@ -46,7 +46,7 @@ all: blink.elf secondary-outputs
 blink.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Sourcery Windows GCC C Linker'
-	arm-none-eabi-gcc -T""C:\Users\Anthony.Paterson@opus.co\Documents\eclipse\STM32F4\Discovery\workspace/blink/stm32_flash.ld"" -Xlinker --gc-sections -Wl,-Map,"blink.map" -mcpu=cortex-m4 -mthumb -g -gdwarf-2 -o "blink.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -T""C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\stm32_flash.ld"" -Xlinker --gc-sections -Wl,-Map,"blink.map" -mcpu=cortex-m4 -mthumb -g -gdwarf-2 -o "blink.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

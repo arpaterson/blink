@@ -2746,49 +2746,49 @@
  1514              		.text
  1515              	.Letext0:
  1516              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 1517              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 1518              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 1519              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 1517              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 1518              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 1519              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_dma.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:19     .text.DMA_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:24     .text.DMA_DeInit:00000000 DMA_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:295    .text.DMA_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:300    .text.DMA_Init:00000000 DMA_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:427    .text.DMA_StructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:432    .text.DMA_StructInit:00000000 DMA_StructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:519    .text.DMA_Cmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:524    .text.DMA_Cmd:00000000 DMA_Cmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:572    .text.DMA_PeriphIncOffsetSizeConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:577    .text.DMA_PeriphIncOffsetSizeConfig:00000000 DMA_PeriphIncOffsetSizeConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:624    .text.DMA_FlowControllerConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:629    .text.DMA_FlowControllerConfig:00000000 DMA_FlowControllerConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:676    .text.DMA_SetCurrDataCounter:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:681    .text.DMA_SetCurrDataCounter:00000000 DMA_SetCurrDataCounter
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:714    .text.DMA_GetCurrDataCounter:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:719    .text.DMA_GetCurrDataCounter:00000000 DMA_GetCurrDataCounter
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:751    .text.DMA_DoubleBufferModeConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:756    .text.DMA_DoubleBufferModeConfig:00000000 DMA_DoubleBufferModeConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:808    .text.DMA_DoubleBufferModeCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:813    .text.DMA_DoubleBufferModeCmd:00000000 DMA_DoubleBufferModeCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:861    .text.DMA_MemoryTargetConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:866    .text.DMA_MemoryTargetConfig:00000000 DMA_MemoryTargetConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:910    .text.DMA_GetCurrentMemoryTarget:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:915    .text.DMA_GetCurrentMemoryTarget:00000000 DMA_GetCurrentMemoryTarget
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:963    .text.DMA_GetCmdStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:968    .text.DMA_GetCmdStatus:00000000 DMA_GetCmdStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1017   .text.DMA_GetFIFOStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1022   .text.DMA_GetFIFOStatus:00000000 DMA_GetFIFOStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1060   .text.DMA_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1065   .text.DMA_GetFlagStatus:00000000 DMA_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1156   .text.DMA_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1161   .text.DMA_ClearFlag:00000000 DMA_ClearFlag
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1228   .text.DMA_ITConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1233   .text.DMA_ITConfig:00000000 DMA_ITConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1315   .text.DMA_GetITStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1320   .text.DMA_GetITStatus:00000000 DMA_GetITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1443   .text.DMA_ClearITPendingBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccF3jepk.s:1448   .text.DMA_ClearITPendingBit:00000000 DMA_ClearITPendingBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:19     .text.DMA_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:24     .text.DMA_DeInit:00000000 DMA_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:295    .text.DMA_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:300    .text.DMA_Init:00000000 DMA_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:427    .text.DMA_StructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:432    .text.DMA_StructInit:00000000 DMA_StructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:519    .text.DMA_Cmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:524    .text.DMA_Cmd:00000000 DMA_Cmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:572    .text.DMA_PeriphIncOffsetSizeConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:577    .text.DMA_PeriphIncOffsetSizeConfig:00000000 DMA_PeriphIncOffsetSizeConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:624    .text.DMA_FlowControllerConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:629    .text.DMA_FlowControllerConfig:00000000 DMA_FlowControllerConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:676    .text.DMA_SetCurrDataCounter:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:681    .text.DMA_SetCurrDataCounter:00000000 DMA_SetCurrDataCounter
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:714    .text.DMA_GetCurrDataCounter:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:719    .text.DMA_GetCurrDataCounter:00000000 DMA_GetCurrDataCounter
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:751    .text.DMA_DoubleBufferModeConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:756    .text.DMA_DoubleBufferModeConfig:00000000 DMA_DoubleBufferModeConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:808    .text.DMA_DoubleBufferModeCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:813    .text.DMA_DoubleBufferModeCmd:00000000 DMA_DoubleBufferModeCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:861    .text.DMA_MemoryTargetConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:866    .text.DMA_MemoryTargetConfig:00000000 DMA_MemoryTargetConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:910    .text.DMA_GetCurrentMemoryTarget:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:915    .text.DMA_GetCurrentMemoryTarget:00000000 DMA_GetCurrentMemoryTarget
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:963    .text.DMA_GetCmdStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:968    .text.DMA_GetCmdStatus:00000000 DMA_GetCmdStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1017   .text.DMA_GetFIFOStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1022   .text.DMA_GetFIFOStatus:00000000 DMA_GetFIFOStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1060   .text.DMA_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1065   .text.DMA_GetFlagStatus:00000000 DMA_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1156   .text.DMA_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1161   .text.DMA_ClearFlag:00000000 DMA_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1228   .text.DMA_ITConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1233   .text.DMA_ITConfig:00000000 DMA_ITConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1315   .text.DMA_GetITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1320   .text.DMA_GetITStatus:00000000 DMA_GetITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1443   .text.DMA_ClearITPendingBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccw4a0n6.s:1448   .text.DMA_ClearITPendingBit:00000000 DMA_ClearITPendingBit
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

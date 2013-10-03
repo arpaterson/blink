@@ -672,47 +672,47 @@
  469 003a 00BF     		.text
  470              	.Letext0:
  471              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 472              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 473              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 474              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 475              		.file 6 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 472              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 473              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 474              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 475              		.file 6 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
  476              		.file 7 "../src/stm32f4_discovery.h"
- 477              		.file 8 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 477              		.file 8 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4_discovery.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:23     .data.GPIO_PORT:00000000 GPIO_PORT
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:20     .data.GPIO_PORT:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:33     .rodata.GPIO_PIN:00000000 GPIO_PIN
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:30     .rodata.GPIO_PIN:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:43     .rodata.GPIO_CLK:00000000 GPIO_CLK
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:40     .rodata.GPIO_CLK:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:53     .data.BUTTON_PORT:00000000 BUTTON_PORT
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:50     .data.BUTTON_PORT:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:60     .rodata.BUTTON_PIN:00000000 BUTTON_PIN
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:57     .rodata.BUTTON_PIN:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:67     .rodata.BUTTON_CLK:00000000 BUTTON_CLK
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:64     .rodata.BUTTON_CLK:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:74     .rodata.BUTTON_EXTI_LINE:00000000 BUTTON_EXTI_LINE
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:71     .rodata.BUTTON_EXTI_LINE:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:81     .rodata.BUTTON_PORT_SOURCE:00000000 BUTTON_PORT_SOURCE
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:78     .rodata.BUTTON_PORT_SOURCE:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:88     .rodata.BUTTON_PIN_SOURCE:00000000 BUTTON_PIN_SOURCE
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:85     .rodata.BUTTON_PIN_SOURCE:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:95     .rodata.BUTTON_IRQn:00000000 BUTTON_IRQn
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:92     .rodata.BUTTON_IRQn:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:23     .data.GPIO_PORT:00000000 GPIO_PORT
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:20     .data.GPIO_PORT:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:33     .rodata.GPIO_PIN:00000000 GPIO_PIN
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:30     .rodata.GPIO_PIN:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:43     .rodata.GPIO_CLK:00000000 GPIO_CLK
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:40     .rodata.GPIO_CLK:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:53     .data.BUTTON_PORT:00000000 BUTTON_PORT
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:50     .data.BUTTON_PORT:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:60     .rodata.BUTTON_PIN:00000000 BUTTON_PIN
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:57     .rodata.BUTTON_PIN:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:67     .rodata.BUTTON_CLK:00000000 BUTTON_CLK
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:64     .rodata.BUTTON_CLK:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:74     .rodata.BUTTON_EXTI_LINE:00000000 BUTTON_EXTI_LINE
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:71     .rodata.BUTTON_EXTI_LINE:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:81     .rodata.BUTTON_PORT_SOURCE:00000000 BUTTON_PORT_SOURCE
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:78     .rodata.BUTTON_PORT_SOURCE:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:88     .rodata.BUTTON_PIN_SOURCE:00000000 BUTTON_PIN_SOURCE
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:85     .rodata.BUTTON_PIN_SOURCE:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:95     .rodata.BUTTON_IRQn:00000000 BUTTON_IRQn
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:92     .rodata.BUTTON_IRQn:00000000 $d
                             *COM*:00000004 NVIC_InitStructure
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:99     .text.STM_EVAL_LEDInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:104    .text.STM_EVAL_LEDInit:00000000 STM_EVAL_LEDInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:167    .text.STM_EVAL_LEDOn:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:172    .text.STM_EVAL_LEDOn:00000000 STM_EVAL_LEDOn
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:210    .text.STM_EVAL_LEDOff:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:215    .text.STM_EVAL_LEDOff:00000000 STM_EVAL_LEDOff
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:253    .text.STM_EVAL_LEDToggle:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:258    .text.STM_EVAL_LEDToggle:00000000 STM_EVAL_LEDToggle
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:302    .text.STM_EVAL_PBInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:307    .text.STM_EVAL_PBInit:00000000 STM_EVAL_PBInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:424    .text.STM_EVAL_PBGetState:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc4taxJW.s:429    .text.STM_EVAL_PBGetState:00000000 STM_EVAL_PBGetState
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:99     .text.STM_EVAL_LEDInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:104    .text.STM_EVAL_LEDInit:00000000 STM_EVAL_LEDInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:167    .text.STM_EVAL_LEDOn:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:172    .text.STM_EVAL_LEDOn:00000000 STM_EVAL_LEDOn
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:210    .text.STM_EVAL_LEDOff:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:215    .text.STM_EVAL_LEDOff:00000000 STM_EVAL_LEDOff
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:253    .text.STM_EVAL_LEDToggle:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:258    .text.STM_EVAL_LEDToggle:00000000 STM_EVAL_LEDToggle
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:302    .text.STM_EVAL_PBInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:307    .text.STM_EVAL_PBInit:00000000 STM_EVAL_PBInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:424    .text.STM_EVAL_PBGetState:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccD1xL9Q.s:429    .text.STM_EVAL_PBGetState:00000000 STM_EVAL_PBGetState
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

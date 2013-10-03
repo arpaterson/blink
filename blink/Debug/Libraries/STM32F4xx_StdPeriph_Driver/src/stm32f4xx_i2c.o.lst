@@ -3419,78 +3419,78 @@
  2108              		.text
  2109              	.Letext0:
  2110              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 2111              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 2112              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 2113              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 2114              		.file 6 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 2111              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 2112              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 2113              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 2114              		.file 6 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_i2c.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:19     .text.I2C_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:24     .text.I2C_DeInit:00000000 I2C_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:98     .text.I2C_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:103    .text.I2C_Init:00000000 I2C_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:331    .text.I2C_StructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:336    .text.I2C_StructInit:00000000 I2C_StructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:387    .text.I2C_Cmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:392    .text.I2C_Cmd:00000000 I2C_Cmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:444    .text.I2C_GenerateSTART:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:449    .text.I2C_GenerateSTART:00000000 I2C_GenerateSTART
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:501    .text.I2C_GenerateSTOP:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:506    .text.I2C_GenerateSTOP:00000000 I2C_GenerateSTOP
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:558    .text.I2C_Send7bitAddress:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:563    .text.I2C_Send7bitAddress:00000000 I2C_Send7bitAddress
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:614    .text.I2C_AcknowledgeConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:619    .text.I2C_AcknowledgeConfig:00000000 I2C_AcknowledgeConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:671    .text.I2C_OwnAddress2Config:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:676    .text.I2C_OwnAddress2Config:00000000 I2C_OwnAddress2Config
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:729    .text.I2C_DualAddressCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:734    .text.I2C_DualAddressCmd:00000000 I2C_DualAddressCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:786    .text.I2C_GeneralCallCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:791    .text.I2C_GeneralCallCmd:00000000 I2C_GeneralCallCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:843    .text.I2C_SoftwareResetCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:848    .text.I2C_SoftwareResetCmd:00000000 I2C_SoftwareResetCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:902    .text.I2C_StretchClockCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:907    .text.I2C_StretchClockCmd:00000000 I2C_StretchClockCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:959    .text.I2C_FastModeDutyCycleConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:964    .text.I2C_FastModeDutyCycleConfig:00000000 I2C_FastModeDutyCycleConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1016   .text.I2C_NACKPositionConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1021   .text.I2C_NACKPositionConfig:00000000 I2C_NACKPositionConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1073   .text.I2C_SMBusAlertConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1078   .text.I2C_SMBusAlertConfig:00000000 I2C_SMBusAlertConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1130   .text.I2C_ARPCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1135   .text.I2C_ARPCmd:00000000 I2C_ARPCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1187   .text.I2C_SendData:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1192   .text.I2C_SendData:00000000 I2C_SendData
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1226   .text.I2C_ReceiveData:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1231   .text.I2C_ReceiveData:00000000 I2C_ReceiveData
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1264   .text.I2C_TransmitPEC:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1269   .text.I2C_TransmitPEC:00000000 I2C_TransmitPEC
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1321   .text.I2C_PECPositionConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1326   .text.I2C_PECPositionConfig:00000000 I2C_PECPositionConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1378   .text.I2C_CalculatePEC:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1383   .text.I2C_CalculatePEC:00000000 I2C_CalculatePEC
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1435   .text.I2C_GetPEC:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1440   .text.I2C_GetPEC:00000000 I2C_GetPEC
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1475   .text.I2C_DMACmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1480   .text.I2C_DMACmd:00000000 I2C_DMACmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1532   .text.I2C_DMALastTransferCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1537   .text.I2C_DMALastTransferCmd:00000000 I2C_DMALastTransferCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1589   .text.I2C_ReadRegister:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1594   .text.I2C_ReadRegister:00000000 I2C_ReadRegister
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1639   .text.I2C_ITConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1644   .text.I2C_ITConfig:00000000 I2C_ITConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1702   .text.I2C_CheckEvent:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1707   .text.I2C_CheckEvent:00000000 I2C_CheckEvent
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1785   .text.I2C_GetLastEvent:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1790   .text.I2C_GetLastEvent:00000000 I2C_GetLastEvent
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1848   .text.I2C_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1853   .text.I2C_GetFlagStatus:00000000 I2C_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1938   .text.I2C_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1943   .text.I2C_ClearFlag:00000000 I2C_ClearFlag
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1985   .text.I2C_GetITStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:1990   .text.I2C_GetITStatus:00000000 I2C_GetITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:2062   .text.I2C_ClearITPendingBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccmB6NM.s:2067   .text.I2C_ClearITPendingBit:00000000 I2C_ClearITPendingBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:19     .text.I2C_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:24     .text.I2C_DeInit:00000000 I2C_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:98     .text.I2C_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:103    .text.I2C_Init:00000000 I2C_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:331    .text.I2C_StructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:336    .text.I2C_StructInit:00000000 I2C_StructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:387    .text.I2C_Cmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:392    .text.I2C_Cmd:00000000 I2C_Cmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:444    .text.I2C_GenerateSTART:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:449    .text.I2C_GenerateSTART:00000000 I2C_GenerateSTART
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:501    .text.I2C_GenerateSTOP:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:506    .text.I2C_GenerateSTOP:00000000 I2C_GenerateSTOP
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:558    .text.I2C_Send7bitAddress:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:563    .text.I2C_Send7bitAddress:00000000 I2C_Send7bitAddress
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:614    .text.I2C_AcknowledgeConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:619    .text.I2C_AcknowledgeConfig:00000000 I2C_AcknowledgeConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:671    .text.I2C_OwnAddress2Config:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:676    .text.I2C_OwnAddress2Config:00000000 I2C_OwnAddress2Config
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:729    .text.I2C_DualAddressCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:734    .text.I2C_DualAddressCmd:00000000 I2C_DualAddressCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:786    .text.I2C_GeneralCallCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:791    .text.I2C_GeneralCallCmd:00000000 I2C_GeneralCallCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:843    .text.I2C_SoftwareResetCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:848    .text.I2C_SoftwareResetCmd:00000000 I2C_SoftwareResetCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:902    .text.I2C_StretchClockCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:907    .text.I2C_StretchClockCmd:00000000 I2C_StretchClockCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:959    .text.I2C_FastModeDutyCycleConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:964    .text.I2C_FastModeDutyCycleConfig:00000000 I2C_FastModeDutyCycleConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1016   .text.I2C_NACKPositionConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1021   .text.I2C_NACKPositionConfig:00000000 I2C_NACKPositionConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1073   .text.I2C_SMBusAlertConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1078   .text.I2C_SMBusAlertConfig:00000000 I2C_SMBusAlertConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1130   .text.I2C_ARPCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1135   .text.I2C_ARPCmd:00000000 I2C_ARPCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1187   .text.I2C_SendData:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1192   .text.I2C_SendData:00000000 I2C_SendData
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1226   .text.I2C_ReceiveData:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1231   .text.I2C_ReceiveData:00000000 I2C_ReceiveData
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1264   .text.I2C_TransmitPEC:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1269   .text.I2C_TransmitPEC:00000000 I2C_TransmitPEC
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1321   .text.I2C_PECPositionConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1326   .text.I2C_PECPositionConfig:00000000 I2C_PECPositionConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1378   .text.I2C_CalculatePEC:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1383   .text.I2C_CalculatePEC:00000000 I2C_CalculatePEC
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1435   .text.I2C_GetPEC:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1440   .text.I2C_GetPEC:00000000 I2C_GetPEC
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1475   .text.I2C_DMACmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1480   .text.I2C_DMACmd:00000000 I2C_DMACmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1532   .text.I2C_DMALastTransferCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1537   .text.I2C_DMALastTransferCmd:00000000 I2C_DMALastTransferCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1589   .text.I2C_ReadRegister:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1594   .text.I2C_ReadRegister:00000000 I2C_ReadRegister
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1639   .text.I2C_ITConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1644   .text.I2C_ITConfig:00000000 I2C_ITConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1702   .text.I2C_CheckEvent:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1707   .text.I2C_CheckEvent:00000000 I2C_CheckEvent
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1785   .text.I2C_GetLastEvent:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1790   .text.I2C_GetLastEvent:00000000 I2C_GetLastEvent
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1848   .text.I2C_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1853   .text.I2C_GetFlagStatus:00000000 I2C_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1938   .text.I2C_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1943   .text.I2C_ClearFlag:00000000 I2C_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1985   .text.I2C_GetITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:1990   .text.I2C_GetITStatus:00000000 I2C_GetITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:2062   .text.I2C_ClearITPendingBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCHC9Yb.s:2067   .text.I2C_ClearITPendingBit:00000000 I2C_ClearITPendingBit
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

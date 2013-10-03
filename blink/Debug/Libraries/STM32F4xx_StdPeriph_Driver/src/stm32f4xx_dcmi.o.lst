@@ -1399,41 +1399,41 @@
  902              		.text
  903              	.Letext0:
  904              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 905              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 906              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
- 907              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 905              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 906              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 907              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_dcmi.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:19     .text.DCMI_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:24     .text.DCMI_DeInit:00000000 DCMI_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:82     .text.DCMI_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:87     .text.DCMI_Init:00000000 DCMI_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:182    .text.DCMI_StructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:187    .text.DCMI_StructInit:00000000 DCMI_StructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:242    .text.DCMI_CROPConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:247    .text.DCMI_CROPConfig:00000000 DCMI_CROPConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:300    .text.DCMI_CROPCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:305    .text.DCMI_CROPCmd:00000000 DCMI_CROPCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:356    .text.DCMI_SetEmbeddedSynchroCodes:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:361    .text.DCMI_SetEmbeddedSynchroCodes:00000000 DCMI_SetEmbeddedSynchroCodes
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:413    .text.DCMI_JPEGCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:418    .text.DCMI_JPEGCmd:00000000 DCMI_JPEGCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:469    .text.DCMI_Cmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:474    .text.DCMI_Cmd:00000000 DCMI_Cmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:525    .text.DCMI_CaptureCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:530    .text.DCMI_CaptureCmd:00000000 DCMI_CaptureCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:581    .text.DCMI_ReadData:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:586    .text.DCMI_ReadData:00000000 DCMI_ReadData
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:613    .text.DCMI_ITConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:618    .text.DCMI_ITConfig:00000000 DCMI_ITConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:675    .text.DCMI_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:680    .text.DCMI_GetFlagStatus:00000000 DCMI_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:765    .text.DCMI_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:770    .text.DCMI_ClearFlag:00000000 DCMI_ClearFlag
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:803    .text.DCMI_GetITStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:808    .text.DCMI_GetITStatus:00000000 DCMI_GetITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:865    .text.DCMI_ClearITPendingBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccf2bfkY.s:870    .text.DCMI_ClearITPendingBit:00000000 DCMI_ClearITPendingBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:19     .text.DCMI_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:24     .text.DCMI_DeInit:00000000 DCMI_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:82     .text.DCMI_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:87     .text.DCMI_Init:00000000 DCMI_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:182    .text.DCMI_StructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:187    .text.DCMI_StructInit:00000000 DCMI_StructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:242    .text.DCMI_CROPConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:247    .text.DCMI_CROPConfig:00000000 DCMI_CROPConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:300    .text.DCMI_CROPCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:305    .text.DCMI_CROPCmd:00000000 DCMI_CROPCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:356    .text.DCMI_SetEmbeddedSynchroCodes:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:361    .text.DCMI_SetEmbeddedSynchroCodes:00000000 DCMI_SetEmbeddedSynchroCodes
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:413    .text.DCMI_JPEGCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:418    .text.DCMI_JPEGCmd:00000000 DCMI_JPEGCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:469    .text.DCMI_Cmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:474    .text.DCMI_Cmd:00000000 DCMI_Cmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:525    .text.DCMI_CaptureCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:530    .text.DCMI_CaptureCmd:00000000 DCMI_CaptureCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:581    .text.DCMI_ReadData:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:586    .text.DCMI_ReadData:00000000 DCMI_ReadData
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:613    .text.DCMI_ITConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:618    .text.DCMI_ITConfig:00000000 DCMI_ITConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:675    .text.DCMI_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:680    .text.DCMI_GetFlagStatus:00000000 DCMI_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:765    .text.DCMI_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:770    .text.DCMI_ClearFlag:00000000 DCMI_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:803    .text.DCMI_GetITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:808    .text.DCMI_GetITStatus:00000000 DCMI_GetITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:865    .text.DCMI_ClearITPendingBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccWRKHSn.s:870    .text.DCMI_ClearITPendingBit:00000000 DCMI_ClearITPendingBit
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS
