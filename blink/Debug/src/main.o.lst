@@ -1,0 +1,294 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"main.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.Delaynus,"ax",%progbits
+  19              		.align	2
+  20              		.global	Delaynus
+  21              		.thumb
+  22              		.thumb_func
+  24              	Delaynus:
+  25              	.LFB110:
+  26              		.file 1 "../src/main.c"
+   1:../src/main.c **** /**
+   2:../src/main.c **** *****************************************************************************
+   3:../src/main.c **** **
+   4:../src/main.c **** **  File        : main.c
+   5:../src/main.c **** **
+   6:../src/main.c **** **  Abstract    : main function.
+   7:../src/main.c **** **
+   8:../src/main.c **** **  Functions   : main
+   9:../src/main.c **** **
+  10:../src/main.c **** **  Environment : Atollic TrueSTUDIO(R)
+  11:../src/main.c **** **                STMicroelectronics STM32F4xx Standard Peripherals Library
+  12:../src/main.c **** **
+  13:../src/main.c **** **  Distribution: The file is distributed “as is,” without any warranty
+  14:../src/main.c **** **                of any kind.
+  15:../src/main.c **** **
+  16:../src/main.c **** **  (c)Copyright Atollic AB.
+  17:../src/main.c **** **  You may use this file as-is or modify it according to the needs of your
+  18:../src/main.c **** **  project. Distribution of this file (unmodified or modified) is not
+  19:../src/main.c **** **  permitted. Atollic AB permit registered Atollic TrueSTUDIO(R) users the
+  20:../src/main.c **** **  rights to distribute the assembled, compiled & linked contents of this
+  21:../src/main.c **** **  file as part of an application binary file, provided that it is built
+  22:../src/main.c **** **  using the Atollic TrueSTUDIO(R) toolchain.
+  23:../src/main.c **** **
+  24:../src/main.c **** **
+  25:../src/main.c **** *****************************************************************************
+  26:../src/main.c **** */
+  27:../src/main.c **** 
+  28:../src/main.c **** 
+  29:../src/main.c **** 
+  30:../src/main.c **** /* Includes */
+  31:../src/main.c **** 
+  32:../src/main.c **** #include "stm32f4xx.h"
+  33:../src/main.c **** #include <stdio.h>
+  34:../src/main.c **** 
+  35:../src/main.c **** /* Private macro */
+  36:../src/main.c **** /* Private variables */
+  37:../src/main.c **** /* Private function prototypes */
+  38:../src/main.c **** /* Private functions */
+  39:../src/main.c **** 
+  40:../src/main.c **** /*
+  41:../src/main.c ****  * ===========================================================================
+  42:../src/main.c ****  *
+  43:../src/main.c ****  *  Abstract: main program
+  44:../src/main.c ****  *
+  45:../src/main.c ****  * ===========================================================================
+  46:../src/main.c ****  */
+  47:../src/main.c **** 
+  48:../src/main.c **** /*
+  49:../src/main.c ****  * Function Name  : Delaynus
+  50:../src/main.c ****  * Description    : Inserts a delay time abort nus.
+  51:../src/main.c ****  * Input          :nus
+  52:../src/main.c ****  * Output         : None
+  53:../src/main.c ****  * Return         : None
+  54:../src/main.c ****  */
+  55:../src/main.c **** void Delaynus(vu32 nus)
+  56:../src/main.c **** {
+  27              		.loc 1 56 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 16
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 4
+  35              		.cfi_offset 7, -4
+  36 0002 85B0     		sub	sp, sp, #20
+  37              	.LCFI1:
+  38              		.cfi_def_cfa_offset 24
+  39 0004 00AF     		add	r7, sp, #0
+  40              	.LCFI2:
+  41              		.cfi_def_cfa_register 7
+  42 0006 7860     		str	r0, [r7, #4]
+  57:../src/main.c ****     u8 nCount;
+  58:../src/main.c **** 
+  59:../src/main.c ****     while (nus--)
+  43              		.loc 1 59 0
+  44 0008 0AE0     		b	.L2
+  45              	.L5:
+  60:../src/main.c ****     {
+  61:../src/main.c ****         for (nCount = 6; nCount != 0; nCount--);
+  46              		.loc 1 61 0
+  47 000a 4FF00603 		mov	r3, #6
+  48 000e FB73     		strb	r3, [r7, #15]
+  49 0010 03E0     		b	.L3
+  50              	.L4:
+  51              		.loc 1 61 0 is_stmt 0 discriminator 2
+  52 0012 FB7B     		ldrb	r3, [r7, #15]
+  53 0014 03F1FF33 		add	r3, r3, #-1
+  54 0018 FB73     		strb	r3, [r7, #15]
+  55              	.L3:
+  56              		.loc 1 61 0 discriminator 1
+  57 001a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  58 001c 002B     		cmp	r3, #0
+  59 001e F8D1     		bne	.L4
+  60              	.L2:
+  59:../src/main.c ****     while (nus--)
+  61              		.loc 1 59 0 is_stmt 1 discriminator 1
+  62 0020 7B68     		ldr	r3, [r7, #4]
+  63 0022 002B     		cmp	r3, #0
+  64 0024 0CBF     		ite	eq
+  65 0026 0022     		moveq	r2, #0
+  66 0028 0122     		movne	r2, #1
+  67 002a D2B2     		uxtb	r2, r2
+  68 002c 03F1FF33 		add	r3, r3, #-1
+  69 0030 7B60     		str	r3, [r7, #4]
+  70 0032 002A     		cmp	r2, #0
+  71 0034 E9D1     		bne	.L5
+  62:../src/main.c ****     }
+  63:../src/main.c **** }
+  72              		.loc 1 63 0
+  73 0036 07F11407 		add	r7, r7, #20
+  74 003a BD46     		mov	sp, r7
+  75 003c 80BC     		pop	{r7}
+  76 003e 7047     		bx	lr
+  77              		.cfi_endproc
+  78              	.LFE110:
+  80              		.section	.text.LED_Config,"ax",%progbits
+  81              		.align	2
+  82              		.global	LED_Config
+  83              		.thumb
+  84              		.thumb_func
+  86              	LED_Config:
+  87              	.LFB111:
+  64:../src/main.c **** void LED_Config()
+  65:../src/main.c **** {
+  88              		.loc 1 65 0
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 8
+  91              		@ frame_needed = 1, uses_anonymous_args = 0
+  92 0000 80B5     		push	{r7, lr}
+  93              	.LCFI3:
+  94              		.cfi_def_cfa_offset 8
+  95              		.cfi_offset 14, -4
+  96              		.cfi_offset 7, -8
+  97 0002 82B0     		sub	sp, sp, #8
+  98              	.LCFI4:
+  99              		.cfi_def_cfa_offset 16
+ 100 0004 00AF     		add	r7, sp, #0
+ 101              	.LCFI5:
+ 102              		.cfi_def_cfa_register 7
+  66:../src/main.c ****   GPIO_InitTypeDef  GPIO_InitStructure;
+  67:../src/main.c ****   /* GPIOD Periph clock enable */
+  68:../src/main.c ****   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+ 103              		.loc 1 68 0
+ 104 0006 4FF00800 		mov	r0, #8
+ 105 000a 4FF00101 		mov	r1, #1
+ 106 000e FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+  69:../src/main.c ****   /* Configure PD12, PD13, PD14 and PD15 in output push-pull mode */
+  70:../src/main.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_13| GPIO_Pin_14| GPIO_Pin_15;
+ 107              		.loc 1 70 0
+ 108 0012 4FF47043 		mov	r3, #61440
+ 109 0016 3B60     		str	r3, [r7, #0]
+  71:../src/main.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 110              		.loc 1 71 0
+ 111 0018 4FF00003 		mov	r3, #0
+ 112 001c BB71     		strb	r3, [r7, #6]
+  72:../src/main.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_25MHz;
+ 113              		.loc 1 72 0
+ 114 001e 4FF00103 		mov	r3, #1
+ 115 0022 7B71     		strb	r3, [r7, #5]
+  73:../src/main.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+ 116              		.loc 1 73 0
+ 117 0024 4FF00003 		mov	r3, #0
+ 118 0028 FB71     		strb	r3, [r7, #7]
+  74:../src/main.c **** 
+  75:../src/main.c ****   /* standard output pin */
+  76:../src/main.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 119              		.loc 1 76 0
+ 120 002a 4FF00103 		mov	r3, #1
+ 121 002e 3B71     		strb	r3, [r7, #4]
+  77:../src/main.c ****   GPIO_Init(GPIOD, &GPIO_InitStructure);
+ 122              		.loc 1 77 0
+ 123 0030 4FF44060 		mov	r0, #3072
+ 124 0034 C4F20200 		movt	r0, 16386
+ 125 0038 3B46     		mov	r3, r7
+ 126 003a 1946     		mov	r1, r3
+ 127 003c FFF7FEFF 		bl	GPIO_Init
+  78:../src/main.c ****   GPIO_Write(GPIOD,0);	//initial state (all LEDs OFF)
+ 128              		.loc 1 78 0
+ 129 0040 4FF44060 		mov	r0, #3072
+ 130 0044 C4F20200 		movt	r0, 16386
+ 131 0048 4FF00001 		mov	r1, #0
+ 132 004c FFF7FEFF 		bl	GPIO_Write
+  79:../src/main.c **** }
+ 133              		.loc 1 79 0
+ 134 0050 07F10807 		add	r7, r7, #8
+ 135 0054 BD46     		mov	sp, r7
+ 136 0056 80BD     		pop	{r7, pc}
+ 137              		.cfi_endproc
+ 138              	.LFE111:
+ 140              		.comm	GPIO_InitStructure,8,4
+ 141              		.section	.text.main,"ax",%progbits
+ 142              		.align	2
+ 143              		.global	main
+ 144              		.thumb
+ 145              		.thumb_func
+ 147              	main:
+ 148              	.LFB112:
+  80:../src/main.c **** 
+  81:../src/main.c **** GPIO_InitTypeDef GPIO_InitStructure;
+  82:../src/main.c **** 
+  83:../src/main.c **** int main(void)
+  84:../src/main.c **** {
+ 149              		.loc 1 84 0
+ 150              		.cfi_startproc
+ 151              		@ args = 0, pretend = 0, frame = 0
+ 152              		@ frame_needed = 1, uses_anonymous_args = 0
+ 153 0000 80B5     		push	{r7, lr}
+ 154              	.LCFI6:
+ 155              		.cfi_def_cfa_offset 8
+ 156              		.cfi_offset 14, -4
+ 157              		.cfi_offset 7, -8
+ 158 0002 00AF     		add	r7, sp, #0
+ 159              	.LCFI7:
+ 160              		.cfi_def_cfa_register 7
+  85:../src/main.c **** 	LED_Config();
+ 161              		.loc 1 85 0
+ 162 0004 FFF7FEFF 		bl	LED_Config
+ 163              	.L8:
+  86:../src/main.c ****     while (1)
+  87:../src/main.c ****     {
+  88:../src/main.c ****         Delaynus(700000 / 2);    /* A short delay */
+ 164              		.loc 1 88 0 discriminator 1
+ 165 0008 45F23070 		movw	r0, #22320
+ 166 000c C0F20500 		movt	r0, 5
+ 167 0010 FFF7FEFF 		bl	Delaynus
+  89:../src/main.c ****         GPIOD->ODR^=0xF000;
+ 168              		.loc 1 89 0 discriminator 1
+ 169 0014 4FF44063 		mov	r3, #3072
+ 170 0018 C4F20203 		movt	r3, 16386
+ 171 001c 4FF44062 		mov	r2, #3072
+ 172 0020 C4F20202 		movt	r2, 16386
+ 173 0024 5269     		ldr	r2, [r2, #20]
+ 174 0026 82F47042 		eor	r2, r2, #61440
+ 175 002a 5A61     		str	r2, [r3, #20]
+  90:../src/main.c ****         //GPIOD -> BSRRL = GPIO_Pin_12 | GPIO_Pin_13;
+  91:../src/main.c **** 
+  92:../src/main.c ****         Delaynus(200000 / 2);
+ 176              		.loc 1 92 0 discriminator 1
+ 177 002c 48F2A060 		movw	r0, #34464
+ 178 0030 C0F20100 		movt	r0, 1
+ 179 0034 FFF7FEFF 		bl	Delaynus
+  93:../src/main.c ****        // GPIOD -> BSRRH = GPIO_Pin_12 | GPIO_Pin_13;
+  94:../src/main.c ****     }
+ 180              		.loc 1 94 0 discriminator 1
+ 181 0038 E6E7     		b	.L8
+ 182              		.cfi_endproc
+ 183              	.LFE112:
+ 185 003a 00BF     		.text
+ 186              	.Letext0:
+ 187              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 188              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 189              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+ 190              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\eclipse\\STM32F4\\Discovery\\workspace\\b
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:19     .text.Delaynus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:24     .text.Delaynus:00000000 Delaynus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:81     .text.LED_Config:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:86     .text.LED_Config:00000000 LED_Config
+                            *COM*:00000008 GPIO_InitStructure
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:142    .text.main:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccIwoSly.s:147    .text.main:00000000 main
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+RCC_AHB1PeriphClockCmd
+GPIO_Init
+GPIO_Write
