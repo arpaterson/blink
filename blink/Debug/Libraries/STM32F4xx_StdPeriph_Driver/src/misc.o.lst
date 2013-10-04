@@ -565,16 +565,16 @@
  344              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
 DEFINED SYMBOLS
                             *ABS*:00000000 misc.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccs5aT5w.s:19     .text.NVIC_PriorityGroupConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccs5aT5w.s:24     .text.NVIC_PriorityGroupConfig:00000000 NVIC_PriorityGroupConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccs5aT5w.s:59     .text.NVIC_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccs5aT5w.s:64     .text.NVIC_Init:00000000 NVIC_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccs5aT5w.s:182    .text.NVIC_SetVectorTable:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccs5aT5w.s:187    .text.NVIC_SetVectorTable:00000000 NVIC_SetVectorTable
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccs5aT5w.s:224    .text.NVIC_SystemLPConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccs5aT5w.s:229    .text.NVIC_SystemLPConfig:00000000 NVIC_SystemLPConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccs5aT5w.s:285    .text.SysTick_CLKSourceConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccs5aT5w.s:290    .text.SysTick_CLKSourceConfig:00000000 SysTick_CLKSourceConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc9VfH3N.s:19     .text.NVIC_PriorityGroupConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc9VfH3N.s:24     .text.NVIC_PriorityGroupConfig:00000000 NVIC_PriorityGroupConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc9VfH3N.s:59     .text.NVIC_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc9VfH3N.s:64     .text.NVIC_Init:00000000 NVIC_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc9VfH3N.s:182    .text.NVIC_SetVectorTable:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc9VfH3N.s:187    .text.NVIC_SetVectorTable:00000000 NVIC_SetVectorTable
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc9VfH3N.s:224    .text.NVIC_SystemLPConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc9VfH3N.s:229    .text.NVIC_SystemLPConfig:00000000 NVIC_SystemLPConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc9VfH3N.s:285    .text.SysTick_CLKSourceConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc9VfH3N.s:290    .text.SysTick_CLKSourceConfig:00000000 SysTick_CLKSourceConfig
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

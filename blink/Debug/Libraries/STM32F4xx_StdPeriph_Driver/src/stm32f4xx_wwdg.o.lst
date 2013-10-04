@@ -624,22 +624,22 @@
  355              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_wwdg.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:19     .text.WWDG_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:24     .text.WWDG_DeInit:00000000 WWDG_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:53     .text.WWDG_SetPrescaler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:58     .text.WWDG_SetPrescaler:00000000 WWDG_SetPrescaler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:104    .text.WWDG_SetWindowValue:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:109    .text.WWDG_SetWindowValue:00000000 WWDG_SetWindowValue
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:157    .text.WWDG_EnableIT:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:162    .text.WWDG_EnableIT:00000000 WWDG_EnableIT
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:189    .text.WWDG_SetCounter:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:194    .text.WWDG_SetCounter:00000000 WWDG_SetCounter
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:228    .text.WWDG_Enable:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:233    .text.WWDG_Enable:00000000 WWDG_Enable
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:268    .text.WWDG_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:273    .text.WWDG_GetFlagStatus:00000000 WWDG_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:320    .text.WWDG_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccNLUXsa.s:325    .text.WWDG_ClearFlag:00000000 WWDG_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:19     .text.WWDG_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:24     .text.WWDG_DeInit:00000000 WWDG_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:53     .text.WWDG_SetPrescaler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:58     .text.WWDG_SetPrescaler:00000000 WWDG_SetPrescaler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:104    .text.WWDG_SetWindowValue:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:109    .text.WWDG_SetWindowValue:00000000 WWDG_SetWindowValue
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:157    .text.WWDG_EnableIT:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:162    .text.WWDG_EnableIT:00000000 WWDG_EnableIT
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:189    .text.WWDG_SetCounter:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:194    .text.WWDG_SetCounter:00000000 WWDG_SetCounter
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:228    .text.WWDG_Enable:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:233    .text.WWDG_Enable:00000000 WWDG_Enable
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:268    .text.WWDG_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:273    .text.WWDG_GetFlagStatus:00000000 WWDG_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:320    .text.WWDG_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccrMZR4t.s:325    .text.WWDG_ClearFlag:00000000 WWDG_ClearFlag
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

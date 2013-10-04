@@ -1,11 +1,11 @@
-src/main.d: ../src/main.c \
- C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\Device\STM32F4xx\Include/stm32f4xx.h \
+src/main.d: ../src/main.c ../src/main.h \
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\ST\STM32F4xx\Include/stm32f4xx.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cm4.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cmInstr.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cmFunc.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cm4_simd.h \
- C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\Device\STM32F4xx\Include/system_stm32f4xx.h \
- C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\inc/stm32f4xx_conf.h \
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\ST\STM32F4xx\Include/system_stm32f4xx.h \
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\src/stm32f4xx_conf.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_adc.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_can.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_crc.h \
@@ -32,9 +32,14 @@ src/main.d: ../src/main.c \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_usart.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_wwdg.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/misc.h \
- C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\inc/stm32f4_discovery.h
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/stm32f4_discovery.h \
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/stm32f4_discovery_audio_codec.h \
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/stm32f4_discovery_lis302dl.h \
+ ../src/stm32f4xx_it.h ../src/waveplayer.h
 
-C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\Device\STM32F4xx\Include/stm32f4xx.h:
+../src/main.h:
+
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\ST\STM32F4xx\Include/stm32f4xx.h:
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cm4.h:
 
@@ -44,9 +49,9 @@ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Incl
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cm4_simd.h:
 
-C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\Device\STM32F4xx\Include/system_stm32f4xx.h:
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\ST\STM32F4xx\Include/system_stm32f4xx.h:
 
-C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\inc/stm32f4xx_conf.h:
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\src/stm32f4xx_conf.h:
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_adc.h:
 
@@ -100,4 +105,12 @@ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/misc.h:
 
-C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\inc/stm32f4_discovery.h:
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/stm32f4_discovery.h:
+
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/stm32f4_discovery_audio_codec.h:
+
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/stm32f4_discovery_lis302dl.h:
+
+../src/stm32f4xx_it.h:
+
+../src/waveplayer.h:
