@@ -7,7 +7,7 @@ Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.d: \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cmFunc.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cm4_simd.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\Device\STM32F4xx\Include/system_stm32f4xx.h \
- C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\src/stm32f4xx_conf.h \
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\inc/stm32f4xx_conf.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_adc.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_can.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_crc.h \
@@ -48,7 +48,7 @@ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Incl
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\Device\STM32F4xx\Include/system_stm32f4xx.h:
 
-C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\src/stm32f4xx_conf.h:
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\inc/stm32f4xx_conf.h:
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_adc.h:
 

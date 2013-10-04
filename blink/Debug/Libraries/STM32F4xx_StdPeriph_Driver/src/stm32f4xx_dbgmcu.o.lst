@@ -420,16 +420,16 @@
  270              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_dbgmcu.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccH2P4hG.s:19     .text.DBGMCU_GetREVID:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccH2P4hG.s:24     .text.DBGMCU_GetREVID:00000000 DBGMCU_GetREVID
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccH2P4hG.s:53     .text.DBGMCU_GetDEVID:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccH2P4hG.s:58     .text.DBGMCU_GetDEVID:00000000 DBGMCU_GetDEVID
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccH2P4hG.s:87     .text.DBGMCU_Config:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccH2P4hG.s:92     .text.DBGMCU_Config:00000000 DBGMCU_Config
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccH2P4hG.s:147    .text.DBGMCU_APB1PeriphConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccH2P4hG.s:152    .text.DBGMCU_APB1PeriphConfig:00000000 DBGMCU_APB1PeriphConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccH2P4hG.s:207    .text.DBGMCU_APB2PeriphConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccH2P4hG.s:212    .text.DBGMCU_APB2PeriphConfig:00000000 DBGMCU_APB2PeriphConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccY9xhMt.s:19     .text.DBGMCU_GetREVID:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccY9xhMt.s:24     .text.DBGMCU_GetREVID:00000000 DBGMCU_GetREVID
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccY9xhMt.s:53     .text.DBGMCU_GetDEVID:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccY9xhMt.s:58     .text.DBGMCU_GetDEVID:00000000 DBGMCU_GetDEVID
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccY9xhMt.s:87     .text.DBGMCU_Config:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccY9xhMt.s:92     .text.DBGMCU_Config:00000000 DBGMCU_Config
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccY9xhMt.s:147    .text.DBGMCU_APB1PeriphConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccY9xhMt.s:152    .text.DBGMCU_APB1PeriphConfig:00000000 DBGMCU_APB1PeriphConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccY9xhMt.s:207    .text.DBGMCU_APB2PeriphConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccY9xhMt.s:212    .text.DBGMCU_APB2PeriphConfig:00000000 DBGMCU_APB2PeriphConfig
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS
