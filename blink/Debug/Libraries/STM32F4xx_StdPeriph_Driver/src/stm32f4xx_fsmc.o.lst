@@ -27,8 +27,8 @@
    2:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c ****   ******************************************************************************
    3:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c ****   * @file    stm32f4xx_fsmc.c
    4:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c ****   * @author  MCD Application Team
-   5:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c ****   * @version V1.0.0RC1
-   6:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c ****   * @date    25-August-2011
+   5:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c ****   * @version V1.0.0
+   6:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c ****   * @date    30-September-2011
    7:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c ****  * @brief    This file provides firmware functions to manage the following 
    8:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c ****   *          functionalities of the FSMC peripheral:           
    9:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c ****   *           - Interface with SRAM, PSRAM, NOR and OneNAND memories
@@ -2895,49 +2895,49 @@
  1917 0086 00BF     		.text
  1918              	.Letext0:
  1919              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 1920              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 1920              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Device\\STM32F4xx\\Inc
  1921              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
  1922              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_fsmc.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:19     .text.FSMC_NORSRAMDeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:24     .text.FSMC_NORSRAMDeInit:00000000 FSMC_NORSRAMDeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:82     .text.FSMC_NORSRAMInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:87     .text.FSMC_NORSRAMInit:00000000 FSMC_NORSRAMInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:311    .text.FSMC_NORSRAMStructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:316    .text.FSMC_NORSRAMStructInit:00000000 FSMC_NORSRAMStructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:465    .text.FSMC_NORSRAMCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:470    .text.FSMC_NORSRAMCmd:00000000 FSMC_NORSRAMCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:526    .text.FSMC_NANDDeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:531    .text.FSMC_NANDDeInit:00000000 FSMC_NANDDeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:605    .text.FSMC_NANDInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:610    .text.FSMC_NANDInit:00000000 FSMC_NANDInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:767    .text.FSMC_NANDStructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:772    .text.FSMC_NANDStructInit:00000000 FSMC_NANDStructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:867    .text.FSMC_NANDCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:872    .text.FSMC_NANDCmd:00000000 FSMC_NANDCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:956    .text.FSMC_NANDECCCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:961    .text.FSMC_NANDECCCmd:00000000 FSMC_NANDECCCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1045   .text.FSMC_GetECC:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1050   .text.FSMC_GetECC:00000000 FSMC_GetECC
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1100   .text.FSMC_PCCARDDeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1105   .text.FSMC_PCCARDDeInit:00000000 FSMC_PCCARDDeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1152   .text.FSMC_PCCARDInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1157   .text.FSMC_PCCARDInit:00000000 FSMC_PCCARDInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1291   .text.FSMC_PCCARDStructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1296   .text.FSMC_PCCARDStructInit:00000000 FSMC_PCCARDStructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1395   .text.FSMC_PCCARDCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1400   .text.FSMC_PCCARDCmd:00000000 FSMC_PCCARDCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1453   .text.FSMC_ITConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1458   .text.FSMC_ITConfig:00000000 FSMC_ITConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1576   .text.FSMC_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1581   .text.FSMC_GetFlagStatus:00000000 FSMC_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1661   .text.FSMC_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1666   .text.FSMC_ClearFlag:00000000 FSMC_ClearFlag
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1737   .text.FSMC_GetITStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1742   .text.FSMC_GetITStatus:00000000 FSMC_GetITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1839   .text.FSMC_ClearITPendingBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccJbPGRf.s:1844   .text.FSMC_ClearITPendingBit:00000000 FSMC_ClearITPendingBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:19     .text.FSMC_NORSRAMDeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:24     .text.FSMC_NORSRAMDeInit:00000000 FSMC_NORSRAMDeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:82     .text.FSMC_NORSRAMInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:87     .text.FSMC_NORSRAMInit:00000000 FSMC_NORSRAMInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:311    .text.FSMC_NORSRAMStructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:316    .text.FSMC_NORSRAMStructInit:00000000 FSMC_NORSRAMStructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:465    .text.FSMC_NORSRAMCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:470    .text.FSMC_NORSRAMCmd:00000000 FSMC_NORSRAMCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:526    .text.FSMC_NANDDeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:531    .text.FSMC_NANDDeInit:00000000 FSMC_NANDDeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:605    .text.FSMC_NANDInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:610    .text.FSMC_NANDInit:00000000 FSMC_NANDInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:767    .text.FSMC_NANDStructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:772    .text.FSMC_NANDStructInit:00000000 FSMC_NANDStructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:867    .text.FSMC_NANDCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:872    .text.FSMC_NANDCmd:00000000 FSMC_NANDCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:956    .text.FSMC_NANDECCCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:961    .text.FSMC_NANDECCCmd:00000000 FSMC_NANDECCCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1045   .text.FSMC_GetECC:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1050   .text.FSMC_GetECC:00000000 FSMC_GetECC
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1100   .text.FSMC_PCCARDDeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1105   .text.FSMC_PCCARDDeInit:00000000 FSMC_PCCARDDeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1152   .text.FSMC_PCCARDInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1157   .text.FSMC_PCCARDInit:00000000 FSMC_PCCARDInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1291   .text.FSMC_PCCARDStructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1296   .text.FSMC_PCCARDStructInit:00000000 FSMC_PCCARDStructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1395   .text.FSMC_PCCARDCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1400   .text.FSMC_PCCARDCmd:00000000 FSMC_PCCARDCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1453   .text.FSMC_ITConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1458   .text.FSMC_ITConfig:00000000 FSMC_ITConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1576   .text.FSMC_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1581   .text.FSMC_GetFlagStatus:00000000 FSMC_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1661   .text.FSMC_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1666   .text.FSMC_ClearFlag:00000000 FSMC_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1737   .text.FSMC_GetITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1742   .text.FSMC_GetITStatus:00000000 FSMC_GetITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1839   .text.FSMC_ClearITPendingBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyI2awz.s:1844   .text.FSMC_ClearITPendingBit:00000000 FSMC_ClearITPendingBit
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

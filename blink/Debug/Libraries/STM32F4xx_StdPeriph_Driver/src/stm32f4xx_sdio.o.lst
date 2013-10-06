@@ -27,8 +27,8 @@
    2:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c ****   ******************************************************************************
    3:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c ****   * @file    stm32f4xx_sdio.c
    4:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c ****   * @author  MCD Application Team
-   5:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c ****   * @version V1.0.0RC1
-   6:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c ****   * @date    25-August-2011
+   5:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c ****   * @version V1.0.0
+   6:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c ****   * @date    30-September-2011
    7:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c ****   * @brief   This file provides firmware functions to manage the following 
    8:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c ****   *          functionalities of the Secure digital input/output interface (SDIO) 
    9:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c ****   *          peripheral:
@@ -2286,71 +2286,71 @@
  1355 001e 00BF     		.text
  1356              	.Letext0:
  1357              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 1358              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 1358              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Device\\STM32F4xx\\Inc
  1359              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
  1360              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_sdio.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:19     .text.SDIO_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:24     .text.SDIO_DeInit:00000000 SDIO_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:53     .text.SDIO_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:58     .text.SDIO_Init:00000000 SDIO_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:132    .text.SDIO_StructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:137    .text.SDIO_StructInit:00000000 SDIO_StructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:188    .text.SDIO_ClockCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:193    .text.SDIO_ClockCmd:00000000 SDIO_ClockCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:226    .text.SDIO_SetPowerState:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:231    .text.SDIO_SetPowerState:00000000 SDIO_SetPowerState
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:263    .text.SDIO_GetPowerState:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:268    .text.SDIO_GetPowerState:00000000 SDIO_GetPowerState
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:296    .text.SDIO_SendCommand:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:301    .text.SDIO_SendCommand:00000000 SDIO_SendCommand
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:369    .text.SDIO_CmdStructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:374    .text.SDIO_CmdStructInit:00000000 SDIO_CmdStructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:421    .text.SDIO_GetCommandResponse:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:426    .text.SDIO_GetCommandResponse:00000000 SDIO_GetCommandResponse
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:454    .text.SDIO_GetResponse:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:459    .text.SDIO_GetResponse:00000000 SDIO_GetResponse
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:499    .text.SDIO_DataConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:504    .text.SDIO_DataConfig:00000000 SDIO_DataConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:577    .text.SDIO_DataStructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:582    .text.SDIO_DataStructInit:00000000 SDIO_DataStructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:633    .text.SDIO_GetDataCounter:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:638    .text.SDIO_GetDataCounter:00000000 SDIO_GetDataCounter
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:665    .text.SDIO_ReadData:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:670    .text.SDIO_ReadData:00000000 SDIO_ReadData
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:697    .text.SDIO_WriteData:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:702    .text.SDIO_WriteData:00000000 SDIO_WriteData
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:734    .text.SDIO_GetFIFOCount:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:739    .text.SDIO_GetFIFOCount:00000000 SDIO_GetFIFOCount
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:766    .text.SDIO_StartSDIOReadWait:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:771    .text.SDIO_StartSDIOReadWait:00000000 SDIO_StartSDIOReadWait
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:804    .text.SDIO_StopSDIOReadWait:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:809    .text.SDIO_StopSDIOReadWait:00000000 SDIO_StopSDIOReadWait
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:842    .text.SDIO_SetSDIOReadWaitMode:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:847    .text.SDIO_SetSDIOReadWaitMode:00000000 SDIO_SetSDIOReadWaitMode
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:879    .text.SDIO_SetSDIOOperation:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:884    .text.SDIO_SetSDIOOperation:00000000 SDIO_SetSDIOOperation
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:917    .text.SDIO_SendSDIOSuspendCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:922    .text.SDIO_SendSDIOSuspendCmd:00000000 SDIO_SendSDIOSuspendCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:955    .text.SDIO_CommandCompletionCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:960    .text.SDIO_CommandCompletionCmd:00000000 SDIO_CommandCompletionCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:993    .text.SDIO_CEATAITCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:998    .text.SDIO_CEATAITCmd:00000000 SDIO_CEATAITCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1036   .text.SDIO_SendCEATACmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1041   .text.SDIO_SendCEATACmd:00000000 SDIO_SendCEATACmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1074   .text.SDIO_DMACmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1079   .text.SDIO_DMACmd:00000000 SDIO_DMACmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1112   .text.SDIO_ITConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1117   .text.SDIO_ITConfig:00000000 SDIO_ITConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1172   .text.SDIO_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1177   .text.SDIO_GetFlagStatus:00000000 SDIO_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1227   .text.SDIO_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1232   .text.SDIO_ClearFlag:00000000 SDIO_ClearFlag
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1264   .text.SDIO_GetITStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1269   .text.SDIO_GetITStatus:00000000 SDIO_GetITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1319   .text.SDIO_ClearITPendingBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc53pn6k.s:1324   .text.SDIO_ClearITPendingBit:00000000 SDIO_ClearITPendingBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:19     .text.SDIO_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:24     .text.SDIO_DeInit:00000000 SDIO_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:53     .text.SDIO_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:58     .text.SDIO_Init:00000000 SDIO_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:132    .text.SDIO_StructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:137    .text.SDIO_StructInit:00000000 SDIO_StructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:188    .text.SDIO_ClockCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:193    .text.SDIO_ClockCmd:00000000 SDIO_ClockCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:226    .text.SDIO_SetPowerState:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:231    .text.SDIO_SetPowerState:00000000 SDIO_SetPowerState
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:263    .text.SDIO_GetPowerState:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:268    .text.SDIO_GetPowerState:00000000 SDIO_GetPowerState
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:296    .text.SDIO_SendCommand:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:301    .text.SDIO_SendCommand:00000000 SDIO_SendCommand
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:369    .text.SDIO_CmdStructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:374    .text.SDIO_CmdStructInit:00000000 SDIO_CmdStructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:421    .text.SDIO_GetCommandResponse:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:426    .text.SDIO_GetCommandResponse:00000000 SDIO_GetCommandResponse
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:454    .text.SDIO_GetResponse:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:459    .text.SDIO_GetResponse:00000000 SDIO_GetResponse
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:499    .text.SDIO_DataConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:504    .text.SDIO_DataConfig:00000000 SDIO_DataConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:577    .text.SDIO_DataStructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:582    .text.SDIO_DataStructInit:00000000 SDIO_DataStructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:633    .text.SDIO_GetDataCounter:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:638    .text.SDIO_GetDataCounter:00000000 SDIO_GetDataCounter
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:665    .text.SDIO_ReadData:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:670    .text.SDIO_ReadData:00000000 SDIO_ReadData
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:697    .text.SDIO_WriteData:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:702    .text.SDIO_WriteData:00000000 SDIO_WriteData
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:734    .text.SDIO_GetFIFOCount:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:739    .text.SDIO_GetFIFOCount:00000000 SDIO_GetFIFOCount
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:766    .text.SDIO_StartSDIOReadWait:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:771    .text.SDIO_StartSDIOReadWait:00000000 SDIO_StartSDIOReadWait
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:804    .text.SDIO_StopSDIOReadWait:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:809    .text.SDIO_StopSDIOReadWait:00000000 SDIO_StopSDIOReadWait
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:842    .text.SDIO_SetSDIOReadWaitMode:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:847    .text.SDIO_SetSDIOReadWaitMode:00000000 SDIO_SetSDIOReadWaitMode
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:879    .text.SDIO_SetSDIOOperation:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:884    .text.SDIO_SetSDIOOperation:00000000 SDIO_SetSDIOOperation
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:917    .text.SDIO_SendSDIOSuspendCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:922    .text.SDIO_SendSDIOSuspendCmd:00000000 SDIO_SendSDIOSuspendCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:955    .text.SDIO_CommandCompletionCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:960    .text.SDIO_CommandCompletionCmd:00000000 SDIO_CommandCompletionCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:993    .text.SDIO_CEATAITCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:998    .text.SDIO_CEATAITCmd:00000000 SDIO_CEATAITCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1036   .text.SDIO_SendCEATACmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1041   .text.SDIO_SendCEATACmd:00000000 SDIO_SendCEATACmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1074   .text.SDIO_DMACmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1079   .text.SDIO_DMACmd:00000000 SDIO_DMACmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1112   .text.SDIO_ITConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1117   .text.SDIO_ITConfig:00000000 SDIO_ITConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1172   .text.SDIO_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1177   .text.SDIO_GetFlagStatus:00000000 SDIO_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1227   .text.SDIO_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1232   .text.SDIO_ClearFlag:00000000 SDIO_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1264   .text.SDIO_GetITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1269   .text.SDIO_GetITStatus:00000000 SDIO_GetITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1319   .text.SDIO_ClearITPendingBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc3Lqenw.s:1324   .text.SDIO_ClearITPendingBit:00000000 SDIO_ClearITPendingBit
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

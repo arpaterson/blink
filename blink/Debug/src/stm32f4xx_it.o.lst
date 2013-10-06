@@ -15,40 +15,31 @@
   15              		.text
   16              	.Ltext0:
   17              		.cfi_sections	.debug_frame
-  18              		.global	PauseResumeStatus
-  19              		.section	.data.PauseResumeStatus,"aw",%progbits
-  22              	PauseResumeStatus:
-  23 0000 02       		.byte	2
-  24              		.global	Count
-  25              		.section	.bss.Count,"aw",%nobits
-  28              	Count:
+  18              		.global	Counter
+  19              		.section	.bss.Counter,"aw",%nobits
+  22              	Counter:
+  23 0000 00       		.space	1
+  24              		.global	TempAcceleration
+  25              		.section	.bss.TempAcceleration,"aw",%nobits
+  28              	TempAcceleration:
   29 0000 00       		.space	1
-  30              		.global	LED_Toggle
-  31              		.section	.bss.LED_Toggle,"aw",%nobits
-  34              	LED_Toggle:
-  35 0000 00       		.space	1
-  36              		.global	capture
-  37              		.section	.bss.capture,"aw",%nobits
-  38              		.align	1
-  41              	capture:
-  42 0000 0000     		.space	2
-  43              		.section	.text.NMI_Handler,"ax",%progbits
-  44              		.align	2
-  45              		.global	NMI_Handler
-  46              		.thumb
-  47              		.thumb_func
-  49              	NMI_Handler:
-  50              	.LFB110:
-  51              		.file 1 "../src/stm32f4xx_it.c"
+  30              		.section	.text.NMI_Handler,"ax",%progbits
+  31              		.align	2
+  32              		.global	NMI_Handler
+  33              		.thumb
+  34              		.thumb_func
+  36              	NMI_Handler:
+  37              	.LFB110:
+  38              		.file 1 "../src/stm32f4xx_it.c"
    1:../src/stm32f4xx_it.c **** /**
    2:../src/stm32f4xx_it.c ****   ******************************************************************************
-   3:../src/stm32f4xx_it.c ****   * @file    Audio_playback_and_record/src/stm32f4xx_it.c 
+   3:../src/stm32f4xx_it.c ****   * @file    stm32f4xx_it.c
    4:../src/stm32f4xx_it.c ****   * @author  MCD Application Team
    5:../src/stm32f4xx_it.c ****   * @version V1.0.0
-   6:../src/stm32f4xx_it.c ****   * @date    28-October-2011
+   6:../src/stm32f4xx_it.c ****   * @date    19-September-2011
    7:../src/stm32f4xx_it.c ****   * @brief   Main Interrupt Service Routines.
-   8:../src/stm32f4xx_it.c ****   *          This file provides template for all exceptions handler and 
-   9:../src/stm32f4xx_it.c ****   *          peripherals interrupt service routine.
+   8:../src/stm32f4xx_it.c ****   *          This file provides all exceptions handler and peripherals interrupt
+   9:../src/stm32f4xx_it.c ****   *          service routine.
   10:../src/stm32f4xx_it.c ****   ******************************************************************************
   11:../src/stm32f4xx_it.c ****   * @attention
   12:../src/stm32f4xx_it.c ****   *
@@ -64,736 +55,1070 @@
   22:../src/stm32f4xx_it.c ****   */ 
   23:../src/stm32f4xx_it.c **** 
   24:../src/stm32f4xx_it.c **** /* Includes ------------------------------------------------------------------*/
-  25:../src/stm32f4xx_it.c **** #include "main.h"
-  26:../src/stm32f4xx_it.c **** 
-  27:../src/stm32f4xx_it.c **** 
-  28:../src/stm32f4xx_it.c **** /** @addtogroup STM32F4-Discovery_Audio_Player_Recorder
-  29:../src/stm32f4xx_it.c ****   * @{
-  30:../src/stm32f4xx_it.c ****   */
+  25:../src/stm32f4xx_it.c **** #include "stm32f4xx_it.h"
+  26:../src/stm32f4xx_it.c **** #include "main.h"
+  27:../src/stm32f4xx_it.c **** #include "usb_core.h"
+  28:../src/stm32f4xx_it.c **** #include "usbd_core.h"
+  29:../src/stm32f4xx_it.c **** #include "stm32f4_discovery.h"
+  30:../src/stm32f4xx_it.c **** #include "usbd_hid_core.h"
   31:../src/stm32f4xx_it.c **** 
   32:../src/stm32f4xx_it.c **** /* Private typedef -----------------------------------------------------------*/
   33:../src/stm32f4xx_it.c **** /* Private define ------------------------------------------------------------*/
-  34:../src/stm32f4xx_it.c **** /* Private macro -------------------------------------------------------------*/
-  35:../src/stm32f4xx_it.c **** /* Private variables ---------------------------------------------------------*/
-  36:../src/stm32f4xx_it.c **** __IO uint8_t PauseResumeStatus = 2, Count = 0, LED_Toggle = 0;
-  37:../src/stm32f4xx_it.c **** uint16_t capture = 0;
-  38:../src/stm32f4xx_it.c **** extern __IO uint16_t CCR_Val;
-  39:../src/stm32f4xx_it.c **** extern __IO uint8_t RepeatState, AudioPlayStart;
-  40:../src/stm32f4xx_it.c **** extern uint8_t Buffer[];
-  41:../src/stm32f4xx_it.c **** 
-  42:../src/stm32f4xx_it.c **** #if defined MEDIA_USB_KEY
-  43:../src/stm32f4xx_it.c **** __IO uint16_t Time_Rec_Base = 0;
-  44:../src/stm32f4xx_it.c ****  extern USB_OTG_CORE_HANDLE          USB_OTG_Core;
-  45:../src/stm32f4xx_it.c ****  extern USBH_HOST                    USB_Host;
-  46:../src/stm32f4xx_it.c ****  extern FIL file;
-  47:../src/stm32f4xx_it.c ****  extern __IO uint8_t Data_Status;
-  48:../src/stm32f4xx_it.c ****  extern __IO uint32_t XferCplt ;
-  49:../src/stm32f4xx_it.c ****  extern __IO uint8_t Command_index;
-  50:../src/stm32f4xx_it.c **** #endif /* MEDIA_USB_KEY */
-  51:../src/stm32f4xx_it.c **** 
-  52:../src/stm32f4xx_it.c **** /* Private function prototypes -----------------------------------------------*/
-  53:../src/stm32f4xx_it.c **** /* Private functions ---------------------------------------------------------*/
-  54:../src/stm32f4xx_it.c **** 
-  55:../src/stm32f4xx_it.c **** /******************************************************************************/
-  56:../src/stm32f4xx_it.c **** /*            Cortex-M4 Processor Exceptions Handlers                         */
-  57:../src/stm32f4xx_it.c **** /******************************************************************************/
-  58:../src/stm32f4xx_it.c **** 
-  59:../src/stm32f4xx_it.c **** /**
-  60:../src/stm32f4xx_it.c ****   * @brief   This function handles NMI exception.
-  61:../src/stm32f4xx_it.c ****   * @param  None
-  62:../src/stm32f4xx_it.c ****   * @retval None
-  63:../src/stm32f4xx_it.c ****   */
-  64:../src/stm32f4xx_it.c **** void NMI_Handler(void)
-  65:../src/stm32f4xx_it.c **** {
-  52              		.loc 1 65 0
-  53              		.cfi_startproc
-  54              		@ args = 0, pretend = 0, frame = 0
-  55              		@ frame_needed = 1, uses_anonymous_args = 0
-  56              		@ link register save eliminated.
-  57 0000 80B4     		push	{r7}
-  58              	.LCFI0:
-  59              		.cfi_def_cfa_offset 4
-  60              		.cfi_offset 7, -4
-  61 0002 00AF     		add	r7, sp, #0
-  62              	.LCFI1:
-  63              		.cfi_def_cfa_register 7
-  66:../src/stm32f4xx_it.c **** }
-  64              		.loc 1 66 0
-  65 0004 BD46     		mov	sp, r7
-  66 0006 80BC     		pop	{r7}
-  67 0008 7047     		bx	lr
-  68              		.cfi_endproc
-  69              	.LFE110:
-  71 000a 00BF     		.section	.text.HardFault_Handler,"ax",%progbits
-  72              		.align	2
-  73              		.global	HardFault_Handler
-  74              		.thumb
-  75              		.thumb_func
-  77              	HardFault_Handler:
-  78              	.LFB111:
-  67:../src/stm32f4xx_it.c **** 
-  68:../src/stm32f4xx_it.c **** /**
-  69:../src/stm32f4xx_it.c ****   * @brief  This function handles Hard Fault exception.
-  70:../src/stm32f4xx_it.c ****   * @param  None
-  71:../src/stm32f4xx_it.c ****   * @retval None
-  72:../src/stm32f4xx_it.c ****   */
-  73:../src/stm32f4xx_it.c **** void HardFault_Handler(void)
-  74:../src/stm32f4xx_it.c **** {
-  79              		.loc 1 74 0
-  80              		.cfi_startproc
-  81              		@ args = 0, pretend = 0, frame = 0
-  82              		@ frame_needed = 1, uses_anonymous_args = 0
-  83              		@ link register save eliminated.
-  84 0000 80B4     		push	{r7}
-  85              	.LCFI2:
-  86              		.cfi_def_cfa_offset 4
-  87              		.cfi_offset 7, -4
-  88 0002 00AF     		add	r7, sp, #0
-  89              	.LCFI3:
-  90              		.cfi_def_cfa_register 7
-  91              	.L3:
-  75:../src/stm32f4xx_it.c ****   /* Go to infinite loop when Hard Fault exception occurs */
-  76:../src/stm32f4xx_it.c ****   while (1)
-  77:../src/stm32f4xx_it.c ****   {
-  78:../src/stm32f4xx_it.c ****   }
-  92              		.loc 1 78 0 discriminator 1
-  93 0004 FEE7     		b	.L3
-  94              		.cfi_endproc
-  95              	.LFE111:
-  97 0006 00BF     		.section	.text.MemManage_Handler,"ax",%progbits
-  98              		.align	2
-  99              		.global	MemManage_Handler
- 100              		.thumb
- 101              		.thumb_func
- 103              	MemManage_Handler:
- 104              	.LFB112:
-  79:../src/stm32f4xx_it.c **** }
-  80:../src/stm32f4xx_it.c **** 
-  81:../src/stm32f4xx_it.c **** /**
-  82:../src/stm32f4xx_it.c ****   * @brief  This function handles Memory Manage exception.
-  83:../src/stm32f4xx_it.c ****   * @param  None
-  84:../src/stm32f4xx_it.c ****   * @retval None
-  85:../src/stm32f4xx_it.c ****   */
-  86:../src/stm32f4xx_it.c **** void MemManage_Handler(void)
-  87:../src/stm32f4xx_it.c **** {
- 105              		.loc 1 87 0
- 106              		.cfi_startproc
- 107              		@ args = 0, pretend = 0, frame = 0
- 108              		@ frame_needed = 1, uses_anonymous_args = 0
- 109              		@ link register save eliminated.
- 110 0000 80B4     		push	{r7}
- 111              	.LCFI4:
- 112              		.cfi_def_cfa_offset 4
- 113              		.cfi_offset 7, -4
- 114 0002 00AF     		add	r7, sp, #0
- 115              	.LCFI5:
- 116              		.cfi_def_cfa_register 7
- 117              	.L5:
-  88:../src/stm32f4xx_it.c ****   /* Go to infinite loop when Memory Manage exception occurs */
-  89:../src/stm32f4xx_it.c ****   while (1)
-  90:../src/stm32f4xx_it.c ****   {
-  91:../src/stm32f4xx_it.c ****   }
- 118              		.loc 1 91 0 discriminator 1
- 119 0004 FEE7     		b	.L5
- 120              		.cfi_endproc
- 121              	.LFE112:
- 123 0006 00BF     		.section	.text.BusFault_Handler,"ax",%progbits
- 124              		.align	2
- 125              		.global	BusFault_Handler
- 126              		.thumb
- 127              		.thumb_func
- 129              	BusFault_Handler:
- 130              	.LFB113:
-  92:../src/stm32f4xx_it.c **** }
-  93:../src/stm32f4xx_it.c **** 
-  94:../src/stm32f4xx_it.c **** /**
-  95:../src/stm32f4xx_it.c ****   * @brief  This function handles Bus Fault exception.
-  96:../src/stm32f4xx_it.c ****   * @param  None
-  97:../src/stm32f4xx_it.c ****   * @retval None
-  98:../src/stm32f4xx_it.c ****   */
-  99:../src/stm32f4xx_it.c **** void BusFault_Handler(void)
- 100:../src/stm32f4xx_it.c **** {
- 131              		.loc 1 100 0
- 132              		.cfi_startproc
- 133              		@ args = 0, pretend = 0, frame = 0
- 134              		@ frame_needed = 1, uses_anonymous_args = 0
- 135              		@ link register save eliminated.
- 136 0000 80B4     		push	{r7}
- 137              	.LCFI6:
- 138              		.cfi_def_cfa_offset 4
- 139              		.cfi_offset 7, -4
- 140 0002 00AF     		add	r7, sp, #0
- 141              	.LCFI7:
- 142              		.cfi_def_cfa_register 7
- 143              	.L7:
- 101:../src/stm32f4xx_it.c ****   /* Go to infinite loop when Bus Fault exception occurs */
- 102:../src/stm32f4xx_it.c ****   while (1)
- 103:../src/stm32f4xx_it.c ****   {
- 104:../src/stm32f4xx_it.c ****   }
- 144              		.loc 1 104 0 discriminator 1
- 145 0004 FEE7     		b	.L7
- 146              		.cfi_endproc
- 147              	.LFE113:
- 149 0006 00BF     		.section	.text.UsageFault_Handler,"ax",%progbits
- 150              		.align	2
- 151              		.global	UsageFault_Handler
- 152              		.thumb
- 153              		.thumb_func
- 155              	UsageFault_Handler:
- 156              	.LFB114:
- 105:../src/stm32f4xx_it.c **** }
- 106:../src/stm32f4xx_it.c **** 
- 107:../src/stm32f4xx_it.c **** /**
- 108:../src/stm32f4xx_it.c ****   * @brief  This function handles Usage Fault exception.
- 109:../src/stm32f4xx_it.c ****   * @param  None
- 110:../src/stm32f4xx_it.c ****   * @retval None
- 111:../src/stm32f4xx_it.c ****   */
- 112:../src/stm32f4xx_it.c **** void UsageFault_Handler(void)
- 113:../src/stm32f4xx_it.c **** {
- 157              		.loc 1 113 0
- 158              		.cfi_startproc
- 159              		@ args = 0, pretend = 0, frame = 0
- 160              		@ frame_needed = 1, uses_anonymous_args = 0
- 161              		@ link register save eliminated.
- 162 0000 80B4     		push	{r7}
- 163              	.LCFI8:
- 164              		.cfi_def_cfa_offset 4
- 165              		.cfi_offset 7, -4
- 166 0002 00AF     		add	r7, sp, #0
- 167              	.LCFI9:
- 168              		.cfi_def_cfa_register 7
- 169              	.L9:
- 114:../src/stm32f4xx_it.c ****   /* Go to infinite loop when Usage Fault exception occurs */
- 115:../src/stm32f4xx_it.c ****   while (1)
- 116:../src/stm32f4xx_it.c ****   {
- 117:../src/stm32f4xx_it.c ****   }
- 170              		.loc 1 117 0 discriminator 1
- 171 0004 FEE7     		b	.L9
- 172              		.cfi_endproc
- 173              	.LFE114:
- 175 0006 00BF     		.section	.text.SVC_Handler,"ax",%progbits
- 176              		.align	2
- 177              		.global	SVC_Handler
- 178              		.thumb
- 179              		.thumb_func
- 181              	SVC_Handler:
- 182              	.LFB115:
- 118:../src/stm32f4xx_it.c **** }
- 119:../src/stm32f4xx_it.c **** 
- 120:../src/stm32f4xx_it.c **** /**
- 121:../src/stm32f4xx_it.c ****   * @brief  This function handles SVCall exception.
- 122:../src/stm32f4xx_it.c ****   * @param  None
- 123:../src/stm32f4xx_it.c ****   * @retval None
- 124:../src/stm32f4xx_it.c ****   */
- 125:../src/stm32f4xx_it.c **** void SVC_Handler(void)
- 126:../src/stm32f4xx_it.c **** {
- 183              		.loc 1 126 0
- 184              		.cfi_startproc
- 185              		@ args = 0, pretend = 0, frame = 0
- 186              		@ frame_needed = 1, uses_anonymous_args = 0
- 187              		@ link register save eliminated.
- 188 0000 80B4     		push	{r7}
- 189              	.LCFI10:
- 190              		.cfi_def_cfa_offset 4
- 191              		.cfi_offset 7, -4
- 192 0002 00AF     		add	r7, sp, #0
- 193              	.LCFI11:
- 194              		.cfi_def_cfa_register 7
- 127:../src/stm32f4xx_it.c **** }
- 195              		.loc 1 127 0
- 196 0004 BD46     		mov	sp, r7
- 197 0006 80BC     		pop	{r7}
- 198 0008 7047     		bx	lr
- 199              		.cfi_endproc
- 200              	.LFE115:
- 202 000a 00BF     		.section	.text.DebugMon_Handler,"ax",%progbits
- 203              		.align	2
- 204              		.global	DebugMon_Handler
- 205              		.thumb
- 206              		.thumb_func
- 208              	DebugMon_Handler:
- 209              	.LFB116:
- 128:../src/stm32f4xx_it.c **** 
- 129:../src/stm32f4xx_it.c **** /**
- 130:../src/stm32f4xx_it.c ****   * @brief  This function handles Debug Monitor exception.
- 131:../src/stm32f4xx_it.c ****   * @param  None
- 132:../src/stm32f4xx_it.c ****   * @retval None
- 133:../src/stm32f4xx_it.c ****   */
- 134:../src/stm32f4xx_it.c **** void DebugMon_Handler(void)
- 135:../src/stm32f4xx_it.c **** {
- 210              		.loc 1 135 0
- 211              		.cfi_startproc
- 212              		@ args = 0, pretend = 0, frame = 0
- 213              		@ frame_needed = 1, uses_anonymous_args = 0
- 214              		@ link register save eliminated.
- 215 0000 80B4     		push	{r7}
- 216              	.LCFI12:
- 217              		.cfi_def_cfa_offset 4
- 218              		.cfi_offset 7, -4
- 219 0002 00AF     		add	r7, sp, #0
- 220              	.LCFI13:
- 221              		.cfi_def_cfa_register 7
- 136:../src/stm32f4xx_it.c **** }
- 222              		.loc 1 136 0
- 223 0004 BD46     		mov	sp, r7
- 224 0006 80BC     		pop	{r7}
- 225 0008 7047     		bx	lr
- 226              		.cfi_endproc
- 227              	.LFE116:
- 229 000a 00BF     		.section	.text.PendSV_Handler,"ax",%progbits
- 230              		.align	2
- 231              		.global	PendSV_Handler
- 232              		.thumb
- 233              		.thumb_func
- 235              	PendSV_Handler:
- 236              	.LFB117:
- 137:../src/stm32f4xx_it.c **** 
- 138:../src/stm32f4xx_it.c **** /**
- 139:../src/stm32f4xx_it.c ****   * @brief  This function handles PendSVC exception.
- 140:../src/stm32f4xx_it.c ****   * @param  None
- 141:../src/stm32f4xx_it.c ****   * @retval None
- 142:../src/stm32f4xx_it.c ****   */
- 143:../src/stm32f4xx_it.c **** void PendSV_Handler(void)
- 144:../src/stm32f4xx_it.c **** {
- 237              		.loc 1 144 0
- 238              		.cfi_startproc
- 239              		@ args = 0, pretend = 0, frame = 0
- 240              		@ frame_needed = 1, uses_anonymous_args = 0
- 241              		@ link register save eliminated.
- 242 0000 80B4     		push	{r7}
- 243              	.LCFI14:
- 244              		.cfi_def_cfa_offset 4
- 245              		.cfi_offset 7, -4
- 246 0002 00AF     		add	r7, sp, #0
- 247              	.LCFI15:
- 248              		.cfi_def_cfa_register 7
- 145:../src/stm32f4xx_it.c **** }
- 249              		.loc 1 145 0
- 250 0004 BD46     		mov	sp, r7
- 251 0006 80BC     		pop	{r7}
- 252 0008 7047     		bx	lr
- 253              		.cfi_endproc
- 254              	.LFE117:
- 256 000a 00BF     		.section	.text.SysTick_Handler,"ax",%progbits
- 257              		.align	2
- 258              		.global	SysTick_Handler
- 259              		.thumb
- 260              		.thumb_func
- 262              	SysTick_Handler:
- 263              	.LFB118:
- 146:../src/stm32f4xx_it.c **** 
- 147:../src/stm32f4xx_it.c **** /**
- 148:../src/stm32f4xx_it.c ****   * @brief  This function handles SysTick Handler.
- 149:../src/stm32f4xx_it.c ****   * @param  None
- 150:../src/stm32f4xx_it.c ****   * @retval None
- 151:../src/stm32f4xx_it.c ****   */
- 152:../src/stm32f4xx_it.c **** void SysTick_Handler(void)
- 153:../src/stm32f4xx_it.c **** {
- 264              		.loc 1 153 0
- 265              		.cfi_startproc
- 266              		@ args = 0, pretend = 0, frame = 0
- 267              		@ frame_needed = 1, uses_anonymous_args = 0
- 268 0000 80B5     		push	{r7, lr}
- 269              	.LCFI16:
- 270              		.cfi_def_cfa_offset 8
- 271              		.cfi_offset 14, -4
- 272              		.cfi_offset 7, -8
- 273 0002 00AF     		add	r7, sp, #0
- 274              	.LCFI17:
- 275              		.cfi_def_cfa_register 7
- 154:../src/stm32f4xx_it.c ****   TimingDelay_Decrement();
+  34:../src/stm32f4xx_it.c **** #define CURSOR_STEP     7
+  35:../src/stm32f4xx_it.c **** 
+  36:../src/stm32f4xx_it.c **** extern uint8_t Buffer[6];
+  37:../src/stm32f4xx_it.c **** /* Private macro -------------------------------------------------------------*/
+  38:../src/stm32f4xx_it.c **** /* Private variables ---------------------------------------------------------*/
+  39:../src/stm32f4xx_it.c **** extern __IO uint8_t DemoEnterCondition;
+  40:../src/stm32f4xx_it.c **** uint8_t Counter  = 0x00;
+  41:../src/stm32f4xx_it.c **** extern int8_t X_Offset;
+  42:../src/stm32f4xx_it.c **** extern int8_t Y_Offset;
+  43:../src/stm32f4xx_it.c **** extern __IO uint8_t UserButtonPressed;
+  44:../src/stm32f4xx_it.c **** __IO uint8_t TempAcceleration = 0;
+  45:../src/stm32f4xx_it.c **** /* Private function prototypes -----------------------------------------------*/
+  46:../src/stm32f4xx_it.c **** extern USB_OTG_CORE_HANDLE           USB_OTG_dev;
+  47:../src/stm32f4xx_it.c **** static uint8_t *USBD_HID_GetPos (void);
+  48:../src/stm32f4xx_it.c **** extern uint32_t USBD_OTG_ISR_Handler (USB_OTG_CORE_HANDLE *pdev);
+  49:../src/stm32f4xx_it.c **** 
+  50:../src/stm32f4xx_it.c **** /******************************************************************************/
+  51:../src/stm32f4xx_it.c **** /*            Cortex-M3 Processor Exceptions Handlers                         */
+  52:../src/stm32f4xx_it.c **** /******************************************************************************/
+  53:../src/stm32f4xx_it.c **** 
+  54:../src/stm32f4xx_it.c **** /**
+  55:../src/stm32f4xx_it.c ****   * @brief   This function handles NMI exception.
+  56:../src/stm32f4xx_it.c ****   * @param  None
+  57:../src/stm32f4xx_it.c ****   * @retval None
+  58:../src/stm32f4xx_it.c ****   */
+  59:../src/stm32f4xx_it.c **** void NMI_Handler(void)
+  60:../src/stm32f4xx_it.c **** {
+  39              		.loc 1 60 0
+  40              		.cfi_startproc
+  41              		@ args = 0, pretend = 0, frame = 0
+  42              		@ frame_needed = 1, uses_anonymous_args = 0
+  43              		@ link register save eliminated.
+  44 0000 80B4     		push	{r7}
+  45              	.LCFI0:
+  46              		.cfi_def_cfa_offset 4
+  47              		.cfi_offset 7, -4
+  48 0002 00AF     		add	r7, sp, #0
+  49              	.LCFI1:
+  50              		.cfi_def_cfa_register 7
+  61:../src/stm32f4xx_it.c **** }
+  51              		.loc 1 61 0
+  52 0004 BD46     		mov	sp, r7
+  53 0006 80BC     		pop	{r7}
+  54 0008 7047     		bx	lr
+  55              		.cfi_endproc
+  56              	.LFE110:
+  58 000a 00BF     		.section	.text.HardFault_Handler,"ax",%progbits
+  59              		.align	2
+  60              		.global	HardFault_Handler
+  61              		.thumb
+  62              		.thumb_func
+  64              	HardFault_Handler:
+  65              	.LFB111:
+  62:../src/stm32f4xx_it.c **** 
+  63:../src/stm32f4xx_it.c **** /**
+  64:../src/stm32f4xx_it.c ****   * @brief  This function handles Hard Fault exception.
+  65:../src/stm32f4xx_it.c ****   * @param  None
+  66:../src/stm32f4xx_it.c ****   * @retval None
+  67:../src/stm32f4xx_it.c ****   */
+  68:../src/stm32f4xx_it.c **** void HardFault_Handler(void)
+  69:../src/stm32f4xx_it.c **** {
+  66              		.loc 1 69 0
+  67              		.cfi_startproc
+  68              		@ args = 0, pretend = 0, frame = 0
+  69              		@ frame_needed = 1, uses_anonymous_args = 0
+  70              		@ link register save eliminated.
+  71 0000 80B4     		push	{r7}
+  72              	.LCFI2:
+  73              		.cfi_def_cfa_offset 4
+  74              		.cfi_offset 7, -4
+  75 0002 00AF     		add	r7, sp, #0
+  76              	.LCFI3:
+  77              		.cfi_def_cfa_register 7
+  78              	.L3:
+  70:../src/stm32f4xx_it.c ****   /* Go to infinite loop when Hard Fault exception occurs */
+  71:../src/stm32f4xx_it.c ****   while (1)
+  72:../src/stm32f4xx_it.c ****   {
+  73:../src/stm32f4xx_it.c ****   }
+  79              		.loc 1 73 0 discriminator 1
+  80 0004 FEE7     		b	.L3
+  81              		.cfi_endproc
+  82              	.LFE111:
+  84 0006 00BF     		.section	.text.MemManage_Handler,"ax",%progbits
+  85              		.align	2
+  86              		.global	MemManage_Handler
+  87              		.thumb
+  88              		.thumb_func
+  90              	MemManage_Handler:
+  91              	.LFB112:
+  74:../src/stm32f4xx_it.c **** }
+  75:../src/stm32f4xx_it.c **** 
+  76:../src/stm32f4xx_it.c **** /**
+  77:../src/stm32f4xx_it.c ****   * @brief  This function handles Memory Manage exception.
+  78:../src/stm32f4xx_it.c ****   * @param  None
+  79:../src/stm32f4xx_it.c ****   * @retval None
+  80:../src/stm32f4xx_it.c ****   */
+  81:../src/stm32f4xx_it.c **** void MemManage_Handler(void)
+  82:../src/stm32f4xx_it.c **** {
+  92              		.loc 1 82 0
+  93              		.cfi_startproc
+  94              		@ args = 0, pretend = 0, frame = 0
+  95              		@ frame_needed = 1, uses_anonymous_args = 0
+  96              		@ link register save eliminated.
+  97 0000 80B4     		push	{r7}
+  98              	.LCFI4:
+  99              		.cfi_def_cfa_offset 4
+ 100              		.cfi_offset 7, -4
+ 101 0002 00AF     		add	r7, sp, #0
+ 102              	.LCFI5:
+ 103              		.cfi_def_cfa_register 7
+ 104              	.L5:
+  83:../src/stm32f4xx_it.c ****   /* Go to infinite loop when Memory Manage exception occurs */
+  84:../src/stm32f4xx_it.c ****   while (1)
+  85:../src/stm32f4xx_it.c ****   {
+  86:../src/stm32f4xx_it.c ****   }
+ 105              		.loc 1 86 0 discriminator 1
+ 106 0004 FEE7     		b	.L5
+ 107              		.cfi_endproc
+ 108              	.LFE112:
+ 110 0006 00BF     		.section	.text.BusFault_Handler,"ax",%progbits
+ 111              		.align	2
+ 112              		.global	BusFault_Handler
+ 113              		.thumb
+ 114              		.thumb_func
+ 116              	BusFault_Handler:
+ 117              	.LFB113:
+  87:../src/stm32f4xx_it.c **** }
+  88:../src/stm32f4xx_it.c **** 
+  89:../src/stm32f4xx_it.c **** /**
+  90:../src/stm32f4xx_it.c ****   * @brief  This function handles Bus Fault exception.
+  91:../src/stm32f4xx_it.c ****   * @param  None
+  92:../src/stm32f4xx_it.c ****   * @retval None
+  93:../src/stm32f4xx_it.c ****   */
+  94:../src/stm32f4xx_it.c **** void BusFault_Handler(void)
+  95:../src/stm32f4xx_it.c **** {
+ 118              		.loc 1 95 0
+ 119              		.cfi_startproc
+ 120              		@ args = 0, pretend = 0, frame = 0
+ 121              		@ frame_needed = 1, uses_anonymous_args = 0
+ 122              		@ link register save eliminated.
+ 123 0000 80B4     		push	{r7}
+ 124              	.LCFI6:
+ 125              		.cfi_def_cfa_offset 4
+ 126              		.cfi_offset 7, -4
+ 127 0002 00AF     		add	r7, sp, #0
+ 128              	.LCFI7:
+ 129              		.cfi_def_cfa_register 7
+ 130              	.L7:
+  96:../src/stm32f4xx_it.c ****   /* Go to infinite loop when Bus Fault exception occurs */
+  97:../src/stm32f4xx_it.c ****   while (1)
+  98:../src/stm32f4xx_it.c ****   {
+  99:../src/stm32f4xx_it.c ****   }
+ 131              		.loc 1 99 0 discriminator 1
+ 132 0004 FEE7     		b	.L7
+ 133              		.cfi_endproc
+ 134              	.LFE113:
+ 136 0006 00BF     		.section	.text.UsageFault_Handler,"ax",%progbits
+ 137              		.align	2
+ 138              		.global	UsageFault_Handler
+ 139              		.thumb
+ 140              		.thumb_func
+ 142              	UsageFault_Handler:
+ 143              	.LFB114:
+ 100:../src/stm32f4xx_it.c **** }
+ 101:../src/stm32f4xx_it.c **** 
+ 102:../src/stm32f4xx_it.c **** /**
+ 103:../src/stm32f4xx_it.c ****   * @brief  This function handles Usage Fault exception.
+ 104:../src/stm32f4xx_it.c ****   * @param  None
+ 105:../src/stm32f4xx_it.c ****   * @retval None
+ 106:../src/stm32f4xx_it.c ****   */
+ 107:../src/stm32f4xx_it.c **** void UsageFault_Handler(void)
+ 108:../src/stm32f4xx_it.c **** {
+ 144              		.loc 1 108 0
+ 145              		.cfi_startproc
+ 146              		@ args = 0, pretend = 0, frame = 0
+ 147              		@ frame_needed = 1, uses_anonymous_args = 0
+ 148              		@ link register save eliminated.
+ 149 0000 80B4     		push	{r7}
+ 150              	.LCFI8:
+ 151              		.cfi_def_cfa_offset 4
+ 152              		.cfi_offset 7, -4
+ 153 0002 00AF     		add	r7, sp, #0
+ 154              	.LCFI9:
+ 155              		.cfi_def_cfa_register 7
+ 156              	.L9:
+ 109:../src/stm32f4xx_it.c ****   /* Go to infinite loop when Usage Fault exception occurs */
+ 110:../src/stm32f4xx_it.c ****   while (1)
+ 111:../src/stm32f4xx_it.c ****   {
+ 112:../src/stm32f4xx_it.c ****   }
+ 157              		.loc 1 112 0 discriminator 1
+ 158 0004 FEE7     		b	.L9
+ 159              		.cfi_endproc
+ 160              	.LFE114:
+ 162 0006 00BF     		.section	.text.SVC_Handler,"ax",%progbits
+ 163              		.align	2
+ 164              		.global	SVC_Handler
+ 165              		.thumb
+ 166              		.thumb_func
+ 168              	SVC_Handler:
+ 169              	.LFB115:
+ 113:../src/stm32f4xx_it.c **** }
+ 114:../src/stm32f4xx_it.c **** 
+ 115:../src/stm32f4xx_it.c **** /**
+ 116:../src/stm32f4xx_it.c ****   * @brief  This function handles SVCall exception.
+ 117:../src/stm32f4xx_it.c ****   * @param  None
+ 118:../src/stm32f4xx_it.c ****   * @retval None
+ 119:../src/stm32f4xx_it.c ****   */
+ 120:../src/stm32f4xx_it.c **** void SVC_Handler(void)
+ 121:../src/stm32f4xx_it.c **** {
+ 170              		.loc 1 121 0
+ 171              		.cfi_startproc
+ 172              		@ args = 0, pretend = 0, frame = 0
+ 173              		@ frame_needed = 1, uses_anonymous_args = 0
+ 174              		@ link register save eliminated.
+ 175 0000 80B4     		push	{r7}
+ 176              	.LCFI10:
+ 177              		.cfi_def_cfa_offset 4
+ 178              		.cfi_offset 7, -4
+ 179 0002 00AF     		add	r7, sp, #0
+ 180              	.LCFI11:
+ 181              		.cfi_def_cfa_register 7
+ 122:../src/stm32f4xx_it.c **** }
+ 182              		.loc 1 122 0
+ 183 0004 BD46     		mov	sp, r7
+ 184 0006 80BC     		pop	{r7}
+ 185 0008 7047     		bx	lr
+ 186              		.cfi_endproc
+ 187              	.LFE115:
+ 189 000a 00BF     		.section	.text.DebugMon_Handler,"ax",%progbits
+ 190              		.align	2
+ 191              		.global	DebugMon_Handler
+ 192              		.thumb
+ 193              		.thumb_func
+ 195              	DebugMon_Handler:
+ 196              	.LFB116:
+ 123:../src/stm32f4xx_it.c **** 
+ 124:../src/stm32f4xx_it.c **** /**
+ 125:../src/stm32f4xx_it.c ****   * @brief  This function handles Debug Monitor exception.
+ 126:../src/stm32f4xx_it.c ****   * @param  None
+ 127:../src/stm32f4xx_it.c ****   * @retval None
+ 128:../src/stm32f4xx_it.c ****   */
+ 129:../src/stm32f4xx_it.c **** void DebugMon_Handler(void)
+ 130:../src/stm32f4xx_it.c **** {
+ 197              		.loc 1 130 0
+ 198              		.cfi_startproc
+ 199              		@ args = 0, pretend = 0, frame = 0
+ 200              		@ frame_needed = 1, uses_anonymous_args = 0
+ 201              		@ link register save eliminated.
+ 202 0000 80B4     		push	{r7}
+ 203              	.LCFI12:
+ 204              		.cfi_def_cfa_offset 4
+ 205              		.cfi_offset 7, -4
+ 206 0002 00AF     		add	r7, sp, #0
+ 207              	.LCFI13:
+ 208              		.cfi_def_cfa_register 7
+ 131:../src/stm32f4xx_it.c **** }
+ 209              		.loc 1 131 0
+ 210 0004 BD46     		mov	sp, r7
+ 211 0006 80BC     		pop	{r7}
+ 212 0008 7047     		bx	lr
+ 213              		.cfi_endproc
+ 214              	.LFE116:
+ 216 000a 00BF     		.section	.text.PendSV_Handler,"ax",%progbits
+ 217              		.align	2
+ 218              		.global	PendSV_Handler
+ 219              		.thumb
+ 220              		.thumb_func
+ 222              	PendSV_Handler:
+ 223              	.LFB117:
+ 132:../src/stm32f4xx_it.c **** 
+ 133:../src/stm32f4xx_it.c **** /**
+ 134:../src/stm32f4xx_it.c ****   * @brief  This function handles PendSVC exception.
+ 135:../src/stm32f4xx_it.c ****   * @param  None
+ 136:../src/stm32f4xx_it.c ****   * @retval None
+ 137:../src/stm32f4xx_it.c ****   */
+ 138:../src/stm32f4xx_it.c **** void PendSV_Handler(void)
+ 139:../src/stm32f4xx_it.c **** {
+ 224              		.loc 1 139 0
+ 225              		.cfi_startproc
+ 226              		@ args = 0, pretend = 0, frame = 0
+ 227              		@ frame_needed = 1, uses_anonymous_args = 0
+ 228              		@ link register save eliminated.
+ 229 0000 80B4     		push	{r7}
+ 230              	.LCFI14:
+ 231              		.cfi_def_cfa_offset 4
+ 232              		.cfi_offset 7, -4
+ 233 0002 00AF     		add	r7, sp, #0
+ 234              	.LCFI15:
+ 235              		.cfi_def_cfa_register 7
+ 140:../src/stm32f4xx_it.c **** }
+ 236              		.loc 1 140 0
+ 237 0004 BD46     		mov	sp, r7
+ 238 0006 80BC     		pop	{r7}
+ 239 0008 7047     		bx	lr
+ 240              		.cfi_endproc
+ 241              	.LFE117:
+ 243 000a 00BF     		.section	.text.SysTick_Handler,"ax",%progbits
+ 244              		.align	2
+ 245              		.global	SysTick_Handler
+ 246              		.thumb
+ 247              		.thumb_func
+ 249              	SysTick_Handler:
+ 250              	.LFB118:
+ 141:../src/stm32f4xx_it.c **** 
+ 142:../src/stm32f4xx_it.c **** /**
+ 143:../src/stm32f4xx_it.c ****   * @brief  This function handles SysTick Handler.
+ 144:../src/stm32f4xx_it.c ****   * @param  None
+ 145:../src/stm32f4xx_it.c ****   * @retval None
+ 146:../src/stm32f4xx_it.c ****   */
+ 147:../src/stm32f4xx_it.c **** void SysTick_Handler(void)
+ 148:../src/stm32f4xx_it.c **** {
+ 251              		.loc 1 148 0
+ 252              		.cfi_startproc
+ 253              		@ args = 0, pretend = 0, frame = 16
+ 254              		@ frame_needed = 1, uses_anonymous_args = 0
+ 255 0000 80B5     		push	{r7, lr}
+ 256              	.LCFI16:
+ 257              		.cfi_def_cfa_offset 8
+ 258              		.cfi_offset 14, -4
+ 259              		.cfi_offset 7, -8
+ 260 0002 84B0     		sub	sp, sp, #16
+ 261              	.LCFI17:
+ 262              		.cfi_def_cfa_offset 24
+ 263 0004 00AF     		add	r7, sp, #0
+ 264              	.LCFI18:
+ 265              		.cfi_def_cfa_register 7
+ 149:../src/stm32f4xx_it.c ****   uint8_t *buf;
+ 150:../src/stm32f4xx_it.c ****   uint8_t temp1, temp2 = 0x00;
+ 266              		.loc 1 150 0
+ 267 0006 4FF00003 		mov	r3, #0
+ 268 000a FB73     		strb	r3, [r7, #15]
+ 151:../src/stm32f4xx_it.c ****   
+ 152:../src/stm32f4xx_it.c ****   if (DemoEnterCondition == 0x00)
+ 269              		.loc 1 152 0
+ 270 000c 40F20003 		movw	r3, #:lower16:DemoEnterCondition
+ 271 0010 C0F20003 		movt	r3, #:upper16:DemoEnterCondition
+ 272 0014 1B78     		ldrb	r3, [r3, #0]
+ 273 0016 DBB2     		uxtb	r3, r3
+ 274 0018 002B     		cmp	r3, #0
+ 275 001a 02D1     		bne	.L14
+ 153:../src/stm32f4xx_it.c ****   {
+ 154:../src/stm32f4xx_it.c ****     TimingDelay_Decrement();
  276              		.loc 1 154 0
- 277 0004 FFF7FEFF 		bl	TimingDelay_Decrement
- 155:../src/stm32f4xx_it.c **** #if defined MEDIA_USB_KEY
- 156:../src/stm32f4xx_it.c ****   if ( Command_index == 1)
+ 277 001c FFF7FEFF 		bl	TimingDelay_Decrement
+ 278 0020 64E1     		b	.L13
+ 279              	.L14:
+ 155:../src/stm32f4xx_it.c ****   }
+ 156:../src/stm32f4xx_it.c ****   else
  157:../src/stm32f4xx_it.c ****   {
- 158:../src/stm32f4xx_it.c ****     Time_Rec_Base ++;
- 159:../src/stm32f4xx_it.c ****   }
- 160:../src/stm32f4xx_it.c **** #endif
- 161:../src/stm32f4xx_it.c **** }
- 278              		.loc 1 161 0
- 279 0008 80BD     		pop	{r7, pc}
- 280              		.cfi_endproc
- 281              	.LFE118:
- 283 000a 00BF     		.section	.text.EXTI1_IRQHandler,"ax",%progbits
- 284              		.align	2
- 285              		.global	EXTI1_IRQHandler
- 286              		.thumb
- 287              		.thumb_func
- 289              	EXTI1_IRQHandler:
- 290              	.LFB119:
- 162:../src/stm32f4xx_it.c **** 
- 163:../src/stm32f4xx_it.c **** 
- 164:../src/stm32f4xx_it.c **** /******************************************************************************/
- 165:../src/stm32f4xx_it.c **** /*                 STM32F4xx Peripherals Interrupt Handlers                   */
- 166:../src/stm32f4xx_it.c **** /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
- 167:../src/stm32f4xx_it.c **** /*  available peripheral interrupt handler's name please refer to the startup */
- 168:../src/stm32f4xx_it.c **** /*  file (startup_stm32f4xx.s).                                               */
- 169:../src/stm32f4xx_it.c **** /******************************************************************************/
- 170:../src/stm32f4xx_it.c **** /**
- 171:../src/stm32f4xx_it.c ****   * @brief  This function handles External line 1 interrupt request.
- 172:../src/stm32f4xx_it.c ****   * @param  None
- 173:../src/stm32f4xx_it.c ****   * @retval None
- 174:../src/stm32f4xx_it.c ****   */
- 175:../src/stm32f4xx_it.c **** void EXTI1_IRQHandler(void)
- 176:../src/stm32f4xx_it.c **** {
- 291              		.loc 1 176 0
- 292              		.cfi_startproc
- 293              		@ args = 0, pretend = 0, frame = 0
- 294              		@ frame_needed = 1, uses_anonymous_args = 0
- 295 0000 80B5     		push	{r7, lr}
- 296              	.LCFI18:
- 297              		.cfi_def_cfa_offset 8
- 298              		.cfi_offset 14, -4
- 299              		.cfi_offset 7, -8
- 300 0002 00AF     		add	r7, sp, #0
- 301              	.LCFI19:
- 302              		.cfi_def_cfa_register 7
- 177:../src/stm32f4xx_it.c ****   /* Check the clic on the accelerometer to Pause/Resume Playing */
- 178:../src/stm32f4xx_it.c ****   if(EXTI_GetITStatus(EXTI_Line1) != RESET)
- 303              		.loc 1 178 0
- 304 0004 4FF00200 		mov	r0, #2
- 305 0008 FFF7FEFF 		bl	EXTI_GetITStatus
- 306 000c 0346     		mov	r3, r0
- 307 000e 002B     		cmp	r3, #0
- 308 0010 28D0     		beq	.L14
- 179:../src/stm32f4xx_it.c ****   {
- 180:../src/stm32f4xx_it.c ****     if( Count==1)
- 309              		.loc 1 180 0
- 310 0012 40F20003 		movw	r3, #:lower16:Count
- 311 0016 C0F20003 		movt	r3, #:upper16:Count
- 312 001a 1B78     		ldrb	r3, [r3, #0]
- 313 001c DBB2     		uxtb	r3, r3
- 314 001e 012B     		cmp	r3, #1
- 315 0020 0ED1     		bne	.L16
- 181:../src/stm32f4xx_it.c ****     {
- 182:../src/stm32f4xx_it.c ****       PauseResumeStatus = 1;
- 316              		.loc 1 182 0
- 317 0022 40F20003 		movw	r3, #:lower16:PauseResumeStatus
- 318 0026 C0F20003 		movt	r3, #:upper16:PauseResumeStatus
- 319 002a 4FF00102 		mov	r2, #1
- 320 002e 1A70     		strb	r2, [r3, #0]
- 183:../src/stm32f4xx_it.c ****       Count = 0;
- 321              		.loc 1 183 0
- 322 0030 40F20003 		movw	r3, #:lower16:Count
- 323 0034 C0F20003 		movt	r3, #:upper16:Count
- 324 0038 4FF00002 		mov	r2, #0
- 325 003c 1A70     		strb	r2, [r3, #0]
- 326 003e 0DE0     		b	.L17
- 327              	.L16:
- 184:../src/stm32f4xx_it.c ****     }
- 185:../src/stm32f4xx_it.c ****     else
- 186:../src/stm32f4xx_it.c ****     {
- 187:../src/stm32f4xx_it.c ****       PauseResumeStatus = 0;
- 328              		.loc 1 187 0
- 329 0040 40F20003 		movw	r3, #:lower16:PauseResumeStatus
- 330 0044 C0F20003 		movt	r3, #:upper16:PauseResumeStatus
- 331 0048 4FF00002 		mov	r2, #0
- 332 004c 1A70     		strb	r2, [r3, #0]
- 188:../src/stm32f4xx_it.c ****       Count = 1;
- 333              		.loc 1 188 0
- 334 004e 40F20003 		movw	r3, #:lower16:Count
- 335 0052 C0F20003 		movt	r3, #:upper16:Count
- 336 0056 4FF00102 		mov	r2, #1
- 337 005a 1A70     		strb	r2, [r3, #0]
- 338              	.L17:
- 189:../src/stm32f4xx_it.c ****     }
- 190:../src/stm32f4xx_it.c ****     /* Clear the EXTI line 1 pending bit */
- 191:../src/stm32f4xx_it.c ****     EXTI_ClearITPendingBit(EXTI_Line1);
- 339              		.loc 1 191 0
- 340 005c 4FF00200 		mov	r0, #2
- 341 0060 FFF7FEFF 		bl	EXTI_ClearITPendingBit
- 342              	.L14:
- 192:../src/stm32f4xx_it.c ****   }
- 193:../src/stm32f4xx_it.c **** }
- 343              		.loc 1 193 0
- 344 0064 80BD     		pop	{r7, pc}
- 345              		.cfi_endproc
- 346              	.LFE119:
- 348 0066 00BF     		.section	.text.TIM4_IRQHandler,"ax",%progbits
- 349              		.align	2
- 350              		.global	TIM4_IRQHandler
- 351              		.thumb
- 352              		.thumb_func
- 354              	TIM4_IRQHandler:
- 355              	.LFB120:
- 194:../src/stm32f4xx_it.c **** 
- 195:../src/stm32f4xx_it.c **** /**
- 196:../src/stm32f4xx_it.c ****   * @brief  This function handles TIM4 global interrupt request.
- 197:../src/stm32f4xx_it.c ****   * @param  None
- 198:../src/stm32f4xx_it.c ****   * @retval None
- 199:../src/stm32f4xx_it.c ****   */
- 200:../src/stm32f4xx_it.c **** void TIM4_IRQHandler(void)
- 201:../src/stm32f4xx_it.c **** {
- 356              		.loc 1 201 0
- 357              		.cfi_startproc
- 358              		@ args = 0, pretend = 0, frame = 8
- 359              		@ frame_needed = 1, uses_anonymous_args = 0
- 360 0000 80B5     		push	{r7, lr}
- 361              	.LCFI20:
- 362              		.cfi_def_cfa_offset 8
- 363              		.cfi_offset 14, -4
- 364              		.cfi_offset 7, -8
- 365 0002 82B0     		sub	sp, sp, #8
- 366              	.LCFI21:
- 367              		.cfi_def_cfa_offset 16
- 368 0004 00AF     		add	r7, sp, #0
- 369              	.LCFI22:
- 370              		.cfi_def_cfa_register 7
- 202:../src/stm32f4xx_it.c ****    uint8_t clickreg = 0;
- 371              		.loc 1 202 0
- 372 0006 4FF00003 		mov	r3, #0
- 373 000a FB71     		strb	r3, [r7, #7]
- 203:../src/stm32f4xx_it.c **** 
- 204:../src/stm32f4xx_it.c ****   if (AudioPlayStart != 0x00)
- 374              		.loc 1 204 0
- 375 000c 40F20003 		movw	r3, #:lower16:AudioPlayStart
- 376 0010 C0F20003 		movt	r3, #:upper16:AudioPlayStart
- 377 0014 1B78     		ldrb	r3, [r3, #0]
- 378 0016 DBB2     		uxtb	r3, r3
- 379 0018 002B     		cmp	r3, #0
- 380 001a 12D0     		beq	.L19
- 205:../src/stm32f4xx_it.c ****   {
- 206:../src/stm32f4xx_it.c ****     /* Read click status register */
- 207:../src/stm32f4xx_it.c ****     LIS302DL_Read(&clickreg, LIS302DL_CLICK_SRC_REG_ADDR, 1); 
- 381              		.loc 1 207 0
- 382 001c 07F10703 		add	r3, r7, #7
- 383 0020 1846     		mov	r0, r3
- 384 0022 4FF03901 		mov	r1, #57
- 385 0026 4FF00102 		mov	r2, #1
- 386 002a FFF7FEFF 		bl	LIS302DL_Read
- 208:../src/stm32f4xx_it.c ****     LIS302DL_Read(Buffer, LIS302DL_STATUS_REG_ADDR, 6);
- 387              		.loc 1 208 0
- 388 002e 40F20000 		movw	r0, #:lower16:Buffer
- 389 0032 C0F20000 		movt	r0, #:upper16:Buffer
- 390 0036 4FF02701 		mov	r1, #39
- 391 003a 4FF00602 		mov	r2, #6
- 392 003e FFF7FEFF 		bl	LIS302DL_Read
- 393              	.L19:
- 209:../src/stm32f4xx_it.c ****   }
- 210:../src/stm32f4xx_it.c ****   
- 211:../src/stm32f4xx_it.c ****   /* Checks whether the TIM interrupt has occurred */
- 212:../src/stm32f4xx_it.c ****   if (TIM_GetITStatus(TIM4, TIM_IT_CC1) != RESET)
- 394              		.loc 1 212 0
- 395 0042 4FF40060 		mov	r0, #2048
- 396 0046 C4F20000 		movt	r0, 16384
- 397 004a 4FF00201 		mov	r1, #2
- 398 004e FFF7FEFF 		bl	TIM_GetITStatus
- 399 0052 0346     		mov	r3, r0
- 400 0054 002B     		cmp	r3, #0
- 401 0056 00F08D80 		beq	.L18
- 213:../src/stm32f4xx_it.c ****   {
- 214:../src/stm32f4xx_it.c ****     TIM_ClearITPendingBit(TIM4, TIM_IT_CC1);
- 402              		.loc 1 214 0
- 403 005a 4FF40060 		mov	r0, #2048
- 404 005e C4F20000 		movt	r0, 16384
- 405 0062 4FF00201 		mov	r1, #2
- 406 0066 FFF7FEFF 		bl	TIM_ClearITPendingBit
- 215:../src/stm32f4xx_it.c ****     if( LED_Toggle == 3)
- 407              		.loc 1 215 0
- 408 006a 40F20003 		movw	r3, #:lower16:LED_Toggle
- 409 006e C0F20003 		movt	r3, #:upper16:LED_Toggle
- 410 0072 1B78     		ldrb	r3, [r3, #0]
- 411 0074 DBB2     		uxtb	r3, r3
- 412 0076 032B     		cmp	r3, #3
- 413 0078 0CD1     		bne	.L21
- 216:../src/stm32f4xx_it.c ****     {
- 217:../src/stm32f4xx_it.c ****       /* LED3 Orange toggling */
- 218:../src/stm32f4xx_it.c ****       STM_EVAL_LEDToggle(LED3);
- 414              		.loc 1 218 0
- 415 007a 4FF00100 		mov	r0, #1
- 416 007e FFF7FEFF 		bl	STM_EVAL_LEDToggle
- 219:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOff(LED6);
- 417              		.loc 1 219 0
- 418 0082 4FF00300 		mov	r0, #3
- 419 0086 FFF7FEFF 		bl	STM_EVAL_LEDOff
- 220:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOff(LED4);
- 420              		.loc 1 220 0
- 421 008a 4FF00000 		mov	r0, #0
- 422 008e FFF7FEFF 		bl	STM_EVAL_LEDOff
- 423 0092 4EE0     		b	.L22
- 424              	.L21:
- 221:../src/stm32f4xx_it.c ****     }
- 222:../src/stm32f4xx_it.c ****     else if( LED_Toggle == 4)
- 425              		.loc 1 222 0
- 426 0094 40F20003 		movw	r3, #:lower16:LED_Toggle
- 427 0098 C0F20003 		movt	r3, #:upper16:LED_Toggle
- 428 009c 1B78     		ldrb	r3, [r3, #0]
- 429 009e DBB2     		uxtb	r3, r3
- 430 00a0 042B     		cmp	r3, #4
- 431 00a2 0CD1     		bne	.L23
- 223:../src/stm32f4xx_it.c ****     {
- 224:../src/stm32f4xx_it.c ****       /* LED4 Green toggling */
- 225:../src/stm32f4xx_it.c ****       STM_EVAL_LEDToggle(LED4);
- 432              		.loc 1 225 0
- 433 00a4 4FF00000 		mov	r0, #0
- 434 00a8 FFF7FEFF 		bl	STM_EVAL_LEDToggle
- 226:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOff(LED6);
- 435              		.loc 1 226 0
- 436 00ac 4FF00300 		mov	r0, #3
- 437 00b0 FFF7FEFF 		bl	STM_EVAL_LEDOff
- 227:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOff(LED3);
- 438              		.loc 1 227 0
- 439 00b4 4FF00100 		mov	r0, #1
- 440 00b8 FFF7FEFF 		bl	STM_EVAL_LEDOff
- 441 00bc 39E0     		b	.L22
- 442              	.L23:
- 228:../src/stm32f4xx_it.c ****     }
- 229:../src/stm32f4xx_it.c ****     else if( LED_Toggle == 6)
- 443              		.loc 1 229 0
- 444 00be 40F20003 		movw	r3, #:lower16:LED_Toggle
- 445 00c2 C0F20003 		movt	r3, #:upper16:LED_Toggle
- 446 00c6 1B78     		ldrb	r3, [r3, #0]
- 447 00c8 DBB2     		uxtb	r3, r3
- 448 00ca 062B     		cmp	r3, #6
- 449 00cc 0CD1     		bne	.L24
- 230:../src/stm32f4xx_it.c ****     {
- 231:../src/stm32f4xx_it.c ****       /* LED6 Blue toggling */
- 232:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOff(LED3);
- 450              		.loc 1 232 0
- 451 00ce 4FF00100 		mov	r0, #1
- 452 00d2 FFF7FEFF 		bl	STM_EVAL_LEDOff
- 233:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOff(LED4);
- 453              		.loc 1 233 0
- 454 00d6 4FF00000 		mov	r0, #0
- 455 00da FFF7FEFF 		bl	STM_EVAL_LEDOff
- 234:../src/stm32f4xx_it.c ****       STM_EVAL_LEDToggle(LED6);
- 456              		.loc 1 234 0
- 457 00de 4FF00300 		mov	r0, #3
- 458 00e2 FFF7FEFF 		bl	STM_EVAL_LEDToggle
- 459 00e6 24E0     		b	.L22
- 460              	.L24:
- 235:../src/stm32f4xx_it.c ****     }
- 236:../src/stm32f4xx_it.c ****     else if (LED_Toggle ==0)
- 461              		.loc 1 236 0
- 462 00e8 40F20003 		movw	r3, #:lower16:LED_Toggle
- 463 00ec C0F20003 		movt	r3, #:upper16:LED_Toggle
- 464 00f0 1B78     		ldrb	r3, [r3, #0]
- 465 00f2 DBB2     		uxtb	r3, r3
- 466 00f4 002B     		cmp	r3, #0
- 467 00f6 04D1     		bne	.L25
- 237:../src/stm32f4xx_it.c ****     {
- 238:../src/stm32f4xx_it.c ****       /* LED6 Blue On to signal Pause */
- 239:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOn(LED6);
- 468              		.loc 1 239 0
- 469 00f8 4FF00300 		mov	r0, #3
- 470 00fc FFF7FEFF 		bl	STM_EVAL_LEDOn
- 471 0100 17E0     		b	.L22
- 472              	.L25:
- 240:../src/stm32f4xx_it.c ****     }
- 241:../src/stm32f4xx_it.c ****     else if (LED_Toggle == 7)
- 473              		.loc 1 241 0
- 474 0102 40F20003 		movw	r3, #:lower16:LED_Toggle
- 475 0106 C0F20003 		movt	r3, #:upper16:LED_Toggle
- 476 010a 1B78     		ldrb	r3, [r3, #0]
- 477 010c DBB2     		uxtb	r3, r3
- 478 010e 072B     		cmp	r3, #7
- 479 0110 0FD1     		bne	.L22
- 242:../src/stm32f4xx_it.c ****     {
- 243:../src/stm32f4xx_it.c ****       /* LED4 toggling with frequency = 439.4 Hz */
- 244:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOff(LED3);
- 480              		.loc 1 244 0
- 481 0112 4FF00100 		mov	r0, #1
- 482 0116 FFF7FEFF 		bl	STM_EVAL_LEDOff
- 245:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOff(LED4);
- 483              		.loc 1 245 0
- 484 011a 4FF00000 		mov	r0, #0
- 485 011e FFF7FEFF 		bl	STM_EVAL_LEDOff
- 246:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOff(LED5);
- 486              		.loc 1 246 0
- 487 0122 4FF00200 		mov	r0, #2
- 488 0126 FFF7FEFF 		bl	STM_EVAL_LEDOff
- 247:../src/stm32f4xx_it.c ****       STM_EVAL_LEDOff(LED6);
- 489              		.loc 1 247 0
- 490 012a 4FF00300 		mov	r0, #3
- 491 012e FFF7FEFF 		bl	STM_EVAL_LEDOff
- 492              	.L22:
- 248:../src/stm32f4xx_it.c ****     }
- 249:../src/stm32f4xx_it.c ****     capture = TIM_GetCapture1(TIM4);
- 493              		.loc 1 249 0
- 494 0132 4FF40060 		mov	r0, #2048
- 495 0136 C4F20000 		movt	r0, 16384
- 496 013a FFF7FEFF 		bl	TIM_GetCapture1
- 497 013e 0346     		mov	r3, r0
- 498 0140 9AB2     		uxth	r2, r3
- 499 0142 40F20003 		movw	r3, #:lower16:capture
- 500 0146 C0F20003 		movt	r3, #:upper16:capture
- 501 014a 1A80     		strh	r2, [r3, #0]	@ movhi
- 250:../src/stm32f4xx_it.c ****     TIM_SetCompare1(TIM4, capture + CCR_Val);
- 502              		.loc 1 250 0
- 503 014c 40F20003 		movw	r3, #:lower16:capture
- 504 0150 C0F20003 		movt	r3, #:upper16:capture
- 505 0154 1B88     		ldrh	r3, [r3, #0]
- 506 0156 1A46     		mov	r2, r3
- 507 0158 40F20003 		movw	r3, #:lower16:CCR_Val
- 508 015c C0F20003 		movt	r3, #:upper16:CCR_Val
- 509 0160 1B88     		ldrh	r3, [r3, #0]	@ movhi
- 510 0162 9BB2     		uxth	r3, r3
- 511 0164 D318     		adds	r3, r2, r3
- 512 0166 4FF40060 		mov	r0, #2048
- 513 016a C4F20000 		movt	r0, 16384
- 514 016e 1946     		mov	r1, r3
- 515 0170 FFF7FEFF 		bl	TIM_SetCompare1
- 516              	.L18:
- 251:../src/stm32f4xx_it.c ****   }
- 252:../src/stm32f4xx_it.c **** }
- 517              		.loc 1 252 0
- 518 0174 07F10807 		add	r7, r7, #8
- 519 0178 BD46     		mov	sp, r7
- 520 017a 80BD     		pop	{r7, pc}
- 521              		.cfi_endproc
- 522              	.LFE120:
- 524              		.text
- 525              	.Letext0:
- 526              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 527              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\ST\\
- 528              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Utilities\\STM32F4-Dis
- 529              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
+ 158:../src/stm32f4xx_it.c ****     buf = USBD_HID_GetPos();
+ 280              		.loc 1 158 0
+ 281 0022 FFF7FEFF 		bl	USBD_HID_GetPos
+ 282 0026 B860     		str	r0, [r7, #8]
+ 159:../src/stm32f4xx_it.c ****     if((buf[1] != 0) ||(buf[2] != 0))
+ 283              		.loc 1 159 0
+ 284 0028 BB68     		ldr	r3, [r7, #8]
+ 285 002a 03F10103 		add	r3, r3, #1
+ 286 002e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 287 0030 002B     		cmp	r3, #0
+ 288 0032 05D1     		bne	.L16
+ 289              		.loc 1 159 0 is_stmt 0 discriminator 1
+ 290 0034 BB68     		ldr	r3, [r7, #8]
+ 291 0036 03F10203 		add	r3, r3, #2
+ 292 003a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 293 003c 002B     		cmp	r3, #0
+ 294 003e 08D0     		beq	.L17
+ 295              	.L16:
+ 160:../src/stm32f4xx_it.c ****     {
+ 161:../src/stm32f4xx_it.c ****       USBD_HID_SendReport (&USB_OTG_dev, 
+ 296              		.loc 1 161 0 is_stmt 1
+ 297 0040 40F20000 		movw	r0, #:lower16:USB_OTG_dev
+ 298 0044 C0F20000 		movt	r0, #:upper16:USB_OTG_dev
+ 299 0048 B968     		ldr	r1, [r7, #8]
+ 300 004a 4FF00402 		mov	r2, #4
+ 301 004e FFF7FEFF 		bl	USBD_HID_SendReport
+ 302              	.L17:
+ 162:../src/stm32f4xx_it.c ****                            buf,
+ 163:../src/stm32f4xx_it.c ****                            4);
+ 164:../src/stm32f4xx_it.c ****     } 
+ 165:../src/stm32f4xx_it.c ****     Counter ++;
+ 303              		.loc 1 165 0
+ 304 0052 40F20003 		movw	r3, #:lower16:Counter
+ 305 0056 C0F20003 		movt	r3, #:upper16:Counter
+ 306 005a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 307 005c 03F10103 		add	r3, r3, #1
+ 308 0060 DAB2     		uxtb	r2, r3
+ 309 0062 40F20003 		movw	r3, #:lower16:Counter
+ 310 0066 C0F20003 		movt	r3, #:upper16:Counter
+ 311 006a 1A70     		strb	r2, [r3, #0]
+ 166:../src/stm32f4xx_it.c ****     if (Counter == 10)
+ 312              		.loc 1 166 0
+ 313 006c 40F20003 		movw	r3, #:lower16:Counter
+ 314 0070 C0F20003 		movt	r3, #:upper16:Counter
+ 315 0074 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 316 0076 0A2B     		cmp	r3, #10
+ 317 0078 40F03881 		bne	.L13
+ 167:../src/stm32f4xx_it.c ****     {
+ 168:../src/stm32f4xx_it.c ****       Buffer[0] = 0;
+ 318              		.loc 1 168 0
+ 319 007c 40F20003 		movw	r3, #:lower16:Buffer
+ 320 0080 C0F20003 		movt	r3, #:upper16:Buffer
+ 321 0084 4FF00002 		mov	r2, #0
+ 322 0088 1A70     		strb	r2, [r3, #0]
+ 169:../src/stm32f4xx_it.c ****       Buffer[2] = 0;
+ 323              		.loc 1 169 0
+ 324 008a 40F20003 		movw	r3, #:lower16:Buffer
+ 325 008e C0F20003 		movt	r3, #:upper16:Buffer
+ 326 0092 4FF00002 		mov	r2, #0
+ 327 0096 9A70     		strb	r2, [r3, #2]
+ 170:../src/stm32f4xx_it.c ****       /* Disable All TIM4 Capture Compare Channels */
+ 171:../src/stm32f4xx_it.c ****       TIM_CCxCmd(TIM4, TIM_Channel_1, DISABLE);
+ 328              		.loc 1 171 0
+ 329 0098 4FF40060 		mov	r0, #2048
+ 330 009c C4F20000 		movt	r0, 16384
+ 331 00a0 4FF00001 		mov	r1, #0
+ 332 00a4 4FF00002 		mov	r2, #0
+ 333 00a8 FFF7FEFF 		bl	TIM_CCxCmd
+ 172:../src/stm32f4xx_it.c ****       TIM_CCxCmd(TIM4, TIM_Channel_2, DISABLE);
+ 334              		.loc 1 172 0
+ 335 00ac 4FF40060 		mov	r0, #2048
+ 336 00b0 C4F20000 		movt	r0, 16384
+ 337 00b4 4FF00401 		mov	r1, #4
+ 338 00b8 4FF00002 		mov	r2, #0
+ 339 00bc FFF7FEFF 		bl	TIM_CCxCmd
+ 173:../src/stm32f4xx_it.c ****       TIM_CCxCmd(TIM4, TIM_Channel_3, DISABLE);
+ 340              		.loc 1 173 0
+ 341 00c0 4FF40060 		mov	r0, #2048
+ 342 00c4 C4F20000 		movt	r0, 16384
+ 343 00c8 4FF00801 		mov	r1, #8
+ 344 00cc 4FF00002 		mov	r2, #0
+ 345 00d0 FFF7FEFF 		bl	TIM_CCxCmd
+ 174:../src/stm32f4xx_it.c ****       TIM_CCxCmd(TIM4, TIM_Channel_4, DISABLE);
+ 346              		.loc 1 174 0
+ 347 00d4 4FF40060 		mov	r0, #2048
+ 348 00d8 C4F20000 		movt	r0, 16384
+ 349 00dc 4FF00C01 		mov	r1, #12
+ 350 00e0 4FF00002 		mov	r2, #0
+ 351 00e4 FFF7FEFF 		bl	TIM_CCxCmd
+ 175:../src/stm32f4xx_it.c ****       
+ 176:../src/stm32f4xx_it.c ****       LIS302DL_Read(Buffer, LIS302DL_OUT_X_ADDR, 6);
+ 352              		.loc 1 176 0
+ 353 00e8 40F20000 		movw	r0, #:lower16:Buffer
+ 354 00ec C0F20000 		movt	r0, #:upper16:Buffer
+ 355 00f0 4FF02901 		mov	r1, #41
+ 356 00f4 4FF00602 		mov	r2, #6
+ 357 00f8 FFF7FEFF 		bl	LIS302DL_Read
+ 177:../src/stm32f4xx_it.c ****       /* Remove the offsets values from data */
+ 178:../src/stm32f4xx_it.c ****       Buffer[0] -= X_Offset;
+ 358              		.loc 1 178 0
+ 359 00fc 40F20003 		movw	r3, #:lower16:Buffer
+ 360 0100 C0F20003 		movt	r3, #:upper16:Buffer
+ 361 0104 1A78     		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 362 0106 40F20003 		movw	r3, #:lower16:X_Offset
+ 363 010a C0F20003 		movt	r3, #:upper16:X_Offset
+ 364 010e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 365 0110 DBB2     		uxtb	r3, r3
+ 366 0112 D31A     		subs	r3, r2, r3
+ 367 0114 DAB2     		uxtb	r2, r3
+ 368 0116 40F20003 		movw	r3, #:lower16:Buffer
+ 369 011a C0F20003 		movt	r3, #:upper16:Buffer
+ 370 011e 1A70     		strb	r2, [r3, #0]
+ 179:../src/stm32f4xx_it.c ****       Buffer[2] -= Y_Offset;
+ 371              		.loc 1 179 0
+ 372 0120 40F20003 		movw	r3, #:lower16:Buffer
+ 373 0124 C0F20003 		movt	r3, #:upper16:Buffer
+ 374 0128 9A78     		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 375 012a 40F20003 		movw	r3, #:lower16:Y_Offset
+ 376 012e C0F20003 		movt	r3, #:upper16:Y_Offset
+ 377 0132 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 378 0134 DBB2     		uxtb	r3, r3
+ 379 0136 D31A     		subs	r3, r2, r3
+ 380 0138 DAB2     		uxtb	r2, r3
+ 381 013a 40F20003 		movw	r3, #:lower16:Buffer
+ 382 013e C0F20003 		movt	r3, #:upper16:Buffer
+ 383 0142 9A70     		strb	r2, [r3, #2]
+ 180:../src/stm32f4xx_it.c ****       /* Update autoreload and capture compare registers value*/
+ 181:../src/stm32f4xx_it.c ****       temp1 = ABS((int8_t)(Buffer[0]));
+ 384              		.loc 1 181 0
+ 385 0144 40F20003 		movw	r3, #:lower16:Buffer
+ 386 0148 C0F20003 		movt	r3, #:upper16:Buffer
+ 387 014c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 388 014e DBB2     		uxtb	r3, r3
+ 389 0150 5BB2     		sxtb	r3, r3
+ 390 0152 002B     		cmp	r3, #0
+ 391 0154 B8BF     		it	lt
+ 392 0156 5B42     		rsblt	r3, r3, #0
+ 393 0158 FB71     		strb	r3, [r7, #7]
+ 182:../src/stm32f4xx_it.c ****       temp2 = ABS((int8_t)(Buffer[2]));       
+ 394              		.loc 1 182 0
+ 395 015a 40F20003 		movw	r3, #:lower16:Buffer
+ 396 015e C0F20003 		movt	r3, #:upper16:Buffer
+ 397 0162 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 398 0164 DBB2     		uxtb	r3, r3
+ 399 0166 5BB2     		sxtb	r3, r3
+ 400 0168 002B     		cmp	r3, #0
+ 401 016a B8BF     		it	lt
+ 402 016c 5B42     		rsblt	r3, r3, #0
+ 403 016e FB73     		strb	r3, [r7, #15]
+ 183:../src/stm32f4xx_it.c ****       TempAcceleration = MAX(temp1, temp2);
+ 404              		.loc 1 183 0
+ 405 0170 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 406 0172 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 407 0174 9A42     		cmp	r2, r3
+ 408 0176 28BF     		it	cs
+ 409 0178 1346     		movcs	r3, r2
+ 410 017a DAB2     		uxtb	r2, r3
+ 411 017c 40F20003 		movw	r3, #:lower16:TempAcceleration
+ 412 0180 C0F20003 		movt	r3, #:upper16:TempAcceleration
+ 413 0184 1A70     		strb	r2, [r3, #0]
+ 184:../src/stm32f4xx_it.c **** 
+ 185:../src/stm32f4xx_it.c ****       if(TempAcceleration != 0)
+ 414              		.loc 1 185 0
+ 415 0186 40F20003 		movw	r3, #:lower16:TempAcceleration
+ 416 018a C0F20003 		movt	r3, #:upper16:TempAcceleration
+ 417 018e 1B78     		ldrb	r3, [r3, #0]
+ 418 0190 DBB2     		uxtb	r3, r3
+ 419 0192 002B     		cmp	r3, #0
+ 420 0194 00F0A380 		beq	.L18
+ 186:../src/stm32f4xx_it.c ****       { 
+ 187:../src/stm32f4xx_it.c ****         if ((int8_t)Buffer[0] < -2)
+ 421              		.loc 1 187 0
+ 422 0198 40F20003 		movw	r3, #:lower16:Buffer
+ 423 019c C0F20003 		movt	r3, #:upper16:Buffer
+ 424 01a0 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 425 01a2 DBB2     		uxtb	r3, r3
+ 426 01a4 5BB2     		sxtb	r3, r3
+ 427 01a6 13F1020F 		cmn	r3, #2
+ 428 01aa 1ADA     		bge	.L19
+ 188:../src/stm32f4xx_it.c ****         {
+ 189:../src/stm32f4xx_it.c ****           /* Enable TIM4 Capture Compare Channel 4 */
+ 190:../src/stm32f4xx_it.c ****           TIM_CCxCmd(TIM4, TIM_Channel_4, ENABLE);
+ 429              		.loc 1 190 0
+ 430 01ac 4FF40060 		mov	r0, #2048
+ 431 01b0 C4F20000 		movt	r0, 16384
+ 432 01b4 4FF00C01 		mov	r1, #12
+ 433 01b8 4FF00102 		mov	r2, #1
+ 434 01bc FFF7FEFF 		bl	TIM_CCxCmd
+ 191:../src/stm32f4xx_it.c ****           /* Sets the TIM4 Capture Compare4 Register value */
+ 192:../src/stm32f4xx_it.c ****           TIM_SetCompare4(TIM4, TIM_CCR/TempAcceleration);
+ 435              		.loc 1 192 0
+ 436 01c0 40F20003 		movw	r3, #:lower16:TempAcceleration
+ 437 01c4 C0F20003 		movt	r3, #:upper16:TempAcceleration
+ 438 01c8 1B78     		ldrb	r3, [r3, #0]
+ 439 01ca DBB2     		uxtb	r3, r3
+ 440 01cc 4FF47A72 		mov	r2, #1000
+ 441 01d0 92FBF3F3 		sdiv	r3, r2, r3
+ 442 01d4 4FF40060 		mov	r0, #2048
+ 443 01d8 C4F20000 		movt	r0, 16384
+ 444 01dc 1946     		mov	r1, r3
+ 445 01de FFF7FEFF 		bl	TIM_SetCompare4
+ 446              	.L19:
+ 193:../src/stm32f4xx_it.c ****         }
+ 194:../src/stm32f4xx_it.c ****         if ((int8_t)Buffer[0] > 2)
+ 447              		.loc 1 194 0
+ 448 01e2 40F20003 		movw	r3, #:lower16:Buffer
+ 449 01e6 C0F20003 		movt	r3, #:upper16:Buffer
+ 450 01ea 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 451 01ec DBB2     		uxtb	r3, r3
+ 452 01ee 5BB2     		sxtb	r3, r3
+ 453 01f0 022B     		cmp	r3, #2
+ 454 01f2 1ADD     		ble	.L20
+ 195:../src/stm32f4xx_it.c ****         {
+ 196:../src/stm32f4xx_it.c ****           /* Enable TIM4 Capture Compare Channel 2 */
+ 197:../src/stm32f4xx_it.c ****           TIM_CCxCmd(TIM4, TIM_Channel_2, ENABLE);
+ 455              		.loc 1 197 0
+ 456 01f4 4FF40060 		mov	r0, #2048
+ 457 01f8 C4F20000 		movt	r0, 16384
+ 458 01fc 4FF00401 		mov	r1, #4
+ 459 0200 4FF00102 		mov	r2, #1
+ 460 0204 FFF7FEFF 		bl	TIM_CCxCmd
+ 198:../src/stm32f4xx_it.c ****           /* Sets the TIM4 Capture Compare2 Register value */
+ 199:../src/stm32f4xx_it.c ****           TIM_SetCompare2(TIM4, TIM_CCR/TempAcceleration);
+ 461              		.loc 1 199 0
+ 462 0208 40F20003 		movw	r3, #:lower16:TempAcceleration
+ 463 020c C0F20003 		movt	r3, #:upper16:TempAcceleration
+ 464 0210 1B78     		ldrb	r3, [r3, #0]
+ 465 0212 DBB2     		uxtb	r3, r3
+ 466 0214 4FF47A72 		mov	r2, #1000
+ 467 0218 92FBF3F3 		sdiv	r3, r2, r3
+ 468 021c 4FF40060 		mov	r0, #2048
+ 469 0220 C4F20000 		movt	r0, 16384
+ 470 0224 1946     		mov	r1, r3
+ 471 0226 FFF7FEFF 		bl	TIM_SetCompare2
+ 472              	.L20:
+ 200:../src/stm32f4xx_it.c ****         }
+ 201:../src/stm32f4xx_it.c ****         if ((int8_t)Buffer[2] > 2)
+ 473              		.loc 1 201 0
+ 474 022a 40F20003 		movw	r3, #:lower16:Buffer
+ 475 022e C0F20003 		movt	r3, #:upper16:Buffer
+ 476 0232 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 477 0234 DBB2     		uxtb	r3, r3
+ 478 0236 5BB2     		sxtb	r3, r3
+ 479 0238 022B     		cmp	r3, #2
+ 480 023a 1ADD     		ble	.L21
+ 202:../src/stm32f4xx_it.c ****         { 
+ 203:../src/stm32f4xx_it.c ****           /* Enable TIM4 Capture Compare Channel 1 */
+ 204:../src/stm32f4xx_it.c ****           TIM_CCxCmd(TIM4, TIM_Channel_1, ENABLE);
+ 481              		.loc 1 204 0
+ 482 023c 4FF40060 		mov	r0, #2048
+ 483 0240 C4F20000 		movt	r0, 16384
+ 484 0244 4FF00001 		mov	r1, #0
+ 485 0248 4FF00102 		mov	r2, #1
+ 486 024c FFF7FEFF 		bl	TIM_CCxCmd
+ 205:../src/stm32f4xx_it.c ****           /* Sets the TIM4 Capture Compare1 Register value */
+ 206:../src/stm32f4xx_it.c ****           TIM_SetCompare1(TIM4, TIM_CCR/TempAcceleration);
+ 487              		.loc 1 206 0
+ 488 0250 40F20003 		movw	r3, #:lower16:TempAcceleration
+ 489 0254 C0F20003 		movt	r3, #:upper16:TempAcceleration
+ 490 0258 1B78     		ldrb	r3, [r3, #0]
+ 491 025a DBB2     		uxtb	r3, r3
+ 492 025c 4FF47A72 		mov	r2, #1000
+ 493 0260 92FBF3F3 		sdiv	r3, r2, r3
+ 494 0264 4FF40060 		mov	r0, #2048
+ 495 0268 C4F20000 		movt	r0, 16384
+ 496 026c 1946     		mov	r1, r3
+ 497 026e FFF7FEFF 		bl	TIM_SetCompare1
+ 498              	.L21:
+ 207:../src/stm32f4xx_it.c ****         }      
+ 208:../src/stm32f4xx_it.c ****         if ((int8_t)Buffer[2] < -2)
+ 499              		.loc 1 208 0
+ 500 0272 40F20003 		movw	r3, #:lower16:Buffer
+ 501 0276 C0F20003 		movt	r3, #:upper16:Buffer
+ 502 027a 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 503 027c DBB2     		uxtb	r3, r3
+ 504 027e 5BB2     		sxtb	r3, r3
+ 505 0280 13F1020F 		cmn	r3, #2
+ 506 0284 1ADA     		bge	.L22
+ 209:../src/stm32f4xx_it.c ****         { 
+ 210:../src/stm32f4xx_it.c ****           /* Enable TIM4 Capture Compare Channel 3 */
+ 211:../src/stm32f4xx_it.c ****           TIM_CCxCmd(TIM4, TIM_Channel_3, ENABLE);
+ 507              		.loc 1 211 0
+ 508 0286 4FF40060 		mov	r0, #2048
+ 509 028a C4F20000 		movt	r0, 16384
+ 510 028e 4FF00801 		mov	r1, #8
+ 511 0292 4FF00102 		mov	r2, #1
+ 512 0296 FFF7FEFF 		bl	TIM_CCxCmd
+ 212:../src/stm32f4xx_it.c ****           /* Sets the TIM4 Capture Compare3 Register value */
+ 213:../src/stm32f4xx_it.c ****           TIM_SetCompare3(TIM4, TIM_CCR/TempAcceleration);
+ 513              		.loc 1 213 0
+ 514 029a 40F20003 		movw	r3, #:lower16:TempAcceleration
+ 515 029e C0F20003 		movt	r3, #:upper16:TempAcceleration
+ 516 02a2 1B78     		ldrb	r3, [r3, #0]
+ 517 02a4 DBB2     		uxtb	r3, r3
+ 518 02a6 4FF47A72 		mov	r2, #1000
+ 519 02aa 92FBF3F3 		sdiv	r3, r2, r3
+ 520 02ae 4FF40060 		mov	r0, #2048
+ 521 02b2 C4F20000 		movt	r0, 16384
+ 522 02b6 1946     		mov	r1, r3
+ 523 02b8 FFF7FEFF 		bl	TIM_SetCompare3
+ 524              	.L22:
+ 214:../src/stm32f4xx_it.c ****         }
+ 215:../src/stm32f4xx_it.c ****         /* Time base configuration */
+ 216:../src/stm32f4xx_it.c ****         TIM_SetAutoreload(TIM4,  TIM_ARR/TempAcceleration);
+ 525              		.loc 1 216 0
+ 526 02bc 40F20003 		movw	r3, #:lower16:TempAcceleration
+ 527 02c0 C0F20003 		movt	r3, #:upper16:TempAcceleration
+ 528 02c4 1B78     		ldrb	r3, [r3, #0]
+ 529 02c6 DBB2     		uxtb	r3, r3
+ 530 02c8 40F2CF72 		movw	r2, #1999
+ 531 02cc 92FBF3F3 		sdiv	r3, r2, r3
+ 532 02d0 4FF40060 		mov	r0, #2048
+ 533 02d4 C4F20000 		movt	r0, 16384
+ 534 02d8 1946     		mov	r1, r3
+ 535 02da FFF7FEFF 		bl	TIM_SetAutoreload
+ 536              	.L18:
+ 217:../src/stm32f4xx_it.c ****       }
+ 218:../src/stm32f4xx_it.c ****       Counter = 0x00;
+ 537              		.loc 1 218 0
+ 538 02de 40F20003 		movw	r3, #:lower16:Counter
+ 539 02e2 C0F20003 		movt	r3, #:upper16:Counter
+ 540 02e6 4FF00002 		mov	r2, #0
+ 541 02ea 1A70     		strb	r2, [r3, #0]
+ 542              	.L13:
+ 219:../src/stm32f4xx_it.c ****     }  
+ 220:../src/stm32f4xx_it.c ****   }
+ 221:../src/stm32f4xx_it.c ****   
+ 222:../src/stm32f4xx_it.c **** }
+ 543              		.loc 1 222 0
+ 544 02ec 07F11007 		add	r7, r7, #16
+ 545 02f0 BD46     		mov	sp, r7
+ 546 02f2 80BD     		pop	{r7, pc}
+ 547              		.cfi_endproc
+ 548              	.LFE118:
+ 550              		.section	.text.EXTI0_IRQHandler,"ax",%progbits
+ 551              		.align	2
+ 552              		.global	EXTI0_IRQHandler
+ 553              		.thumb
+ 554              		.thumb_func
+ 556              	EXTI0_IRQHandler:
+ 557              	.LFB119:
+ 223:../src/stm32f4xx_it.c **** 
+ 224:../src/stm32f4xx_it.c **** /******************************************************************************/
+ 225:../src/stm32f4xx_it.c **** /*                 STM32Fxxx Peripherals Interrupt Handlers                   */
+ 226:../src/stm32f4xx_it.c **** /*  Add here the Interrupt Handler for the used peripheral(s) (PPP), for the  */
+ 227:../src/stm32f4xx_it.c **** /*  available peripheral interrupt handler's name please refer to the startup */
+ 228:../src/stm32f4xx_it.c **** /*  file (startup_stm32fxxx.s).                                               */
+ 229:../src/stm32f4xx_it.c **** /******************************************************************************/
+ 230:../src/stm32f4xx_it.c **** 
+ 231:../src/stm32f4xx_it.c **** /**
+ 232:../src/stm32f4xx_it.c ****   * @brief  This function handles PPP interrupt request.
+ 233:../src/stm32f4xx_it.c ****   * @param  None
+ 234:../src/stm32f4xx_it.c ****   * @retval None
+ 235:../src/stm32f4xx_it.c ****   */
+ 236:../src/stm32f4xx_it.c **** /*void PPP_IRQHandler(void)
+ 237:../src/stm32f4xx_it.c **** {
+ 238:../src/stm32f4xx_it.c **** }*/
+ 239:../src/stm32f4xx_it.c **** 
+ 240:../src/stm32f4xx_it.c **** /**
+ 241:../src/stm32f4xx_it.c ****   * @brief  This function handles EXTI0_IRQ Handler.
+ 242:../src/stm32f4xx_it.c ****   * @param  None
+ 243:../src/stm32f4xx_it.c ****   * @retval None
+ 244:../src/stm32f4xx_it.c ****   */
+ 245:../src/stm32f4xx_it.c **** void EXTI0_IRQHandler(void)
+ 246:../src/stm32f4xx_it.c **** {
+ 558              		.loc 1 246 0
+ 559              		.cfi_startproc
+ 560              		@ args = 0, pretend = 0, frame = 0
+ 561              		@ frame_needed = 1, uses_anonymous_args = 0
+ 562 0000 80B5     		push	{r7, lr}
+ 563              	.LCFI19:
+ 564              		.cfi_def_cfa_offset 8
+ 565              		.cfi_offset 14, -4
+ 566              		.cfi_offset 7, -8
+ 567 0002 00AF     		add	r7, sp, #0
+ 568              	.LCFI20:
+ 569              		.cfi_def_cfa_register 7
+ 247:../src/stm32f4xx_it.c ****   UserButtonPressed = 0x01;
+ 570              		.loc 1 247 0
+ 571 0004 40F20003 		movw	r3, #:lower16:UserButtonPressed
+ 572 0008 C0F20003 		movt	r3, #:upper16:UserButtonPressed
+ 573 000c 4FF00102 		mov	r2, #1
+ 574 0010 1A70     		strb	r2, [r3, #0]
+ 248:../src/stm32f4xx_it.c ****   
+ 249:../src/stm32f4xx_it.c ****   /* Clear the EXTI line pending bit */
+ 250:../src/stm32f4xx_it.c ****   EXTI_ClearITPendingBit(USER_BUTTON_EXTI_LINE);
+ 575              		.loc 1 250 0
+ 576 0012 4FF00100 		mov	r0, #1
+ 577 0016 FFF7FEFF 		bl	EXTI_ClearITPendingBit
+ 251:../src/stm32f4xx_it.c **** }
+ 578              		.loc 1 251 0
+ 579 001a 80BD     		pop	{r7, pc}
+ 580              		.cfi_endproc
+ 581              	.LFE119:
+ 583              		.section	.text.OTG_FS_WKUP_IRQHandler,"ax",%progbits
+ 584              		.align	2
+ 585              		.global	OTG_FS_WKUP_IRQHandler
+ 586              		.thumb
+ 587              		.thumb_func
+ 589              	OTG_FS_WKUP_IRQHandler:
+ 590              	.LFB120:
+ 252:../src/stm32f4xx_it.c **** 
+ 253:../src/stm32f4xx_it.c **** /**
+ 254:../src/stm32f4xx_it.c ****   * @brief  This function handles EXTI15_10_IRQ Handler.
+ 255:../src/stm32f4xx_it.c ****   * @param  None
+ 256:../src/stm32f4xx_it.c ****   * @retval None
+ 257:../src/stm32f4xx_it.c ****   */
+ 258:../src/stm32f4xx_it.c **** void OTG_FS_WKUP_IRQHandler(void)
+ 259:../src/stm32f4xx_it.c **** {
+ 591              		.loc 1 259 0
+ 592              		.cfi_startproc
+ 593              		@ args = 0, pretend = 0, frame = 0
+ 594              		@ frame_needed = 1, uses_anonymous_args = 0
+ 595 0000 80B5     		push	{r7, lr}
+ 596              	.LCFI21:
+ 597              		.cfi_def_cfa_offset 8
+ 598              		.cfi_offset 14, -4
+ 599              		.cfi_offset 7, -8
+ 600 0002 00AF     		add	r7, sp, #0
+ 601              	.LCFI22:
+ 602              		.cfi_def_cfa_register 7
+ 260:../src/stm32f4xx_it.c ****   if(USB_OTG_dev.cfg.low_power)
+ 603              		.loc 1 260 0
+ 604 0004 40F20003 		movw	r3, #:lower16:USB_OTG_dev
+ 605 0008 C0F20003 		movt	r3, #:upper16:USB_OTG_dev
+ 606 000c 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
+ 607 000e 002B     		cmp	r3, #0
+ 608 0010 13D0     		beq	.L25
+ 261:../src/stm32f4xx_it.c ****   {
+ 262:../src/stm32f4xx_it.c **** 	/* Reset SLEEPDEEP and SLEEPONEXIT bits */
+ 263:../src/stm32f4xx_it.c **** 	SCB->SCR &= (uint32_t)~((uint32_t)(SCB_SCR_SLEEPDEEP_Msk | SCB_SCR_SLEEPONEXIT_Msk));
+ 609              		.loc 1 263 0
+ 610 0012 4FF46D43 		mov	r3, #60672
+ 611 0016 CEF20003 		movt	r3, 57344
+ 612 001a 4FF46D42 		mov	r2, #60672
+ 613 001e CEF20002 		movt	r2, 57344
+ 614 0022 1269     		ldr	r2, [r2, #16]
+ 615 0024 22F00602 		bic	r2, r2, #6
+ 616 0028 1A61     		str	r2, [r3, #16]
+ 264:../src/stm32f4xx_it.c **** 
+ 265:../src/stm32f4xx_it.c **** 	/* After wake-up from sleep mode, reconfigure the system clock */
+ 266:../src/stm32f4xx_it.c **** 	SystemInit();
+ 617              		.loc 1 266 0
+ 618 002a FFF7FEFF 		bl	SystemInit
+ 267:../src/stm32f4xx_it.c ****     USB_OTG_UngateClock(&USB_OTG_dev);
+ 619              		.loc 1 267 0
+ 620 002e 40F20000 		movw	r0, #:lower16:USB_OTG_dev
+ 621 0032 C0F20000 		movt	r0, #:upper16:USB_OTG_dev
+ 622 0036 FFF7FEFF 		bl	USB_OTG_UngateClock
+ 623              	.L25:
+ 268:../src/stm32f4xx_it.c ****   }
+ 269:../src/stm32f4xx_it.c ****   EXTI_ClearITPendingBit(EXTI_Line18);
+ 624              		.loc 1 269 0
+ 625 003a 4FF48020 		mov	r0, #262144
+ 626 003e FFF7FEFF 		bl	EXTI_ClearITPendingBit
+ 270:../src/stm32f4xx_it.c **** }
+ 627              		.loc 1 270 0
+ 628 0042 80BD     		pop	{r7, pc}
+ 629              		.cfi_endproc
+ 630              	.LFE120:
+ 632              		.section	.text.OTG_FS_IRQHandler,"ax",%progbits
+ 633              		.align	2
+ 634              		.global	OTG_FS_IRQHandler
+ 635              		.thumb
+ 636              		.thumb_func
+ 638              	OTG_FS_IRQHandler:
+ 639              	.LFB121:
+ 271:../src/stm32f4xx_it.c **** 
+ 272:../src/stm32f4xx_it.c **** /**
+ 273:../src/stm32f4xx_it.c ****   * @brief  This function handles OTG_HS Handler.
+ 274:../src/stm32f4xx_it.c ****   * @param  None
+ 275:../src/stm32f4xx_it.c ****   * @retval None
+ 276:../src/stm32f4xx_it.c ****   */
+ 277:../src/stm32f4xx_it.c **** void OTG_FS_IRQHandler(void)
+ 278:../src/stm32f4xx_it.c **** {
+ 640              		.loc 1 278 0
+ 641              		.cfi_startproc
+ 642              		@ args = 0, pretend = 0, frame = 0
+ 643              		@ frame_needed = 1, uses_anonymous_args = 0
+ 644 0000 80B5     		push	{r7, lr}
+ 645              	.LCFI23:
+ 646              		.cfi_def_cfa_offset 8
+ 647              		.cfi_offset 14, -4
+ 648              		.cfi_offset 7, -8
+ 649 0002 00AF     		add	r7, sp, #0
+ 650              	.LCFI24:
+ 651              		.cfi_def_cfa_register 7
+ 279:../src/stm32f4xx_it.c ****   USBD_OTG_ISR_Handler (&USB_OTG_dev);
+ 652              		.loc 1 279 0
+ 653 0004 40F20000 		movw	r0, #:lower16:USB_OTG_dev
+ 654 0008 C0F20000 		movt	r0, #:upper16:USB_OTG_dev
+ 655 000c FFF7FEFF 		bl	USBD_OTG_ISR_Handler
+ 280:../src/stm32f4xx_it.c **** }
+ 656              		.loc 1 280 0
+ 657 0010 80BD     		pop	{r7, pc}
+ 658              		.cfi_endproc
+ 659              	.LFE121:
+ 661 0012 00BF     		.section	.text.USBD_HID_GetPos,"ax",%progbits
+ 662              		.align	2
+ 663              		.thumb
+ 664              		.thumb_func
+ 666              	USBD_HID_GetPos:
+ 667              	.LFB122:
+ 281:../src/stm32f4xx_it.c **** 
+ 282:../src/stm32f4xx_it.c **** /**
+ 283:../src/stm32f4xx_it.c **** * @brief  USBD_HID_GetPos
+ 284:../src/stm32f4xx_it.c **** * @param  None
+ 285:../src/stm32f4xx_it.c **** * @retval Pointer to report
+ 286:../src/stm32f4xx_it.c **** */
+ 287:../src/stm32f4xx_it.c **** static uint8_t *USBD_HID_GetPos (void)
+ 288:../src/stm32f4xx_it.c **** {
+ 668              		.loc 1 288 0
+ 669              		.cfi_startproc
+ 670              		@ args = 0, pretend = 0, frame = 0
+ 671              		@ frame_needed = 1, uses_anonymous_args = 0
+ 672              		@ link register save eliminated.
+ 673 0000 80B4     		push	{r7}
+ 674              	.LCFI25:
+ 675              		.cfi_def_cfa_offset 4
+ 676              		.cfi_offset 7, -4
+ 677 0002 00AF     		add	r7, sp, #0
+ 678              	.LCFI26:
+ 679              		.cfi_def_cfa_register 7
+ 289:../src/stm32f4xx_it.c ****   static uint8_t HID_Buffer[4] = {0};
+ 290:../src/stm32f4xx_it.c ****   
+ 291:../src/stm32f4xx_it.c ****   HID_Buffer[1] = 0;
+ 680              		.loc 1 291 0
+ 681 0004 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 682 0008 C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 683 000c 4FF00002 		mov	r2, #0
+ 684 0010 5A70     		strb	r2, [r3, #1]
+ 292:../src/stm32f4xx_it.c ****   HID_Buffer[2] = 0;
+ 685              		.loc 1 292 0
+ 686 0012 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 687 0016 C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 688 001a 4FF00002 		mov	r2, #0
+ 689 001e 9A70     		strb	r2, [r3, #2]
+ 293:../src/stm32f4xx_it.c ****   /* LEFT Direction */
+ 294:../src/stm32f4xx_it.c ****   if(((int8_t)Buffer[2]) < -2)
+ 690              		.loc 1 294 0
+ 691 0020 40F20003 		movw	r3, #:lower16:Buffer
+ 692 0024 C0F20003 		movt	r3, #:upper16:Buffer
+ 693 0028 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 694 002a DBB2     		uxtb	r3, r3
+ 695 002c 5BB2     		sxtb	r3, r3
+ 696 002e 13F1020F 		cmn	r3, #2
+ 697 0032 0CDA     		bge	.L28
+ 295:../src/stm32f4xx_it.c ****   {
+ 296:../src/stm32f4xx_it.c ****     HID_Buffer[1] += CURSOR_STEP;
+ 698              		.loc 1 296 0
+ 699 0034 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 700 0038 C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 701 003c 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 702 003e 03F10703 		add	r3, r3, #7
+ 703 0042 DAB2     		uxtb	r2, r3
+ 704 0044 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 705 0048 C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 706 004c 5A70     		strb	r2, [r3, #1]
+ 707              	.L28:
+ 297:../src/stm32f4xx_it.c ****   }
+ 298:../src/stm32f4xx_it.c ****   /* RIGHT Direction */ 
+ 299:../src/stm32f4xx_it.c ****   if(((int8_t)Buffer[2]) > 2)
+ 708              		.loc 1 299 0
+ 709 004e 40F20003 		movw	r3, #:lower16:Buffer
+ 710 0052 C0F20003 		movt	r3, #:upper16:Buffer
+ 711 0056 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 712 0058 DBB2     		uxtb	r3, r3
+ 713 005a 5BB2     		sxtb	r3, r3
+ 714 005c 022B     		cmp	r3, #2
+ 715 005e 0CDD     		ble	.L29
+ 300:../src/stm32f4xx_it.c ****   {
+ 301:../src/stm32f4xx_it.c ****    HID_Buffer[1] -= CURSOR_STEP;
+ 716              		.loc 1 301 0
+ 717 0060 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 718 0064 C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 719 0068 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 720 006a A3F10703 		sub	r3, r3, #7
+ 721 006e DAB2     		uxtb	r2, r3
+ 722 0070 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 723 0074 C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 724 0078 5A70     		strb	r2, [r3, #1]
+ 725              	.L29:
+ 302:../src/stm32f4xx_it.c ****   } 
+ 303:../src/stm32f4xx_it.c ****   /* UP Direction */
+ 304:../src/stm32f4xx_it.c ****   if(((int8_t)Buffer[0]) < -2)
+ 726              		.loc 1 304 0
+ 727 007a 40F20003 		movw	r3, #:lower16:Buffer
+ 728 007e C0F20003 		movt	r3, #:upper16:Buffer
+ 729 0082 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 730 0084 DBB2     		uxtb	r3, r3
+ 731 0086 5BB2     		sxtb	r3, r3
+ 732 0088 13F1020F 		cmn	r3, #2
+ 733 008c 0CDA     		bge	.L30
+ 305:../src/stm32f4xx_it.c ****   {
+ 306:../src/stm32f4xx_it.c ****     HID_Buffer[2] += CURSOR_STEP;
+ 734              		.loc 1 306 0
+ 735 008e 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 736 0092 C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 737 0096 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 738 0098 03F10703 		add	r3, r3, #7
+ 739 009c DAB2     		uxtb	r2, r3
+ 740 009e 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 741 00a2 C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 742 00a6 9A70     		strb	r2, [r3, #2]
+ 743              	.L30:
+ 307:../src/stm32f4xx_it.c ****   }
+ 308:../src/stm32f4xx_it.c ****   /* DOWN Direction */ 
+ 309:../src/stm32f4xx_it.c ****   if(((int8_t)Buffer[0]) > 2)
+ 744              		.loc 1 309 0
+ 745 00a8 40F20003 		movw	r3, #:lower16:Buffer
+ 746 00ac C0F20003 		movt	r3, #:upper16:Buffer
+ 747 00b0 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 748 00b2 DBB2     		uxtb	r3, r3
+ 749 00b4 5BB2     		sxtb	r3, r3
+ 750 00b6 022B     		cmp	r3, #2
+ 751 00b8 0CDD     		ble	.L31
+ 310:../src/stm32f4xx_it.c ****   {
+ 311:../src/stm32f4xx_it.c ****     HID_Buffer[2] -= CURSOR_STEP;
+ 752              		.loc 1 311 0
+ 753 00ba 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 754 00be C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 755 00c2 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 756 00c4 A3F10703 		sub	r3, r3, #7
+ 757 00c8 DAB2     		uxtb	r2, r3
+ 758 00ca 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 759 00ce C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 760 00d2 9A70     		strb	r2, [r3, #2]
+ 761              	.L31:
+ 312:../src/stm32f4xx_it.c ****   } 
+ 313:../src/stm32f4xx_it.c ****   
+ 314:../src/stm32f4xx_it.c ****   return HID_Buffer;
+ 762              		.loc 1 314 0
+ 763 00d4 40F20003 		movw	r3, #:lower16:HID_Buffer.9265
+ 764 00d8 C0F20003 		movt	r3, #:upper16:HID_Buffer.9265
+ 315:../src/stm32f4xx_it.c **** }
+ 765              		.loc 1 315 0
+ 766 00dc 1846     		mov	r0, r3
+ 767 00de BD46     		mov	sp, r7
+ 768 00e0 80BC     		pop	{r7}
+ 769 00e2 7047     		bx	lr
+ 770              		.cfi_endproc
+ 771              	.LFE122:
+ 773              		.section	.bss.HID_Buffer.9265,"aw",%nobits
+ 774              		.align	2
+ 777              	HID_Buffer.9265:
+ 778 0000 00000000 		.space	4
+ 779              		.text
+ 780              	.Letext0:
+ 781              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 782              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
+ 783              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\ST\\
+ 784              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32_USB_O
+ 785              		.file 6 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32_USB_O
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_it.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:22     .data.PauseResumeStatus:00000000 PauseResumeStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:28     .bss.Count:00000000 Count
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:29     .bss.Count:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:34     .bss.LED_Toggle:00000000 LED_Toggle
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:35     .bss.LED_Toggle:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:41     .bss.capture:00000000 capture
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:38     .bss.capture:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:44     .text.NMI_Handler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:49     .text.NMI_Handler:00000000 NMI_Handler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:72     .text.HardFault_Handler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:77     .text.HardFault_Handler:00000000 HardFault_Handler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:98     .text.MemManage_Handler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:103    .text.MemManage_Handler:00000000 MemManage_Handler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:124    .text.BusFault_Handler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:129    .text.BusFault_Handler:00000000 BusFault_Handler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:150    .text.UsageFault_Handler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:155    .text.UsageFault_Handler:00000000 UsageFault_Handler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:176    .text.SVC_Handler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:181    .text.SVC_Handler:00000000 SVC_Handler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:203    .text.DebugMon_Handler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:208    .text.DebugMon_Handler:00000000 DebugMon_Handler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:230    .text.PendSV_Handler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:235    .text.PendSV_Handler:00000000 PendSV_Handler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:257    .text.SysTick_Handler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:262    .text.SysTick_Handler:00000000 SysTick_Handler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:284    .text.EXTI1_IRQHandler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:289    .text.EXTI1_IRQHandler:00000000 EXTI1_IRQHandler
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:349    .text.TIM4_IRQHandler:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQ4EjqQ.s:354    .text.TIM4_IRQHandler:00000000 TIM4_IRQHandler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:22     .bss.Counter:00000000 Counter
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:23     .bss.Counter:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:28     .bss.TempAcceleration:00000000 TempAcceleration
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:29     .bss.TempAcceleration:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:31     .text.NMI_Handler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:36     .text.NMI_Handler:00000000 NMI_Handler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:59     .text.HardFault_Handler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:64     .text.HardFault_Handler:00000000 HardFault_Handler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:85     .text.MemManage_Handler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:90     .text.MemManage_Handler:00000000 MemManage_Handler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:111    .text.BusFault_Handler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:116    .text.BusFault_Handler:00000000 BusFault_Handler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:137    .text.UsageFault_Handler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:142    .text.UsageFault_Handler:00000000 UsageFault_Handler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:163    .text.SVC_Handler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:168    .text.SVC_Handler:00000000 SVC_Handler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:190    .text.DebugMon_Handler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:195    .text.DebugMon_Handler:00000000 DebugMon_Handler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:217    .text.PendSV_Handler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:222    .text.PendSV_Handler:00000000 PendSV_Handler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:244    .text.SysTick_Handler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:249    .text.SysTick_Handler:00000000 SysTick_Handler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:666    .text.USBD_HID_GetPos:00000000 USBD_HID_GetPos
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:551    .text.EXTI0_IRQHandler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:556    .text.EXTI0_IRQHandler:00000000 EXTI0_IRQHandler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:584    .text.OTG_FS_WKUP_IRQHandler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:589    .text.OTG_FS_WKUP_IRQHandler:00000000 OTG_FS_WKUP_IRQHandler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:633    .text.OTG_FS_IRQHandler:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:638    .text.OTG_FS_IRQHandler:00000000 OTG_FS_IRQHandler
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:662    .text.USBD_HID_GetPos:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:777    .bss.HID_Buffer.9265:00000000 HID_Buffer.9265
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cceYXojs.s:774    .bss.HID_Buffer.9265:00000000 $d
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
+DemoEnterCondition
 TimingDelay_Decrement
-EXTI_GetITStatus
-EXTI_ClearITPendingBit
-AudioPlayStart
-LIS302DL_Read
+USB_OTG_dev
+USBD_HID_SendReport
 Buffer
-TIM_GetITStatus
-TIM_ClearITPendingBit
-STM_EVAL_LEDToggle
-STM_EVAL_LEDOff
-STM_EVAL_LEDOn
-TIM_GetCapture1
-CCR_Val
+TIM_CCxCmd
+LIS302DL_Read
+X_Offset
+Y_Offset
+TIM_SetCompare4
+TIM_SetCompare2
 TIM_SetCompare1
+TIM_SetCompare3
+TIM_SetAutoreload
+UserButtonPressed
+EXTI_ClearITPendingBit
+SystemInit
+USB_OTG_UngateClock
+USBD_OTG_ISR_Handler

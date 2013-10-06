@@ -1,10 +1,10 @@
 src/system_stm32f4xx.d: ../src/system_stm32f4xx.c \
- C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\ST\STM32F4xx\Include/stm32f4xx.h \
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Device\STM32F4xx\Include/stm32f4xx.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cm4.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cmInstr.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cmFunc.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cm4_simd.h \
- C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\ST\STM32F4xx\Include/system_stm32f4xx.h \
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Device\STM32F4xx\Include/system_stm32f4xx.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\src/stm32f4xx_conf.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_adc.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_can.h \
@@ -33,7 +33,7 @@ src/system_stm32f4xx.d: ../src/system_stm32f4xx.c \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_wwdg.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/misc.h
 
-C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\ST\STM32F4xx\Include/stm32f4xx.h:
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Device\STM32F4xx\Include/stm32f4xx.h:
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cm4.h:
 
@@ -43,7 +43,7 @@ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Incl
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cm4_simd.h:
 
-C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\ST\STM32F4xx\Include/system_stm32f4xx.h:
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Device\STM32F4xx\Include/system_stm32f4xx.h:
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\src/stm32f4xx_conf.h:
 

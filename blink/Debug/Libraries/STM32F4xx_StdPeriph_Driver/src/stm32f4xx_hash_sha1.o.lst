@@ -27,8 +27,8 @@
    2:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c ****   ******************************************************************************
    3:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c ****   * @file    stm32f4xx_hash_sha1.c
    4:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c ****   * @author  MCD Application Team
-   5:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c ****   * @version V1.0.0RC1
-   6:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c ****   * @date    25-August-2011
+   5:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c ****   * @version V1.0.0
+   6:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c ****   * @date    30-September-2011
    7:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c ****   * @brief   This file provides high level functions to compute the HASH SHA1 and
    8:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c ****   *          HMAC SHA1 Digest of an input message.
    9:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c ****   *          It uses the stm32f4xx_hash.c/.h drivers to access the STM32F4xx HASH
@@ -1349,15 +1349,15 @@
  683              		.text
  684              	.Letext0:
  685              		.file 3 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 686              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 686              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Device\\STM32F4xx\\Inc
  687              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
  688              		.file 6 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_hash_sha1.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccd8F7Za.s:19     .text.HASH_SHA1:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccd8F7Za.s:24     .text.HASH_SHA1:00000000 HASH_SHA1
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccd8F7Za.s:276    .text.HMAC_SHA1:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccd8F7Za.s:281    .text.HMAC_SHA1:00000000 HMAC_SHA1
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc22aUOq.s:19     .text.HASH_SHA1:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc22aUOq.s:24     .text.HASH_SHA1:00000000 HASH_SHA1
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc22aUOq.s:276    .text.HMAC_SHA1:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc22aUOq.s:281    .text.HMAC_SHA1:00000000 HMAC_SHA1
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

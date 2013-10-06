@@ -1,0 +1,2903 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"selftest.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.comm	RCC_Clocks,16,4
+  19              		.comm	ADC_InitStructure,24,4
+  20              		.comm	ADC_CommonInitStructure,16,4
+  21              		.comm	ConvData1,2,2
+  22              		.comm	ConvData2,2,2
+  23              		.global	counter0
+  24              		.section	.bss.counter0,"aw",%nobits
+  25              		.align	1
+  28              	counter0:
+  29 0000 0000     		.space	2
+  30              		.global	counter1
+  31              		.section	.bss.counter1,"aw",%nobits
+  32              		.align	1
+  35              	counter1:
+  36 0000 0000     		.space	2
+  37              		.global	Idx
+  38              		.section	.bss.Idx,"aw",%nobits
+  39              		.align	1
+  42              	Idx:
+  43 0000 0000     		.space	2
+  44              		.global	ADC_Channel
+  45              		.section	.data.ADC_Channel,"aw",%progbits
+  46              		.align	2
+  49              	ADC_Channel:
+  50 0000 02       		.byte	2
+  51 0001 03       		.byte	3
+  52              		.global	DACTest
+  53 0002 0000     		.section	.bss.DACTest,"aw",%nobits
+  56              	DACTest:
+  57 0000 00       		.space	1
+  58              		.global	GPIO_Pin
+  59              		.section	.data.GPIO_Pin,"aw",%progbits
+  60              		.align	2
+  63              	GPIO_Pin:
+  64 0000 04       		.byte	4
+  65 0001 08       		.byte	8
+  66              		.global	count
+  67 0002 0000     		.section	.bss.count,"aw",%nobits
+  68              		.align	1
+  71              	count:
+  72 0000 0000     		.space	2
+  73              		.global	count1
+  74              		.section	.data.count1,"aw",%progbits
+  75              		.align	1
+  78              	count1:
+  79 0000 1800     		.short	24
+  80              		.global	Left_Right
+  81              		.section	.bss.Left_Right,"aw",%nobits
+  82              		.align	1
+  85              	Left_Right:
+  86 0000 0000     		.space	2
+  87              		.global	sinebuf
+  88              		.section	.rodata.sinebuf,"a",%progbits
+  89              		.align	2
+  92              	sinebuf:
+  93 0000 0000     		.short	0
+  94 0002 B410     		.short	4276
+  95 0004 2021     		.short	8480
+  96 0006 FB30     		.short	12539
+  97 0008 FF3F     		.short	16383
+  98 000a EB4D     		.short	19947
+  99 000c 815A     		.short	23169
+ 100 000e 8B65     		.short	25995
+ 101 0010 D96E     		.short	28377
+ 102 0012 4076     		.short	30272
+ 103 0014 A27B     		.short	31650
+ 104 0016 E67E     		.short	32486
+ 105 0018 FF7F     		.short	32767
+ 106 001a E67E     		.short	32486
+ 107 001c A27B     		.short	31650
+ 108 001e 4076     		.short	30272
+ 109 0020 D96E     		.short	28377
+ 110 0022 8B65     		.short	25995
+ 111 0024 815A     		.short	23169
+ 112 0026 EB4D     		.short	19947
+ 113 0028 FF3F     		.short	16383
+ 114 002a FB30     		.short	12539
+ 115 002c 2021     		.short	8480
+ 116 002e B410     		.short	4276
+ 117 0030 0000     		.short	0
+ 118 0032 4CEF     		.short	-4276
+ 119 0034 E0DE     		.short	-8480
+ 120 0036 05CF     		.short	-12539
+ 121 0038 01C0     		.short	-16383
+ 122 003a 15B2     		.short	-19947
+ 123 003c 7FA5     		.short	-23169
+ 124 003e 759A     		.short	-25995
+ 125 0040 2791     		.short	-28377
+ 126 0042 C089     		.short	-30272
+ 127 0044 5E84     		.short	-31650
+ 128 0046 1A81     		.short	-32486
+ 129 0048 0180     		.short	-32767
+ 130 004a 1A81     		.short	-32486
+ 131 004c 5E84     		.short	-31650
+ 132 004e C089     		.short	-30272
+ 133 0050 2791     		.short	-28377
+ 134 0052 759A     		.short	-25995
+ 135 0054 7FA5     		.short	-23169
+ 136 0056 15B2     		.short	-19947
+ 137 0058 01C0     		.short	-16383
+ 138 005a 05CF     		.short	-12539
+ 139 005c E0DE     		.short	-8480
+ 140 005e 4CEF     		.short	-4276
+ 141              		.section	.text.Accelerometer_MEMS_Test,"ax",%progbits
+ 142              		.align	2
+ 143              		.global	Accelerometer_MEMS_Test
+ 144              		.thumb
+ 145              		.thumb_func
+ 147              	Accelerometer_MEMS_Test:
+ 148              	.LFB110:
+ 149              		.file 1 "../src/selftest.c"
+   1:../src/selftest.c **** /**
+   2:../src/selftest.c ****   ******************************************************************************
+   3:../src/selftest.c ****   * @file    selftest.c
+   4:../src/selftest.c ****   * @author  MCD Application Team
+   5:../src/selftest.c ****   * @version V1.0.0
+   6:../src/selftest.c ****   * @date    19-September-2011
+   7:../src/selftest.c ****   * @brief   This file provides the hardware tests
+   8:../src/selftest.c ****   ******************************************************************************
+   9:../src/selftest.c ****   * @attention
+  10:../src/selftest.c ****   *
+  11:../src/selftest.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:../src/selftest.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:../src/selftest.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:../src/selftest.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:../src/selftest.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:../src/selftest.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:../src/selftest.c ****   *
+  18:../src/selftest.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:../src/selftest.c ****   */ 
+  20:../src/selftest.c **** 
+  21:../src/selftest.c **** /* Includes ------------------------------------------------------------------*/
+  22:../src/selftest.c **** #include "selftest.h"
+  23:../src/selftest.c **** 
+  24:../src/selftest.c **** 
+  25:../src/selftest.c **** /* Private typedef -----------------------------------------------------------*/
+  26:../src/selftest.c **** /* Private define ------------------------------------------------------------*/
+  27:../src/selftest.c **** #define MEMS_PASSCONDITION              15
+  28:../src/selftest.c **** /* Private macro -------------------------------------------------------------*/
+  29:../src/selftest.c **** /* Private variables ---------------------------------------------------------*/
+  30:../src/selftest.c **** /* Init Structure definition */
+  31:../src/selftest.c **** RCC_ClocksTypeDef      RCC_Clocks;
+  32:../src/selftest.c **** ADC_InitTypeDef        ADC_InitStructure;
+  33:../src/selftest.c **** ADC_CommonInitTypeDef  ADC_CommonInitStructure;
+  34:../src/selftest.c **** 
+  35:../src/selftest.c **** __IO uint16_t ConvData1, ConvData2;
+  36:../src/selftest.c **** __IO uint16_t counter0 = 0, counter1 = 0, Idx = 0;
+  37:../src/selftest.c **** uint8_t ADC_Channel[2] = {ADC_Channel_2, ADC_Channel_3};
+  38:../src/selftest.c **** uint8_t DACTest = 0;
+  39:../src/selftest.c **** uint8_t GPIO_Pin [2] = {GPIO_Pin_2, GPIO_Pin_3};
+  40:../src/selftest.c **** 
+  41:../src/selftest.c **** uint16_t count = 0, count1 = 24, Left_Right = 0;
+  42:../src/selftest.c **** const int16_t sinebuf[48] = {0, 4276, 8480, 12539, 16383, 19947, 23169, 25995,
+  43:../src/selftest.c ****                              28377, 30272, 31650, 32486, 32767, 32486, 31650, 30272,
+  44:../src/selftest.c ****                              28377, 25995, 23169, 19947, 16383, 12539, 8480, 4276,
+  45:../src/selftest.c ****                              0, -4276, -8480, -12539, -16383, -19947, -23169, -25995,
+  46:../src/selftest.c ****                              -28377, -30272, -31650, -32486, -32767, -32486, -31650, -30272,
+  47:../src/selftest.c ****                              -28377, -25995, -23169, -19947, -16383, -12539, -8480, -4276
+  48:../src/selftest.c ****                              };
+  49:../src/selftest.c **** extern __IO uint32_t TimingDelay;
+  50:../src/selftest.c **** 
+  51:../src/selftest.c **** extern LIS302DL_InitTypeDef  LIS302DL_InitStruct;
+  52:../src/selftest.c **** extern LIS302DL_FilterConfigTypeDef LIS302DL_FilterStruct;  
+  53:../src/selftest.c **** 
+  54:../src/selftest.c **** extern __IO int8_t X_Offset, Y_Offset, Z_Offset;
+  55:../src/selftest.c **** extern uint8_t Buffer[6];
+  56:../src/selftest.c **** /* Private function prototypes -----------------------------------------------*/
+  57:../src/selftest.c **** /* Private functions ---------------------------------------------------------*/
+  58:../src/selftest.c **** /**
+  59:../src/selftest.c ****   * @brief Test MEMS Hardware.
+  60:../src/selftest.c ****   *   The main objectif of this test is to check the hardware connection of the 
+  61:../src/selftest.c ****   *   MEMS peripheral.
+  62:../src/selftest.c ****   * @param None
+  63:../src/selftest.c ****   * @retval None
+  64:../src/selftest.c ****   */
+  65:../src/selftest.c **** void Accelerometer_MEMS_Test(void)
+  66:../src/selftest.c **** {
+ 150              		.loc 1 66 0
+ 151              		.cfi_startproc
+ 152              		@ args = 0, pretend = 0, frame = 8
+ 153              		@ frame_needed = 1, uses_anonymous_args = 0
+ 154 0000 80B5     		push	{r7, lr}
+ 155              	.LCFI0:
+ 156              		.cfi_def_cfa_offset 8
+ 157              		.cfi_offset 14, -4
+ 158              		.cfi_offset 7, -8
+ 159 0002 82B0     		sub	sp, sp, #8
+ 160              	.LCFI1:
+ 161              		.cfi_def_cfa_offset 16
+ 162 0004 00AF     		add	r7, sp, #0
+ 163              	.LCFI2:
+ 164              		.cfi_def_cfa_register 7
+  67:../src/selftest.c ****   uint8_t temp, memsteststatus = 0x00;
+ 165              		.loc 1 67 0
+ 166 0006 4FF00003 		mov	r3, #0
+ 167 000a FB71     		strb	r3, [r7, #7]
+  68:../src/selftest.c ****   uint8_t xdata, ydata = 0;
+ 168              		.loc 1 68 0
+ 169 000c 4FF00003 		mov	r3, #0
+ 170 0010 BB71     		strb	r3, [r7, #6]
+  69:../src/selftest.c ****   
+  70:../src/selftest.c ****   /* MEMS configuration ------------------------------------------------------*/
+  71:../src/selftest.c ****   /* Set configuration of LIS302DL*/
+  72:../src/selftest.c ****   LIS302DL_InitStruct.Power_Mode = LIS302DL_LOWPOWERMODE_ACTIVE;
+ 171              		.loc 1 72 0
+ 172 0012 40F20003 		movw	r3, #:lower16:LIS302DL_InitStruct
+ 173 0016 C0F20003 		movt	r3, #:upper16:LIS302DL_InitStruct
+ 174 001a 4FF04002 		mov	r2, #64
+ 175 001e 1A70     		strb	r2, [r3, #0]
+  73:../src/selftest.c ****   LIS302DL_InitStruct.Output_DataRate = LIS302DL_DATARATE_100;
+ 176              		.loc 1 73 0
+ 177 0020 40F20003 		movw	r3, #:lower16:LIS302DL_InitStruct
+ 178 0024 C0F20003 		movt	r3, #:upper16:LIS302DL_InitStruct
+ 179 0028 4FF00002 		mov	r2, #0
+ 180 002c 5A70     		strb	r2, [r3, #1]
+  74:../src/selftest.c ****   LIS302DL_InitStruct.Axes_Enable = LIS302DL_X_ENABLE | LIS302DL_Y_ENABLE;
+ 181              		.loc 1 74 0
+ 182 002e 40F20003 		movw	r3, #:lower16:LIS302DL_InitStruct
+ 183 0032 C0F20003 		movt	r3, #:upper16:LIS302DL_InitStruct
+ 184 0036 4FF00302 		mov	r2, #3
+ 185 003a 9A70     		strb	r2, [r3, #2]
+  75:../src/selftest.c ****   LIS302DL_InitStruct.Full_Scale = LIS302DL_FULLSCALE_2_3;
+ 186              		.loc 1 75 0
+ 187 003c 40F20003 		movw	r3, #:lower16:LIS302DL_InitStruct
+ 188 0040 C0F20003 		movt	r3, #:upper16:LIS302DL_InitStruct
+ 189 0044 4FF00002 		mov	r2, #0
+ 190 0048 DA70     		strb	r2, [r3, #3]
+  76:../src/selftest.c ****   LIS302DL_InitStruct.Self_Test = LIS302DL_SELFTEST_NORMAL;
+ 191              		.loc 1 76 0
+ 192 004a 40F20003 		movw	r3, #:lower16:LIS302DL_InitStruct
+ 193 004e C0F20003 		movt	r3, #:upper16:LIS302DL_InitStruct
+ 194 0052 4FF00002 		mov	r2, #0
+ 195 0056 1A71     		strb	r2, [r3, #4]
+  77:../src/selftest.c ****   LIS302DL_Init(&LIS302DL_InitStruct);
+ 196              		.loc 1 77 0
+ 197 0058 40F20000 		movw	r0, #:lower16:LIS302DL_InitStruct
+ 198 005c C0F20000 		movt	r0, #:upper16:LIS302DL_InitStruct
+ 199 0060 FFF7FEFF 		bl	LIS302DL_Init
+  78:../src/selftest.c ****   
+  79:../src/selftest.c ****   /* Set configuration of Internal High Pass Filter of LIS302DL*/
+  80:../src/selftest.c ****   LIS302DL_FilterStruct.HighPassFilter_Data_Selection = LIS302DL_FILTEREDDATASELECTION_OUTPUTREGIST
+ 200              		.loc 1 80 0
+ 201 0064 40F20003 		movw	r3, #:lower16:LIS302DL_FilterStruct
+ 202 0068 C0F20003 		movt	r3, #:upper16:LIS302DL_FilterStruct
+ 203 006c 4FF02002 		mov	r2, #32
+ 204 0070 1A70     		strb	r2, [r3, #0]
+  81:../src/selftest.c ****   LIS302DL_FilterStruct.HighPassFilter_CutOff_Frequency = LIS302DL_HIGHPASSFILTER_LEVEL_1;
+ 205              		.loc 1 81 0
+ 206 0072 40F20003 		movw	r3, #:lower16:LIS302DL_FilterStruct
+ 207 0076 C0F20003 		movt	r3, #:upper16:LIS302DL_FilterStruct
+ 208 007a 4FF00102 		mov	r2, #1
+ 209 007e 5A70     		strb	r2, [r3, #1]
+  82:../src/selftest.c ****   LIS302DL_FilterStruct.HighPassFilter_Interrupt = LIS302DL_HIGHPASSFILTERINTERRUPT_1_2;
+ 210              		.loc 1 82 0
+ 211 0080 40F20003 		movw	r3, #:lower16:LIS302DL_FilterStruct
+ 212 0084 C0F20003 		movt	r3, #:upper16:LIS302DL_FilterStruct
+ 213 0088 4FF00C02 		mov	r2, #12
+ 214 008c 9A70     		strb	r2, [r3, #2]
+  83:../src/selftest.c ****   LIS302DL_FilterConfig(&LIS302DL_FilterStruct);
+ 215              		.loc 1 83 0
+ 216 008e 40F20000 		movw	r0, #:lower16:LIS302DL_FilterStruct
+ 217 0092 C0F20000 		movt	r0, #:upper16:LIS302DL_FilterStruct
+ 218 0096 FFF7FEFF 		bl	LIS302DL_FilterConfig
+  84:../src/selftest.c ****   
+  85:../src/selftest.c ****   /* Required delay for the MEMS Accelerometre: Turn-on time = 3/Output data Rate 
+  86:../src/selftest.c ****                                                              = 3/100 = 30ms */
+  87:../src/selftest.c ****   Delay(30);
+ 219              		.loc 1 87 0
+ 220 009a 4FF01E00 		mov	r0, #30
+ 221 009e FFF7FEFF 		bl	Delay
+  88:../src/selftest.c ****   
+  89:../src/selftest.c ****   /* Read WHO_AM_I register */
+  90:../src/selftest.c ****   LIS302DL_Read(&temp, LIS302DL_WHO_AM_I_ADDR, 1);
+ 222              		.loc 1 90 0
+ 223 00a2 07F10403 		add	r3, r7, #4
+ 224 00a6 1846     		mov	r0, r3
+ 225 00a8 4FF00F01 		mov	r1, #15
+ 226 00ac 4FF00102 		mov	r2, #1
+ 227 00b0 FFF7FEFF 		bl	LIS302DL_Read
+  91:../src/selftest.c ****   
+  92:../src/selftest.c ****   /* Check device identification register, this register should contains 
+  93:../src/selftest.c ****   the device identifier that for LIS302DL is set to 0x3B */
+  94:../src/selftest.c ****   if (temp != 0x3B)
+ 228              		.loc 1 94 0
+ 229 00b4 3B79     		ldrb	r3, [r7, #4]	@ zero_extendqisi2
+ 230 00b6 3B2B     		cmp	r3, #59
+ 231 00b8 01D0     		beq	.L2
+  95:../src/selftest.c ****   {
+  96:../src/selftest.c ****     Fail_Handler();
+ 232              		.loc 1 96 0
+ 233 00ba FFF7FEFF 		bl	Fail_Handler
+ 234              	.L2:
+  97:../src/selftest.c ****   }
+  98:../src/selftest.c **** 
+  99:../src/selftest.c ****   TimingDelay = 500;
+ 235              		.loc 1 99 0
+ 236 00be 40F20003 		movw	r3, #:lower16:TimingDelay
+ 237 00c2 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 238 00c6 4FF4FA72 		mov	r2, #500
+ 239 00ca 1A60     		str	r2, [r3, #0]
+ 100:../src/selftest.c ****   /* Wait until detecting all MEMS direction or timeout */
+ 101:../src/selftest.c ****   while((memsteststatus == 0x00)&&(TimingDelay != 0x00))
+ 240              		.loc 1 101 0
+ 241 00cc 28E0     		b	.L3
+ 242              	.L6:
+ 102:../src/selftest.c ****   {
+ 103:../src/selftest.c ****     LIS302DL_Read(Buffer, LIS302DL_OUT_X_ADDR, 4);
+ 243              		.loc 1 103 0
+ 244 00ce 40F20000 		movw	r0, #:lower16:Buffer
+ 245 00d2 C0F20000 		movt	r0, #:upper16:Buffer
+ 246 00d6 4FF02901 		mov	r1, #41
+ 247 00da 4FF00402 		mov	r2, #4
+ 248 00de FFF7FEFF 		bl	LIS302DL_Read
+ 104:../src/selftest.c ****     xdata = ABS((int8_t)(Buffer[0]));
+ 249              		.loc 1 104 0
+ 250 00e2 40F20003 		movw	r3, #:lower16:Buffer
+ 251 00e6 C0F20003 		movt	r3, #:upper16:Buffer
+ 252 00ea 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 253 00ec DBB2     		uxtb	r3, r3
+ 254 00ee 5BB2     		sxtb	r3, r3
+ 255 00f0 002B     		cmp	r3, #0
+ 256 00f2 B8BF     		it	lt
+ 257 00f4 5B42     		rsblt	r3, r3, #0
+ 258 00f6 7B71     		strb	r3, [r7, #5]
+ 105:../src/selftest.c ****     ydata = ABS((int8_t)(Buffer[2]));
+ 259              		.loc 1 105 0
+ 260 00f8 40F20003 		movw	r3, #:lower16:Buffer
+ 261 00fc C0F20003 		movt	r3, #:upper16:Buffer
+ 262 0100 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 263 0102 DBB2     		uxtb	r3, r3
+ 264 0104 5BB2     		sxtb	r3, r3
+ 265 0106 002B     		cmp	r3, #0
+ 266 0108 B8BF     		it	lt
+ 267 010a 5B42     		rsblt	r3, r3, #0
+ 268 010c BB71     		strb	r3, [r7, #6]
+ 106:../src/selftest.c ****     /* Check test PASS condition */   
+ 107:../src/selftest.c ****     if ((xdata > MEMS_PASSCONDITION) || (ydata > MEMS_PASSCONDITION)) 
+ 269              		.loc 1 107 0
+ 270 010e 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 271 0110 0F2B     		cmp	r3, #15
+ 272 0112 02D8     		bhi	.L4
+ 273              		.loc 1 107 0 is_stmt 0 discriminator 1
+ 274 0114 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 275 0116 0F2B     		cmp	r3, #15
+ 276 0118 02D9     		bls	.L3
+ 277              	.L4:
+ 108:../src/selftest.c ****     {
+ 109:../src/selftest.c ****       /* MEMS Test PASS */
+ 110:../src/selftest.c ****       memsteststatus = 0x01;
+ 278              		.loc 1 110 0 is_stmt 1
+ 279 011a 4FF00103 		mov	r3, #1
+ 280 011e FB71     		strb	r3, [r7, #7]
+ 281              	.L3:
+ 101:../src/selftest.c ****   while((memsteststatus == 0x00)&&(TimingDelay != 0x00))
+ 282              		.loc 1 101 0 discriminator 1
+ 283 0120 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 284 0122 002B     		cmp	r3, #0
+ 285 0124 06D1     		bne	.L5
+ 101:../src/selftest.c ****   while((memsteststatus == 0x00)&&(TimingDelay != 0x00))
+ 286              		.loc 1 101 0 is_stmt 0 discriminator 2
+ 287 0126 40F20003 		movw	r3, #:lower16:TimingDelay
+ 288 012a C0F20003 		movt	r3, #:upper16:TimingDelay
+ 289 012e 1B68     		ldr	r3, [r3, #0]
+ 290 0130 002B     		cmp	r3, #0
+ 291 0132 CCD1     		bne	.L6
+ 292              	.L5:
+ 111:../src/selftest.c ****     }
+ 112:../src/selftest.c ****   }
+ 113:../src/selftest.c ****   
+ 114:../src/selftest.c ****   /* MEMS test status: PASS */ 
+ 115:../src/selftest.c ****   if(memsteststatus != 0x00)
+ 293              		.loc 1 115 0 is_stmt 1
+ 294 0134 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 295 0136 002B     		cmp	r3, #0
+ 296 0138 18D0     		beq	.L7
+ 116:../src/selftest.c ****   {
+ 117:../src/selftest.c ****     /* Turn Green LED ON: signaling MEMS Test PASS */
+ 118:../src/selftest.c ****     STM_EVAL_LEDOn(LED4);
+ 297              		.loc 1 118 0
+ 298 013a 4FF00000 		mov	r0, #0
+ 299 013e FFF7FEFF 		bl	STM_EVAL_LEDOn
+ 119:../src/selftest.c ****     
+ 120:../src/selftest.c ****     /* Waiting User Button is pressed */
+ 121:../src/selftest.c ****     while (STM_EVAL_PBGetState(BUTTON_USER) == Bit_RESET)
+ 300              		.loc 1 121 0
+ 301 0142 00BF     		nop
+ 302              	.L8:
+ 303              		.loc 1 121 0 is_stmt 0 discriminator 1
+ 304 0144 4FF00000 		mov	r0, #0
+ 305 0148 FFF7FEFF 		bl	STM_EVAL_PBGetState
+ 306 014c 0346     		mov	r3, r0
+ 307 014e 002B     		cmp	r3, #0
+ 308 0150 F8D0     		beq	.L8
+ 122:../src/selftest.c ****     {}
+ 123:../src/selftest.c ****     
+ 124:../src/selftest.c ****     /* Waiting User Button is Released */
+ 125:../src/selftest.c ****     while (STM_EVAL_PBGetState(BUTTON_USER) == Bit_SET)
+ 309              		.loc 1 125 0 is_stmt 1
+ 310 0152 00BF     		nop
+ 311              	.L9:
+ 312              		.loc 1 125 0 is_stmt 0 discriminator 1
+ 313 0154 4FF00000 		mov	r0, #0
+ 314 0158 FFF7FEFF 		bl	STM_EVAL_PBGetState
+ 315 015c 0346     		mov	r3, r0
+ 316 015e 012B     		cmp	r3, #1
+ 317 0160 F8D0     		beq	.L9
+ 126:../src/selftest.c ****     {}
+ 127:../src/selftest.c ****     
+ 128:../src/selftest.c ****     /* Turn Green LED OFF: signaling the end of MEMS Test and switching to 
+ 129:../src/selftest.c ****        the next Sub Test */
+ 130:../src/selftest.c ****     STM_EVAL_LEDOff(LED4);
+ 318              		.loc 1 130 0 is_stmt 1
+ 319 0162 4FF00000 		mov	r0, #0
+ 320 0166 FFF7FEFF 		bl	STM_EVAL_LEDOff
+ 321 016a 01E0     		b	.L1
+ 322              	.L7:
+ 131:../src/selftest.c ****   }
+ 132:../src/selftest.c ****   /* MEMS test status: Timeout occurs */
+ 133:../src/selftest.c ****   else
+ 134:../src/selftest.c ****   {
+ 135:../src/selftest.c ****     Fail_Handler();
+ 323              		.loc 1 135 0
+ 324 016c FFF7FEFF 		bl	Fail_Handler
+ 325              	.L1:
+ 136:../src/selftest.c ****   }
+ 137:../src/selftest.c **** }
+ 326              		.loc 1 137 0
+ 327 0170 07F10807 		add	r7, r7, #8
+ 328 0174 BD46     		mov	sp, r7
+ 329 0176 80BD     		pop	{r7, pc}
+ 330              		.cfi_endproc
+ 331              	.LFE110:
+ 333              		.section	.text.USB_Test,"ax",%progbits
+ 334              		.align	2
+ 335              		.global	USB_Test
+ 336              		.thumb
+ 337              		.thumb_func
+ 339              	USB_Test:
+ 340              	.LFB111:
+ 138:../src/selftest.c **** 
+ 139:../src/selftest.c **** /**
+ 140:../src/selftest.c ****   * @brief Test USB Hardware.
+ 141:../src/selftest.c ****   *   The main objectif of this test is to check the hardware connection of the 
+ 142:../src/selftest.c ****   *   Audio and USB peripheral.
+ 143:../src/selftest.c ****   * @param None
+ 144:../src/selftest.c ****   * @retval None
+ 145:../src/selftest.c ****   */
+ 146:../src/selftest.c **** void USB_Test(void)
+ 147:../src/selftest.c **** {
+ 341              		.loc 1 147 0
+ 342              		.cfi_startproc
+ 343              		@ args = 0, pretend = 0, frame = 8
+ 344              		@ frame_needed = 1, uses_anonymous_args = 0
+ 345 0000 80B5     		push	{r7, lr}
+ 346              	.LCFI3:
+ 347              		.cfi_def_cfa_offset 8
+ 348              		.cfi_offset 14, -4
+ 349              		.cfi_offset 7, -8
+ 350 0002 82B0     		sub	sp, sp, #8
+ 351              	.LCFI4:
+ 352              		.cfi_def_cfa_offset 16
+ 353 0004 00AF     		add	r7, sp, #0
+ 354              	.LCFI5:
+ 355              		.cfi_def_cfa_register 7
+ 148:../src/selftest.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+ 149:../src/selftest.c **** 
+ 150:../src/selftest.c ****   /******************************** USB Test **********************************/
+ 151:../src/selftest.c ****   
+ 152:../src/selftest.c ****   /*----------------- Part1: without cables connected ------------------------*/ 
+ 153:../src/selftest.c ****   
+ 154:../src/selftest.c ****   /* GPIOA, GPIOC and GPIOD clock enable */
+ 155:../src/selftest.c ****   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOC | \
+ 356              		.loc 1 155 0
+ 357 0006 4FF00D00 		mov	r0, #13
+ 358 000a 4FF00101 		mov	r1, #1
+ 359 000e FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+ 156:../src/selftest.c ****                          RCC_AHB1Periph_GPIOD, ENABLE);
+ 157:../src/selftest.c ****   
+ 158:../src/selftest.c ****   /* GPIOD Configuration: Pins 5 in output push-pull */
+ 159:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+ 360              		.loc 1 159 0
+ 361 0012 4FF02003 		mov	r3, #32
+ 362 0016 3B60     		str	r3, [r7, #0]
+ 160:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 363              		.loc 1 160 0
+ 364 0018 4FF00103 		mov	r3, #1
+ 365 001c 3B71     		strb	r3, [r7, #4]
+ 161:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 366              		.loc 1 161 0
+ 367 001e 4FF00003 		mov	r3, #0
+ 368 0022 BB71     		strb	r3, [r7, #6]
+ 162:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+ 369              		.loc 1 162 0
+ 370 0024 4FF00003 		mov	r3, #0
+ 371 0028 FB71     		strb	r3, [r7, #7]
+ 163:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 372              		.loc 1 163 0
+ 373 002a 4FF00203 		mov	r3, #2
+ 374 002e 7B71     		strb	r3, [r7, #5]
+ 164:../src/selftest.c ****   GPIO_Init(GPIOD, &GPIO_InitStructure);
+ 375              		.loc 1 164 0
+ 376 0030 4FF44060 		mov	r0, #3072
+ 377 0034 C4F20200 		movt	r0, 16386
+ 378 0038 3B46     		mov	r3, r7
+ 379 003a 1946     		mov	r1, r3
+ 380 003c FFF7FEFF 		bl	GPIO_Init
+ 165:../src/selftest.c ****   
+ 166:../src/selftest.c ****   /* Turn LED8 ON using PD5 */
+ 167:../src/selftest.c ****   GPIO_ResetBits(GPIOD, GPIO_Pin_5);
+ 381              		.loc 1 167 0
+ 382 0040 4FF44060 		mov	r0, #3072
+ 383 0044 C4F20200 		movt	r0, 16386
+ 384 0048 4FF02001 		mov	r1, #32
+ 385 004c FFF7FEFF 		bl	GPIO_ResetBits
+ 168:../src/selftest.c ****   
+ 169:../src/selftest.c ****   /* GPIOC Configuration: Pin 0 in output push-pull */
+ 170:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+ 386              		.loc 1 170 0
+ 387 0050 4FF00103 		mov	r3, #1
+ 388 0054 3B60     		str	r3, [r7, #0]
+ 171:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 389              		.loc 1 171 0
+ 390 0056 4FF00103 		mov	r3, #1
+ 391 005a 3B71     		strb	r3, [r7, #4]
+ 172:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 392              		.loc 1 172 0
+ 393 005c 4FF00003 		mov	r3, #0
+ 394 0060 BB71     		strb	r3, [r7, #6]
+ 173:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+ 395              		.loc 1 173 0
+ 396 0062 4FF00003 		mov	r3, #0
+ 397 0066 FB71     		strb	r3, [r7, #7]
+ 174:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 398              		.loc 1 174 0
+ 399 0068 4FF00203 		mov	r3, #2
+ 400 006c 7B71     		strb	r3, [r7, #5]
+ 175:../src/selftest.c ****   GPIO_Init(GPIOC, &GPIO_InitStructure);
+ 401              		.loc 1 175 0
+ 402 006e 4FF40060 		mov	r0, #2048
+ 403 0072 C4F20200 		movt	r0, 16386
+ 404 0076 3B46     		mov	r3, r7
+ 405 0078 1946     		mov	r1, r3
+ 406 007a FFF7FEFF 		bl	GPIO_Init
+ 176:../src/selftest.c ****   
+ 177:../src/selftest.c ****   /* GPIOA Configuration: Pin 9 in input pull-up */
+ 178:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+ 407              		.loc 1 178 0
+ 408 007e 4FF40073 		mov	r3, #512
+ 409 0082 3B60     		str	r3, [r7, #0]
+ 179:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+ 410              		.loc 1 179 0
+ 411 0084 4FF00003 		mov	r3, #0
+ 412 0088 3B71     		strb	r3, [r7, #4]
+ 180:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 413              		.loc 1 180 0
+ 414 008a 4FF00003 		mov	r3, #0
+ 415 008e BB71     		strb	r3, [r7, #6]
+ 181:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+ 416              		.loc 1 181 0
+ 417 0090 4FF00003 		mov	r3, #0
+ 418 0094 FB71     		strb	r3, [r7, #7]
+ 182:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 419              		.loc 1 182 0
+ 420 0096 4FF00203 		mov	r3, #2
+ 421 009a 7B71     		strb	r3, [r7, #5]
+ 183:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 422              		.loc 1 183 0
+ 423 009c 4FF00000 		mov	r0, #0
+ 424 00a0 C4F20200 		movt	r0, 16386
+ 425 00a4 3B46     		mov	r3, r7
+ 426 00a6 1946     		mov	r1, r3
+ 427 00a8 FFF7FEFF 		bl	GPIO_Init
+ 184:../src/selftest.c ****   
+ 185:../src/selftest.c ****   /* Turn LED7 ON using PC0 (5v) */
+ 186:../src/selftest.c ****   GPIO_ResetBits(GPIOC, GPIO_Pin_0); 
+ 428              		.loc 1 186 0
+ 429 00ac 4FF40060 		mov	r0, #2048
+ 430 00b0 C4F20200 		movt	r0, 16386
+ 431 00b4 4FF00101 		mov	r1, #1
+ 432 00b8 FFF7FEFF 		bl	GPIO_ResetBits
+ 187:../src/selftest.c ****   
+ 188:../src/selftest.c ****   /* Waiting delay 10ms */
+ 189:../src/selftest.c ****   Delay(1);
+ 433              		.loc 1 189 0
+ 434 00bc 4FF00100 		mov	r0, #1
+ 435 00c0 FFF7FEFF 		bl	Delay
+ 190:../src/selftest.c ****   
+ 191:../src/selftest.c ****   if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_9) == Bit_RESET)
+ 436              		.loc 1 191 0
+ 437 00c4 4FF00000 		mov	r0, #0
+ 438 00c8 C4F20200 		movt	r0, 16386
+ 439 00cc 4FF40071 		mov	r1, #512
+ 440 00d0 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 441 00d4 0346     		mov	r3, r0
+ 442 00d6 002B     		cmp	r3, #0
+ 443 00d8 01D1     		bne	.L12
+ 192:../src/selftest.c ****   {
+ 193:../src/selftest.c ****     Fail_Handler();
+ 444              		.loc 1 193 0
+ 445 00da FFF7FEFF 		bl	Fail_Handler
+ 446              	.L12:
+ 194:../src/selftest.c ****   }
+ 195:../src/selftest.c ****   
+ 196:../src/selftest.c ****   /* GPIOA Configuration: Pins 10 in output push-pull */
+ 197:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10;
+ 447              		.loc 1 197 0
+ 448 00de 4FF48063 		mov	r3, #1024
+ 449 00e2 3B60     		str	r3, [r7, #0]
+ 198:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+ 450              		.loc 1 198 0
+ 451 00e4 4FF00003 		mov	r3, #0
+ 452 00e8 3B71     		strb	r3, [r7, #4]
+ 199:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 453              		.loc 1 199 0
+ 454 00ea 4FF00003 		mov	r3, #0
+ 455 00ee BB71     		strb	r3, [r7, #6]
+ 200:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 456              		.loc 1 200 0
+ 457 00f0 4FF00103 		mov	r3, #1
+ 458 00f4 FB71     		strb	r3, [r7, #7]
+ 201:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 459              		.loc 1 201 0
+ 460 00f6 4FF00203 		mov	r3, #2
+ 461 00fa 7B71     		strb	r3, [r7, #5]
+ 202:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 462              		.loc 1 202 0
+ 463 00fc 4FF00000 		mov	r0, #0
+ 464 0100 C4F20200 		movt	r0, 16386
+ 465 0104 3B46     		mov	r3, r7
+ 466 0106 1946     		mov	r1, r3
+ 467 0108 FFF7FEFF 		bl	GPIO_Init
+ 203:../src/selftest.c ****   
+ 204:../src/selftest.c ****   /* Waiting delay 10ms */
+ 205:../src/selftest.c ****   Delay(1);
+ 468              		.loc 1 205 0
+ 469 010c 4FF00100 		mov	r0, #1
+ 470 0110 FFF7FEFF 		bl	Delay
+ 206:../src/selftest.c ****   
+ 207:../src/selftest.c ****   /* Check the ID level without cable connected */
+ 208:../src/selftest.c ****   if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_10) == Bit_RESET)
+ 471              		.loc 1 208 0
+ 472 0114 4FF00000 		mov	r0, #0
+ 473 0118 C4F20200 		movt	r0, 16386
+ 474 011c 4FF48061 		mov	r1, #1024
+ 475 0120 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 476 0124 0346     		mov	r3, r0
+ 477 0126 002B     		cmp	r3, #0
+ 478 0128 01D1     		bne	.L13
+ 209:../src/selftest.c ****   {
+ 210:../src/selftest.c ****     Fail_Handler();
+ 479              		.loc 1 210 0
+ 480 012a FFF7FEFF 		bl	Fail_Handler
+ 481              	.L13:
+ 211:../src/selftest.c ****   }
+ 212:../src/selftest.c ****   
+ 213:../src/selftest.c ****   /* Turn LED7 OFF using PC0 */
+ 214:../src/selftest.c ****   GPIO_SetBits(GPIOC, GPIO_Pin_0);  
+ 482              		.loc 1 214 0
+ 483 012e 4FF40060 		mov	r0, #2048
+ 484 0132 C4F20200 		movt	r0, 16386
+ 485 0136 4FF00101 		mov	r1, #1
+ 486 013a FFF7FEFF 		bl	GPIO_SetBits
+ 215:../src/selftest.c ****   
+ 216:../src/selftest.c ****   /* GPIOA Configuration: Pins 11, 12 in input pull-up */
+ 217:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_12;
+ 487              		.loc 1 217 0
+ 488 013e 4FF4C053 		mov	r3, #6144
+ 489 0142 3B60     		str	r3, [r7, #0]
+ 218:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+ 490              		.loc 1 218 0
+ 491 0144 4FF00003 		mov	r3, #0
+ 492 0148 3B71     		strb	r3, [r7, #4]
+ 219:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 493              		.loc 1 219 0
+ 494 014a 4FF00003 		mov	r3, #0
+ 495 014e BB71     		strb	r3, [r7, #6]
+ 220:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 496              		.loc 1 220 0
+ 497 0150 4FF00103 		mov	r3, #1
+ 498 0154 FB71     		strb	r3, [r7, #7]
+ 221:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 499              		.loc 1 221 0
+ 500 0156 4FF00203 		mov	r3, #2
+ 501 015a 7B71     		strb	r3, [r7, #5]
+ 222:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 502              		.loc 1 222 0
+ 503 015c 4FF00000 		mov	r0, #0
+ 504 0160 C4F20200 		movt	r0, 16386
+ 505 0164 3B46     		mov	r3, r7
+ 506 0166 1946     		mov	r1, r3
+ 507 0168 FFF7FEFF 		bl	GPIO_Init
+ 223:../src/selftest.c ****   
+ 224:../src/selftest.c ****   /* GPIOA Configuration: Pin 9 in output push-pull */
+ 225:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+ 508              		.loc 1 225 0
+ 509 016c 4FF40073 		mov	r3, #512
+ 510 0170 3B60     		str	r3, [r7, #0]
+ 226:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 511              		.loc 1 226 0
+ 512 0172 4FF00103 		mov	r3, #1
+ 513 0176 3B71     		strb	r3, [r7, #4]
+ 227:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 514              		.loc 1 227 0
+ 515 0178 4FF00003 		mov	r3, #0
+ 516 017c BB71     		strb	r3, [r7, #6]
+ 228:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 517              		.loc 1 228 0
+ 518 017e 4FF00103 		mov	r3, #1
+ 519 0182 FB71     		strb	r3, [r7, #7]
+ 229:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 520              		.loc 1 229 0
+ 521 0184 4FF00203 		mov	r3, #2
+ 522 0188 7B71     		strb	r3, [r7, #5]
+ 230:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 523              		.loc 1 230 0
+ 524 018a 4FF00000 		mov	r0, #0
+ 525 018e C4F20200 		movt	r0, 16386
+ 526 0192 3B46     		mov	r3, r7
+ 527 0194 1946     		mov	r1, r3
+ 528 0196 FFF7FEFF 		bl	GPIO_Init
+ 231:../src/selftest.c ****   GPIO_ResetBits(GPIOA, GPIO_Pin_9);
+ 529              		.loc 1 231 0
+ 530 019a 4FF00000 		mov	r0, #0
+ 531 019e C4F20200 		movt	r0, 16386
+ 532 01a2 4FF40071 		mov	r1, #512
+ 533 01a6 FFF7FEFF 		bl	GPIO_ResetBits
+ 232:../src/selftest.c ****   
+ 233:../src/selftest.c ****   /* Waiting delay 10ms */
+ 234:../src/selftest.c ****   Delay(1);
+ 534              		.loc 1 234 0
+ 535 01aa 4FF00100 		mov	r0, #1
+ 536 01ae FFF7FEFF 		bl	Delay
+ 235:../src/selftest.c ****   
+ 236:../src/selftest.c ****   /* Check PA11 and PA12 level without cable connected */
+ 237:../src/selftest.c ****   if ((GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_11) == Bit_RESET) || \
+ 537              		.loc 1 237 0
+ 538 01b2 4FF00000 		mov	r0, #0
+ 539 01b6 C4F20200 		movt	r0, 16386
+ 540 01ba 4FF40061 		mov	r1, #2048
+ 541 01be FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 542 01c2 0346     		mov	r3, r0
+ 543 01c4 002B     		cmp	r3, #0
+ 544 01c6 0AD0     		beq	.L14
+ 238:../src/selftest.c ****       (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_12) == Bit_RESET))
+ 545              		.loc 1 238 0 discriminator 1
+ 546 01c8 4FF00000 		mov	r0, #0
+ 547 01cc C4F20200 		movt	r0, 16386
+ 548 01d0 4FF48051 		mov	r1, #4096
+ 549 01d4 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 550 01d8 0346     		mov	r3, r0
+ 237:../src/selftest.c ****   if ((GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_11) == Bit_RESET) || \
+ 551              		.loc 1 237 0 discriminator 1
+ 552 01da 002B     		cmp	r3, #0
+ 553 01dc 01D1     		bne	.L15
+ 554              	.L14:
+ 239:../src/selftest.c ****   {
+ 240:../src/selftest.c ****     Fail_Handler();
+ 555              		.loc 1 240 0
+ 556 01de FFF7FEFF 		bl	Fail_Handler
+ 557              	.L15:
+ 241:../src/selftest.c ****   }
+ 242:../src/selftest.c ****   
+ 243:../src/selftest.c ****   /* GPIOA Configuration: Pins 12 in input pull-up */
+ 244:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+ 558              		.loc 1 244 0
+ 559 01e2 4FF48053 		mov	r3, #4096
+ 560 01e6 3B60     		str	r3, [r7, #0]
+ 245:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+ 561              		.loc 1 245 0
+ 562 01e8 4FF00003 		mov	r3, #0
+ 563 01ec 3B71     		strb	r3, [r7, #4]
+ 246:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 564              		.loc 1 246 0
+ 565 01ee 4FF00003 		mov	r3, #0
+ 566 01f2 BB71     		strb	r3, [r7, #6]
+ 247:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 567              		.loc 1 247 0
+ 568 01f4 4FF00103 		mov	r3, #1
+ 569 01f8 FB71     		strb	r3, [r7, #7]
+ 248:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 570              		.loc 1 248 0
+ 571 01fa 4FF00203 		mov	r3, #2
+ 572 01fe 7B71     		strb	r3, [r7, #5]
+ 249:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 573              		.loc 1 249 0
+ 574 0200 4FF00000 		mov	r0, #0
+ 575 0204 C4F20200 		movt	r0, 16386
+ 576 0208 3B46     		mov	r3, r7
+ 577 020a 1946     		mov	r1, r3
+ 578 020c FFF7FEFF 		bl	GPIO_Init
+ 250:../src/selftest.c ****   
+ 251:../src/selftest.c ****   /* GPIOA Configuration: Pin 11 in output push-pull */
+ 252:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+ 579              		.loc 1 252 0
+ 580 0210 4FF40063 		mov	r3, #2048
+ 581 0214 3B60     		str	r3, [r7, #0]
+ 253:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 582              		.loc 1 253 0
+ 583 0216 4FF00103 		mov	r3, #1
+ 584 021a 3B71     		strb	r3, [r7, #4]
+ 254:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 585              		.loc 1 254 0
+ 586 021c 4FF00003 		mov	r3, #0
+ 587 0220 BB71     		strb	r3, [r7, #6]
+ 255:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 588              		.loc 1 255 0
+ 589 0222 4FF00103 		mov	r3, #1
+ 590 0226 FB71     		strb	r3, [r7, #7]
+ 256:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 591              		.loc 1 256 0
+ 592 0228 4FF00203 		mov	r3, #2
+ 593 022c 7B71     		strb	r3, [r7, #5]
+ 257:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 594              		.loc 1 257 0
+ 595 022e 4FF00000 		mov	r0, #0
+ 596 0232 C4F20200 		movt	r0, 16386
+ 597 0236 3B46     		mov	r3, r7
+ 598 0238 1946     		mov	r1, r3
+ 599 023a FFF7FEFF 		bl	GPIO_Init
+ 258:../src/selftest.c ****   GPIO_ResetBits(GPIOA, GPIO_Pin_11);
+ 600              		.loc 1 258 0
+ 601 023e 4FF00000 		mov	r0, #0
+ 602 0242 C4F20200 		movt	r0, 16386
+ 603 0246 4FF40061 		mov	r1, #2048
+ 604 024a FFF7FEFF 		bl	GPIO_ResetBits
+ 259:../src/selftest.c ****   
+ 260:../src/selftest.c ****   /* Waiting delay 10ms */
+ 261:../src/selftest.c ****   Delay(1);
+ 605              		.loc 1 261 0
+ 606 024e 4FF00100 		mov	r0, #1
+ 607 0252 FFF7FEFF 		bl	Delay
+ 262:../src/selftest.c ****   
+ 263:../src/selftest.c ****   /* Check PA12 level without cable connected */
+ 264:../src/selftest.c ****   if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_12) == Bit_RESET)
+ 608              		.loc 1 264 0
+ 609 0256 4FF00000 		mov	r0, #0
+ 610 025a C4F20200 		movt	r0, 16386
+ 611 025e 4FF48051 		mov	r1, #4096
+ 612 0262 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 613 0266 0346     		mov	r3, r0
+ 614 0268 002B     		cmp	r3, #0
+ 615 026a 01D1     		bne	.L16
+ 265:../src/selftest.c ****   {
+ 266:../src/selftest.c ****     Fail_Handler();
+ 616              		.loc 1 266 0
+ 617 026c FFF7FEFF 		bl	Fail_Handler
+ 618              	.L16:
+ 267:../src/selftest.c ****   }
+ 268:../src/selftest.c ****   
+ 269:../src/selftest.c ****   /* GPIOA Configuration: Pins 11 in input pull-up */
+ 270:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+ 619              		.loc 1 270 0
+ 620 0270 4FF40063 		mov	r3, #2048
+ 621 0274 3B60     		str	r3, [r7, #0]
+ 271:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+ 622              		.loc 1 271 0
+ 623 0276 4FF00003 		mov	r3, #0
+ 624 027a 3B71     		strb	r3, [r7, #4]
+ 272:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 625              		.loc 1 272 0
+ 626 027c 4FF00003 		mov	r3, #0
+ 627 0280 BB71     		strb	r3, [r7, #6]
+ 273:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 628              		.loc 1 273 0
+ 629 0282 4FF00103 		mov	r3, #1
+ 630 0286 FB71     		strb	r3, [r7, #7]
+ 274:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 631              		.loc 1 274 0
+ 632 0288 4FF00203 		mov	r3, #2
+ 633 028c 7B71     		strb	r3, [r7, #5]
+ 275:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 634              		.loc 1 275 0
+ 635 028e 4FF00000 		mov	r0, #0
+ 636 0292 C4F20200 		movt	r0, 16386
+ 637 0296 3B46     		mov	r3, r7
+ 638 0298 1946     		mov	r1, r3
+ 639 029a FFF7FEFF 		bl	GPIO_Init
+ 276:../src/selftest.c ****   
+ 277:../src/selftest.c ****   /* GPIOA Configuration: Pin 12 in output push-pull */
+ 278:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+ 640              		.loc 1 278 0
+ 641 029e 4FF48053 		mov	r3, #4096
+ 642 02a2 3B60     		str	r3, [r7, #0]
+ 279:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 643              		.loc 1 279 0
+ 644 02a4 4FF00103 		mov	r3, #1
+ 645 02a8 3B71     		strb	r3, [r7, #4]
+ 280:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 646              		.loc 1 280 0
+ 647 02aa 4FF00003 		mov	r3, #0
+ 648 02ae BB71     		strb	r3, [r7, #6]
+ 281:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 649              		.loc 1 281 0
+ 650 02b0 4FF00103 		mov	r3, #1
+ 651 02b4 FB71     		strb	r3, [r7, #7]
+ 282:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 652              		.loc 1 282 0
+ 653 02b6 4FF00203 		mov	r3, #2
+ 654 02ba 7B71     		strb	r3, [r7, #5]
+ 283:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 655              		.loc 1 283 0
+ 656 02bc 4FF00000 		mov	r0, #0
+ 657 02c0 C4F20200 		movt	r0, 16386
+ 658 02c4 3B46     		mov	r3, r7
+ 659 02c6 1946     		mov	r1, r3
+ 660 02c8 FFF7FEFF 		bl	GPIO_Init
+ 284:../src/selftest.c ****   GPIO_ResetBits(GPIOA, GPIO_Pin_12);
+ 661              		.loc 1 284 0
+ 662 02cc 4FF00000 		mov	r0, #0
+ 663 02d0 C4F20200 		movt	r0, 16386
+ 664 02d4 4FF48051 		mov	r1, #4096
+ 665 02d8 FFF7FEFF 		bl	GPIO_ResetBits
+ 285:../src/selftest.c ****   
+ 286:../src/selftest.c ****   /* Waiting delay 10ms */
+ 287:../src/selftest.c ****   Delay(1);
+ 666              		.loc 1 287 0
+ 667 02dc 4FF00100 		mov	r0, #1
+ 668 02e0 FFF7FEFF 		bl	Delay
+ 288:../src/selftest.c ****   
+ 289:../src/selftest.c ****   /* Check PA12 level without cable connected */
+ 290:../src/selftest.c ****   if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_11) == Bit_RESET)
+ 669              		.loc 1 290 0
+ 670 02e4 4FF00000 		mov	r0, #0
+ 671 02e8 C4F20200 		movt	r0, 16386
+ 672 02ec 4FF40061 		mov	r1, #2048
+ 673 02f0 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 674 02f4 0346     		mov	r3, r0
+ 675 02f6 002B     		cmp	r3, #0
+ 676 02f8 01D1     		bne	.L17
+ 291:../src/selftest.c ****   {
+ 292:../src/selftest.c ****     Fail_Handler();
+ 677              		.loc 1 292 0
+ 678 02fa FFF7FEFF 		bl	Fail_Handler
+ 679              	.L17:
+ 293:../src/selftest.c ****   }
+ 294:../src/selftest.c ****   
+ 295:../src/selftest.c ****   /* GPIOA Configuration: Pins 9 in output push-pull */
+ 296:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+ 680              		.loc 1 296 0
+ 681 02fe 4FF40073 		mov	r3, #512
+ 682 0302 3B60     		str	r3, [r7, #0]
+ 297:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 683              		.loc 1 297 0
+ 684 0304 4FF00103 		mov	r3, #1
+ 685 0308 3B71     		strb	r3, [r7, #4]
+ 298:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 686              		.loc 1 298 0
+ 687 030a 4FF00003 		mov	r3, #0
+ 688 030e BB71     		strb	r3, [r7, #6]
+ 299:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+ 689              		.loc 1 299 0
+ 690 0310 4FF00003 		mov	r3, #0
+ 691 0314 FB71     		strb	r3, [r7, #7]
+ 300:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 692              		.loc 1 300 0
+ 693 0316 4FF00203 		mov	r3, #2
+ 694 031a 7B71     		strb	r3, [r7, #5]
+ 301:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 695              		.loc 1 301 0
+ 696 031c 4FF00000 		mov	r0, #0
+ 697 0320 C4F20200 		movt	r0, 16386
+ 698 0324 3B46     		mov	r3, r7
+ 699 0326 1946     		mov	r1, r3
+ 700 0328 FFF7FEFF 		bl	GPIO_Init
+ 302:../src/selftest.c ****   
+ 303:../src/selftest.c ****   /* Turn LED7 ON using PA9 */
+ 304:../src/selftest.c ****   GPIO_SetBits(GPIOA, GPIO_Pin_9);
+ 701              		.loc 1 304 0
+ 702 032c 4FF00000 		mov	r0, #0
+ 703 0330 C4F20200 		movt	r0, 16386
+ 704 0334 4FF40071 		mov	r1, #512
+ 705 0338 FFF7FEFF 		bl	GPIO_SetBits
+ 305:../src/selftest.c ****   
+ 306:../src/selftest.c ****   /* Turn Green LED ON: signaling Audio USB Test part1 PASS */
+ 307:../src/selftest.c ****   STM_EVAL_LEDOn(LED4);
+ 706              		.loc 1 307 0
+ 707 033c 4FF00000 		mov	r0, #0
+ 708 0340 FFF7FEFF 		bl	STM_EVAL_LEDOn
+ 308:../src/selftest.c ****   
+ 309:../src/selftest.c ****   /* Waiting User Button is pressed */
+ 310:../src/selftest.c ****   while (STM_EVAL_PBGetState(BUTTON_USER) == Bit_RESET)
+ 709              		.loc 1 310 0
+ 710 0344 00BF     		nop
+ 711              	.L18:
+ 712              		.loc 1 310 0 is_stmt 0 discriminator 1
+ 713 0346 4FF00000 		mov	r0, #0
+ 714 034a FFF7FEFF 		bl	STM_EVAL_PBGetState
+ 715 034e 0346     		mov	r3, r0
+ 716 0350 002B     		cmp	r3, #0
+ 717 0352 F8D0     		beq	.L18
+ 311:../src/selftest.c ****   {}
+ 312:../src/selftest.c ****   
+ 313:../src/selftest.c ****   /* Waiting User Button is Released */
+ 314:../src/selftest.c ****   while (STM_EVAL_PBGetState(BUTTON_USER) != Bit_RESET)
+ 718              		.loc 1 314 0 is_stmt 1
+ 719 0354 00BF     		nop
+ 720              	.L19:
+ 721              		.loc 1 314 0 is_stmt 0 discriminator 1
+ 722 0356 4FF00000 		mov	r0, #0
+ 723 035a FFF7FEFF 		bl	STM_EVAL_PBGetState
+ 724 035e 0346     		mov	r3, r0
+ 725 0360 002B     		cmp	r3, #0
+ 726 0362 F8D1     		bne	.L19
+ 315:../src/selftest.c ****   {}
+ 316:../src/selftest.c ****   
+ 317:../src/selftest.c ****   /* Turn Green LED OFF: signaling the end of Audio USB Test part1 and switching to 
+ 318:../src/selftest.c ****   the part2 */
+ 319:../src/selftest.c ****   STM_EVAL_LEDOff(LED4);
+ 727              		.loc 1 319 0 is_stmt 1
+ 728 0364 4FF00000 		mov	r0, #0
+ 729 0368 FFF7FEFF 		bl	STM_EVAL_LEDOff
+ 320:../src/selftest.c ****   
+ 321:../src/selftest.c ****   /* Turn LED7 OFF using PA9 */
+ 322:../src/selftest.c ****   GPIO_ResetBits(GPIOA, GPIO_Pin_9);
+ 730              		.loc 1 322 0
+ 731 036c 4FF00000 		mov	r0, #0
+ 732 0370 C4F20200 		movt	r0, 16386
+ 733 0374 4FF40071 		mov	r1, #512
+ 734 0378 FFF7FEFF 		bl	GPIO_ResetBits
+ 323:../src/selftest.c ****   
+ 324:../src/selftest.c ****   /* Turn LED8 OFF using PD5 */
+ 325:../src/selftest.c ****   GPIO_SetBits(GPIOD, GPIO_Pin_5);
+ 735              		.loc 1 325 0
+ 736 037c 4FF44060 		mov	r0, #3072
+ 737 0380 C4F20200 		movt	r0, 16386
+ 738 0384 4FF02001 		mov	r1, #32
+ 739 0388 FFF7FEFF 		bl	GPIO_SetBits
+ 326:../src/selftest.c ****   
+ 327:../src/selftest.c ****   /*--------------- Part2: with Audio USB cables connected  ------------------*/ 
+ 328:../src/selftest.c ****   
+ 329:../src/selftest.c ****   /*********************************** USB Test *******************************/
+ 330:../src/selftest.c ****   /* Check the ID level with cable connected */
+ 331:../src/selftest.c ****   if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_10) != Bit_RESET)
+ 740              		.loc 1 331 0
+ 741 038c 4FF00000 		mov	r0, #0
+ 742 0390 C4F20200 		movt	r0, 16386
+ 743 0394 4FF48061 		mov	r1, #1024
+ 744 0398 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 745 039c 0346     		mov	r3, r0
+ 746 039e 002B     		cmp	r3, #0
+ 747 03a0 01D0     		beq	.L20
+ 332:../src/selftest.c ****   {
+ 333:../src/selftest.c ****     Fail_Handler();
+ 748              		.loc 1 333 0
+ 749 03a2 FFF7FEFF 		bl	Fail_Handler
+ 750              	.L20:
+ 334:../src/selftest.c ****   }
+ 335:../src/selftest.c ****   
+ 336:../src/selftest.c ****   /* GPIOA Configuration: Pins 11, 12 in input pull-down */
+ 337:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_12;
+ 751              		.loc 1 337 0
+ 752 03a6 4FF4C053 		mov	r3, #6144
+ 753 03aa 3B60     		str	r3, [r7, #0]
+ 338:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+ 754              		.loc 1 338 0
+ 755 03ac 4FF00003 		mov	r3, #0
+ 756 03b0 3B71     		strb	r3, [r7, #4]
+ 339:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 757              		.loc 1 339 0
+ 758 03b2 4FF00003 		mov	r3, #0
+ 759 03b6 BB71     		strb	r3, [r7, #6]
+ 340:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+ 760              		.loc 1 340 0
+ 761 03b8 4FF00203 		mov	r3, #2
+ 762 03bc FB71     		strb	r3, [r7, #7]
+ 341:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 763              		.loc 1 341 0
+ 764 03be 4FF00203 		mov	r3, #2
+ 765 03c2 7B71     		strb	r3, [r7, #5]
+ 342:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 766              		.loc 1 342 0
+ 767 03c4 4FF00000 		mov	r0, #0
+ 768 03c8 C4F20200 		movt	r0, 16386
+ 769 03cc 3B46     		mov	r3, r7
+ 770 03ce 1946     		mov	r1, r3
+ 771 03d0 FFF7FEFF 		bl	GPIO_Init
+ 343:../src/selftest.c ****   
+ 344:../src/selftest.c ****   /* GPIOA Configuration: Pin 9 in output push-pull */
+ 345:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+ 772              		.loc 1 345 0
+ 773 03d4 4FF40073 		mov	r3, #512
+ 774 03d8 3B60     		str	r3, [r7, #0]
+ 346:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 775              		.loc 1 346 0
+ 776 03da 4FF00103 		mov	r3, #1
+ 777 03de 3B71     		strb	r3, [r7, #4]
+ 347:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 778              		.loc 1 347 0
+ 779 03e0 4FF00003 		mov	r3, #0
+ 780 03e4 BB71     		strb	r3, [r7, #6]
+ 348:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 781              		.loc 1 348 0
+ 782 03e6 4FF00103 		mov	r3, #1
+ 783 03ea FB71     		strb	r3, [r7, #7]
+ 349:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 784              		.loc 1 349 0
+ 785 03ec 4FF00203 		mov	r3, #2
+ 786 03f0 7B71     		strb	r3, [r7, #5]
+ 350:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 787              		.loc 1 350 0
+ 788 03f2 4FF00000 		mov	r0, #0
+ 789 03f6 C4F20200 		movt	r0, 16386
+ 790 03fa 3B46     		mov	r3, r7
+ 791 03fc 1946     		mov	r1, r3
+ 792 03fe FFF7FEFF 		bl	GPIO_Init
+ 351:../src/selftest.c ****   GPIO_SetBits(GPIOA, GPIO_Pin_9);
+ 793              		.loc 1 351 0
+ 794 0402 4FF00000 		mov	r0, #0
+ 795 0406 C4F20200 		movt	r0, 16386
+ 796 040a 4FF40071 		mov	r1, #512
+ 797 040e FFF7FEFF 		bl	GPIO_SetBits
+ 352:../src/selftest.c ****   
+ 353:../src/selftest.c ****   /* Waiting delay 10ms */
+ 354:../src/selftest.c ****   Delay(1);
+ 798              		.loc 1 354 0
+ 799 0412 4FF00100 		mov	r0, #1
+ 800 0416 FFF7FEFF 		bl	Delay
+ 355:../src/selftest.c ****   
+ 356:../src/selftest.c ****   /* Check PA11 and PA12 level with cable connected */
+ 357:../src/selftest.c ****   if ((GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_11) == Bit_RESET) || \
+ 801              		.loc 1 357 0
+ 802 041a 4FF00000 		mov	r0, #0
+ 803 041e C4F20200 		movt	r0, 16386
+ 804 0422 4FF40061 		mov	r1, #2048
+ 805 0426 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 806 042a 0346     		mov	r3, r0
+ 807 042c 002B     		cmp	r3, #0
+ 808 042e 0AD0     		beq	.L21
+ 358:../src/selftest.c ****       (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_12) == Bit_RESET))
+ 809              		.loc 1 358 0 discriminator 1
+ 810 0430 4FF00000 		mov	r0, #0
+ 811 0434 C4F20200 		movt	r0, 16386
+ 812 0438 4FF48051 		mov	r1, #4096
+ 813 043c FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 814 0440 0346     		mov	r3, r0
+ 357:../src/selftest.c ****   if ((GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_11) == Bit_RESET) || \
+ 815              		.loc 1 357 0 discriminator 1
+ 816 0442 002B     		cmp	r3, #0
+ 817 0444 01D1     		bne	.L22
+ 818              	.L21:
+ 359:../src/selftest.c ****   {
+ 360:../src/selftest.c ****     Fail_Handler();
+ 819              		.loc 1 360 0
+ 820 0446 FFF7FEFF 		bl	Fail_Handler
+ 821              	.L22:
+ 361:../src/selftest.c ****   }
+ 362:../src/selftest.c ****   
+ 363:../src/selftest.c ****   /* GPIOA Configuration: Pins 9, 12 in input pull-down */
+ 364:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_12;
+ 822              		.loc 1 364 0
+ 823 044a 4FF49053 		mov	r3, #4608
+ 824 044e 3B60     		str	r3, [r7, #0]
+ 365:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+ 825              		.loc 1 365 0
+ 826 0450 4FF00003 		mov	r3, #0
+ 827 0454 3B71     		strb	r3, [r7, #4]
+ 366:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 828              		.loc 1 366 0
+ 829 0456 4FF00003 		mov	r3, #0
+ 830 045a BB71     		strb	r3, [r7, #6]
+ 367:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+ 831              		.loc 1 367 0
+ 832 045c 4FF00203 		mov	r3, #2
+ 833 0460 FB71     		strb	r3, [r7, #7]
+ 368:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 834              		.loc 1 368 0
+ 835 0462 4FF00203 		mov	r3, #2
+ 836 0466 7B71     		strb	r3, [r7, #5]
+ 369:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 837              		.loc 1 369 0
+ 838 0468 4FF00000 		mov	r0, #0
+ 839 046c C4F20200 		movt	r0, 16386
+ 840 0470 3B46     		mov	r3, r7
+ 841 0472 1946     		mov	r1, r3
+ 842 0474 FFF7FEFF 		bl	GPIO_Init
+ 370:../src/selftest.c ****   
+ 371:../src/selftest.c ****   /* GPIOA Configuration: Pin 11 in output push-pull */
+ 372:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+ 843              		.loc 1 372 0
+ 844 0478 4FF40063 		mov	r3, #2048
+ 845 047c 3B60     		str	r3, [r7, #0]
+ 373:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 846              		.loc 1 373 0
+ 847 047e 4FF00103 		mov	r3, #1
+ 848 0482 3B71     		strb	r3, [r7, #4]
+ 374:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 849              		.loc 1 374 0
+ 850 0484 4FF00003 		mov	r3, #0
+ 851 0488 BB71     		strb	r3, [r7, #6]
+ 375:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 852              		.loc 1 375 0
+ 853 048a 4FF00103 		mov	r3, #1
+ 854 048e FB71     		strb	r3, [r7, #7]
+ 376:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 855              		.loc 1 376 0
+ 856 0490 4FF00203 		mov	r3, #2
+ 857 0494 7B71     		strb	r3, [r7, #5]
+ 377:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 858              		.loc 1 377 0
+ 859 0496 4FF00000 		mov	r0, #0
+ 860 049a C4F20200 		movt	r0, 16386
+ 861 049e 3B46     		mov	r3, r7
+ 862 04a0 1946     		mov	r1, r3
+ 863 04a2 FFF7FEFF 		bl	GPIO_Init
+ 378:../src/selftest.c ****   GPIO_SetBits(GPIOA, GPIO_Pin_11);
+ 864              		.loc 1 378 0
+ 865 04a6 4FF00000 		mov	r0, #0
+ 866 04aa C4F20200 		movt	r0, 16386
+ 867 04ae 4FF40061 		mov	r1, #2048
+ 868 04b2 FFF7FEFF 		bl	GPIO_SetBits
+ 379:../src/selftest.c ****   
+ 380:../src/selftest.c ****   /* Waiting delay 10ms */
+ 381:../src/selftest.c ****   Delay(1);
+ 869              		.loc 1 381 0
+ 870 04b6 4FF00100 		mov	r0, #1
+ 871 04ba FFF7FEFF 		bl	Delay
+ 382:../src/selftest.c ****   
+ 383:../src/selftest.c ****   /* Check PA9 and PA12 level with cable connected */
+ 384:../src/selftest.c ****   if ((GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_9) == Bit_RESET)|| \
+ 872              		.loc 1 384 0
+ 873 04be 4FF00000 		mov	r0, #0
+ 874 04c2 C4F20200 		movt	r0, 16386
+ 875 04c6 4FF40071 		mov	r1, #512
+ 876 04ca FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 877 04ce 0346     		mov	r3, r0
+ 878 04d0 002B     		cmp	r3, #0
+ 879 04d2 0AD0     		beq	.L23
+ 385:../src/selftest.c ****       (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_12) == Bit_RESET))
+ 880              		.loc 1 385 0 discriminator 1
+ 881 04d4 4FF00000 		mov	r0, #0
+ 882 04d8 C4F20200 		movt	r0, 16386
+ 883 04dc 4FF48051 		mov	r1, #4096
+ 884 04e0 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 885 04e4 0346     		mov	r3, r0
+ 384:../src/selftest.c ****   if ((GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_9) == Bit_RESET)|| \
+ 886              		.loc 1 384 0 discriminator 1
+ 887 04e6 002B     		cmp	r3, #0
+ 888 04e8 01D1     		bne	.L24
+ 889              	.L23:
+ 386:../src/selftest.c ****   {
+ 387:../src/selftest.c ****     Fail_Handler();
+ 890              		.loc 1 387 0
+ 891 04ea FFF7FEFF 		bl	Fail_Handler
+ 892              	.L24:
+ 388:../src/selftest.c ****   }
+ 389:../src/selftest.c ****   
+ 390:../src/selftest.c ****   /* GPIOA Configuration: Pins 9, 11 in input pull-down */
+ 391:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_11;
+ 893              		.loc 1 391 0
+ 894 04ee 4FF42063 		mov	r3, #2560
+ 895 04f2 3B60     		str	r3, [r7, #0]
+ 392:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+ 896              		.loc 1 392 0
+ 897 04f4 4FF00003 		mov	r3, #0
+ 898 04f8 3B71     		strb	r3, [r7, #4]
+ 393:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 899              		.loc 1 393 0
+ 900 04fa 4FF00003 		mov	r3, #0
+ 901 04fe BB71     		strb	r3, [r7, #6]
+ 394:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+ 902              		.loc 1 394 0
+ 903 0500 4FF00203 		mov	r3, #2
+ 904 0504 FB71     		strb	r3, [r7, #7]
+ 395:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 905              		.loc 1 395 0
+ 906 0506 4FF00203 		mov	r3, #2
+ 907 050a 7B71     		strb	r3, [r7, #5]
+ 396:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 908              		.loc 1 396 0
+ 909 050c 4FF00000 		mov	r0, #0
+ 910 0510 C4F20200 		movt	r0, 16386
+ 911 0514 3B46     		mov	r3, r7
+ 912 0516 1946     		mov	r1, r3
+ 913 0518 FFF7FEFF 		bl	GPIO_Init
+ 397:../src/selftest.c ****   
+ 398:../src/selftest.c ****   /* GPIOA Configuration: Pin 12 in output push-pull */
+ 399:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12;
+ 914              		.loc 1 399 0
+ 915 051c 4FF48053 		mov	r3, #4096
+ 916 0520 3B60     		str	r3, [r7, #0]
+ 400:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 917              		.loc 1 400 0
+ 918 0522 4FF00103 		mov	r3, #1
+ 919 0526 3B71     		strb	r3, [r7, #4]
+ 401:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 920              		.loc 1 401 0
+ 921 0528 4FF00003 		mov	r3, #0
+ 922 052c BB71     		strb	r3, [r7, #6]
+ 402:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 923              		.loc 1 402 0
+ 924 052e 4FF00103 		mov	r3, #1
+ 925 0532 FB71     		strb	r3, [r7, #7]
+ 403:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 926              		.loc 1 403 0
+ 927 0534 4FF00203 		mov	r3, #2
+ 928 0538 7B71     		strb	r3, [r7, #5]
+ 404:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 929              		.loc 1 404 0
+ 930 053a 4FF00000 		mov	r0, #0
+ 931 053e C4F20200 		movt	r0, 16386
+ 932 0542 3B46     		mov	r3, r7
+ 933 0544 1946     		mov	r1, r3
+ 934 0546 FFF7FEFF 		bl	GPIO_Init
+ 405:../src/selftest.c ****   GPIO_SetBits(GPIOA, GPIO_Pin_12);
+ 935              		.loc 1 405 0
+ 936 054a 4FF00000 		mov	r0, #0
+ 937 054e C4F20200 		movt	r0, 16386
+ 938 0552 4FF48051 		mov	r1, #4096
+ 939 0556 FFF7FEFF 		bl	GPIO_SetBits
+ 406:../src/selftest.c ****   
+ 407:../src/selftest.c ****   /* Waiting delay 10ms */
+ 408:../src/selftest.c ****   Delay(1);
+ 940              		.loc 1 408 0
+ 941 055a 4FF00100 		mov	r0, #1
+ 942 055e FFF7FEFF 		bl	Delay
+ 409:../src/selftest.c ****   
+ 410:../src/selftest.c ****   /* Check PA9 and PA12 level with cable connected */
+ 411:../src/selftest.c ****   if ((GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_9) == Bit_RESET)|| \
+ 943              		.loc 1 411 0
+ 944 0562 4FF00000 		mov	r0, #0
+ 945 0566 C4F20200 		movt	r0, 16386
+ 946 056a 4FF40071 		mov	r1, #512
+ 947 056e FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 948 0572 0346     		mov	r3, r0
+ 949 0574 002B     		cmp	r3, #0
+ 950 0576 0AD0     		beq	.L25
+ 412:../src/selftest.c ****       (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_11) == Bit_RESET))
+ 951              		.loc 1 412 0 discriminator 1
+ 952 0578 4FF00000 		mov	r0, #0
+ 953 057c C4F20200 		movt	r0, 16386
+ 954 0580 4FF40061 		mov	r1, #2048
+ 955 0584 FFF7FEFF 		bl	GPIO_ReadInputDataBit
+ 956 0588 0346     		mov	r3, r0
+ 411:../src/selftest.c ****   if ((GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_9) == Bit_RESET)|| \
+ 957              		.loc 1 411 0 discriminator 1
+ 958 058a 002B     		cmp	r3, #0
+ 959 058c 01D1     		bne	.L26
+ 960              	.L25:
+ 413:../src/selftest.c ****   {
+ 414:../src/selftest.c ****     Fail_Handler();
+ 961              		.loc 1 414 0
+ 962 058e FFF7FEFF 		bl	Fail_Handler
+ 963              	.L26:
+ 415:../src/selftest.c ****   }
+ 416:../src/selftest.c **** 
+ 417:../src/selftest.c ****   /* GPIOA Configuration: Pins 11, 12 in input pull-down */
+ 418:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_12;
+ 964              		.loc 1 418 0
+ 965 0592 4FF4C053 		mov	r3, #6144
+ 966 0596 3B60     		str	r3, [r7, #0]
+ 419:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+ 967              		.loc 1 419 0
+ 968 0598 4FF00003 		mov	r3, #0
+ 969 059c 3B71     		strb	r3, [r7, #4]
+ 420:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 970              		.loc 1 420 0
+ 971 059e 4FF00003 		mov	r3, #0
+ 972 05a2 BB71     		strb	r3, [r7, #6]
+ 421:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;
+ 973              		.loc 1 421 0
+ 974 05a4 4FF00203 		mov	r3, #2
+ 975 05a8 FB71     		strb	r3, [r7, #7]
+ 422:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 976              		.loc 1 422 0
+ 977 05aa 4FF00203 		mov	r3, #2
+ 978 05ae 7B71     		strb	r3, [r7, #5]
+ 423:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 979              		.loc 1 423 0
+ 980 05b0 4FF00000 		mov	r0, #0
+ 981 05b4 C4F20200 		movt	r0, 16386
+ 982 05b8 3B46     		mov	r3, r7
+ 983 05ba 1946     		mov	r1, r3
+ 984 05bc FFF7FEFF 		bl	GPIO_Init
+ 424:../src/selftest.c ****   
+ 425:../src/selftest.c ****   /* GPIOA Configuration: Pin 9 in output push-pull */
+ 426:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+ 985              		.loc 1 426 0
+ 986 05c0 4FF40073 		mov	r3, #512
+ 987 05c4 3B60     		str	r3, [r7, #0]
+ 427:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
+ 988              		.loc 1 427 0
+ 989 05c6 4FF00103 		mov	r3, #1
+ 990 05ca 3B71     		strb	r3, [r7, #4]
+ 428:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 991              		.loc 1 428 0
+ 992 05cc 4FF00003 		mov	r3, #0
+ 993 05d0 BB71     		strb	r3, [r7, #6]
+ 429:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
+ 994              		.loc 1 429 0
+ 995 05d2 4FF00103 		mov	r3, #1
+ 996 05d6 FB71     		strb	r3, [r7, #7]
+ 430:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 997              		.loc 1 430 0
+ 998 05d8 4FF00203 		mov	r3, #2
+ 999 05dc 7B71     		strb	r3, [r7, #5]
+ 431:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 1000              		.loc 1 431 0
+ 1001 05de 4FF00000 		mov	r0, #0
+ 1002 05e2 C4F20200 		movt	r0, 16386
+ 1003 05e6 3B46     		mov	r3, r7
+ 1004 05e8 1946     		mov	r1, r3
+ 1005 05ea FFF7FEFF 		bl	GPIO_Init
+ 432:../src/selftest.c ****   
+ 433:../src/selftest.c ****   /* Turn LED7 OFF using PA9 */
+ 434:../src/selftest.c ****   GPIO_ResetBits(GPIOA, GPIO_Pin_9);
+ 1006              		.loc 1 434 0
+ 1007 05ee 4FF00000 		mov	r0, #0
+ 1008 05f2 C4F20200 		movt	r0, 16386
+ 1009 05f6 4FF40071 		mov	r1, #512
+ 1010 05fa FFF7FEFF 		bl	GPIO_ResetBits
+ 435:../src/selftest.c **** }
+ 1011              		.loc 1 435 0
+ 1012 05fe 07F10807 		add	r7, r7, #8
+ 1013 0602 BD46     		mov	sp, r7
+ 1014 0604 80BD     		pop	{r7, pc}
+ 1015              		.cfi_endproc
+ 1016              	.LFE111:
+ 1018 0606 00BF     		.section	.text.Audio_Test,"ax",%progbits
+ 1019              		.align	2
+ 1020              		.global	Audio_Test
+ 1021              		.thumb
+ 1022              		.thumb_func
+ 1024              	Audio_Test:
+ 1025              	.LFB112:
+ 436:../src/selftest.c **** 
+ 437:../src/selftest.c **** /**
+ 438:../src/selftest.c ****   * @brief Test Audio Hardware.
+ 439:../src/selftest.c ****   *   The main objectif of this test is to check the hardware connection of the 
+ 440:../src/selftest.c ****   *   Audio peripheral.
+ 441:../src/selftest.c ****   * @param  None
+ 442:../src/selftest.c ****   * @retval None
+ 443:../src/selftest.c ****   */
+ 444:../src/selftest.c **** void Audio_Test(void)
+ 445:../src/selftest.c **** { 
+ 1026              		.loc 1 445 0
+ 1027              		.cfi_startproc
+ 1028              		@ args = 0, pretend = 0, frame = 16
+ 1029              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1030 0000 80B5     		push	{r7, lr}
+ 1031              	.LCFI6:
+ 1032              		.cfi_def_cfa_offset 8
+ 1033              		.cfi_offset 14, -4
+ 1034              		.cfi_offset 7, -8
+ 1035 0002 84B0     		sub	sp, sp, #16
+ 1036              	.LCFI7:
+ 1037              		.cfi_def_cfa_offset 24
+ 1038 0004 00AF     		add	r7, sp, #0
+ 1039              	.LCFI8:
+ 1040              		.cfi_def_cfa_register 7
+ 446:../src/selftest.c ****   GPIO_InitTypeDef  GPIO_InitStructure;  
+ 447:../src/selftest.c ****   uint8_t audioteststatus = 0x00;
+ 1041              		.loc 1 447 0
+ 1042 0006 4FF00003 		mov	r3, #0
+ 1043 000a FB73     		strb	r3, [r7, #15]
+ 448:../src/selftest.c **** 
+ 449:../src/selftest.c ****   RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC1, ENABLE);
+ 1044              		.loc 1 449 0
+ 1045 000c 4FF48070 		mov	r0, #256
+ 1046 0010 4FF00101 		mov	r1, #1
+ 1047 0014 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 450:../src/selftest.c ****   RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC2, ENABLE);
+ 1048              		.loc 1 450 0
+ 1049 0018 4FF40070 		mov	r0, #512
+ 1050 001c 4FF00101 		mov	r1, #1
+ 1051 0020 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 451:../src/selftest.c ****   
+ 452:../src/selftest.c ****   /* Set the current audio interface: I2S or DAC */
+ 453:../src/selftest.c ****   EVAL_AUDIO_SetAudioInterface(AUDIO_INTERFACE_I2S);
+ 1052              		.loc 1 453 0
+ 1053 0024 4FF00100 		mov	r0, #1
+ 1054 0028 FFF7FEFF 		bl	EVAL_AUDIO_SetAudioInterface
+ 454:../src/selftest.c ****   
+ 455:../src/selftest.c ****   /* Initialize the Audio codec and all related peripherals (I2S, I2C, IOs...) */  
+ 456:../src/selftest.c ****   if (EVAL_AUDIO_Init(OUTPUT_DEVICE_HEADPHONE, 87, I2S_AudioFreq_48k) !=0)
+ 1055              		.loc 1 456 0
+ 1056 002c 4FF00200 		mov	r0, #2
+ 1057 0030 4FF05701 		mov	r1, #87
+ 1058 0034 4BF68032 		movw	r2, #48000
+ 1059 0038 FFF7FEFF 		bl	EVAL_AUDIO_Init
+ 1060 003c 0346     		mov	r3, r0
+ 1061 003e 002B     		cmp	r3, #0
+ 1062 0040 01D0     		beq	.L28
+ 457:../src/selftest.c ****   {
+ 458:../src/selftest.c ****     Fail_Handler();
+ 1063              		.loc 1 458 0
+ 1064 0042 FFF7FEFF 		bl	Fail_Handler
+ 1065              	.L28:
+ 459:../src/selftest.c ****   }
+ 460:../src/selftest.c ****   /* I2S code to be exectued under the I2S interrupt */
+ 461:../src/selftest.c ****   DACTest = 0;
+ 1066              		.loc 1 461 0
+ 1067 0046 40F20003 		movw	r3, #:lower16:DACTest
+ 1068 004a C0F20003 		movt	r3, #:upper16:DACTest
+ 1069 004e 4FF00002 		mov	r2, #0
+ 1070 0052 1A70     		strb	r2, [r3, #0]
+ 462:../src/selftest.c ****   
+ 463:../src/selftest.c ****   /* ADC Common Init */
+ 464:../src/selftest.c ****   ADC_CommonInitStructure.ADC_Mode = ADC_Mode_Independent;
+ 1071              		.loc 1 464 0
+ 1072 0054 40F20003 		movw	r3, #:lower16:ADC_CommonInitStructure
+ 1073 0058 C0F20003 		movt	r3, #:upper16:ADC_CommonInitStructure
+ 1074 005c 4FF00002 		mov	r2, #0
+ 1075 0060 1A60     		str	r2, [r3, #0]
+ 465:../src/selftest.c ****   ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div8;
+ 1076              		.loc 1 465 0
+ 1077 0062 40F20003 		movw	r3, #:lower16:ADC_CommonInitStructure
+ 1078 0066 C0F20003 		movt	r3, #:upper16:ADC_CommonInitStructure
+ 1079 006a 4FF44032 		mov	r2, #196608
+ 1080 006e 5A60     		str	r2, [r3, #4]
+ 466:../src/selftest.c ****   ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;
+ 1081              		.loc 1 466 0
+ 1082 0070 40F20003 		movw	r3, #:lower16:ADC_CommonInitStructure
+ 1083 0074 C0F20003 		movt	r3, #:upper16:ADC_CommonInitStructure
+ 1084 0078 4FF00002 		mov	r2, #0
+ 1085 007c 9A60     		str	r2, [r3, #8]
+ 467:../src/selftest.c ****   ADC_CommonInitStructure.ADC_TwoSamplingDelay = ADC_TwoSamplingDelay_20Cycles; 
+ 1086              		.loc 1 467 0
+ 1087 007e 40F20003 		movw	r3, #:lower16:ADC_CommonInitStructure
+ 1088 0082 C0F20003 		movt	r3, #:upper16:ADC_CommonInitStructure
+ 1089 0086 4FF47062 		mov	r2, #3840
+ 1090 008a DA60     		str	r2, [r3, #12]
+ 468:../src/selftest.c ****   ADC_CommonInit(&ADC_CommonInitStructure);
+ 1091              		.loc 1 468 0
+ 1092 008c 40F20000 		movw	r0, #:lower16:ADC_CommonInitStructure
+ 1093 0090 C0F20000 		movt	r0, #:upper16:ADC_CommonInitStructure
+ 1094 0094 FFF7FEFF 		bl	ADC_CommonInit
+ 469:../src/selftest.c ****   
+ 470:../src/selftest.c ****   /* ADC peripherals Init */
+ 471:../src/selftest.c ****   ADC_StructInit(&ADC_InitStructure);
+ 1095              		.loc 1 471 0
+ 1096 0098 40F20000 		movw	r0, #:lower16:ADC_InitStructure
+ 1097 009c C0F20000 		movt	r0, #:upper16:ADC_InitStructure
+ 1098 00a0 FFF7FEFF 		bl	ADC_StructInit
+ 472:../src/selftest.c ****   ADC_InitStructure.ADC_Resolution = ADC_Resolution_8b;
+ 1099              		.loc 1 472 0
+ 1100 00a4 40F20003 		movw	r3, #:lower16:ADC_InitStructure
+ 1101 00a8 C0F20003 		movt	r3, #:upper16:ADC_InitStructure
+ 1102 00ac 4FF00072 		mov	r2, #33554432
+ 1103 00b0 1A60     		str	r2, [r3, #0]
+ 473:../src/selftest.c ****   ADC_InitStructure.ADC_ScanConvMode = DISABLE;
+ 1104              		.loc 1 473 0
+ 1105 00b2 40F20003 		movw	r3, #:lower16:ADC_InitStructure
+ 1106 00b6 C0F20003 		movt	r3, #:upper16:ADC_InitStructure
+ 1107 00ba 4FF00002 		mov	r2, #0
+ 1108 00be 1A71     		strb	r2, [r3, #4]
+ 474:../src/selftest.c ****   ADC_InitStructure.ADC_ContinuousConvMode = DISABLE;
+ 1109              		.loc 1 474 0
+ 1110 00c0 40F20003 		movw	r3, #:lower16:ADC_InitStructure
+ 1111 00c4 C0F20003 		movt	r3, #:upper16:ADC_InitStructure
+ 1112 00c8 4FF00002 		mov	r2, #0
+ 1113 00cc 5A71     		strb	r2, [r3, #5]
+ 475:../src/selftest.c ****   ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
+ 1114              		.loc 1 475 0
+ 1115 00ce 40F20003 		movw	r3, #:lower16:ADC_InitStructure
+ 1116 00d2 C0F20003 		movt	r3, #:upper16:ADC_InitStructure
+ 1117 00d6 4FF00002 		mov	r2, #0
+ 1118 00da 9A60     		str	r2, [r3, #8]
+ 476:../src/selftest.c ****   ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
+ 1119              		.loc 1 476 0
+ 1120 00dc 40F20003 		movw	r3, #:lower16:ADC_InitStructure
+ 1121 00e0 C0F20003 		movt	r3, #:upper16:ADC_InitStructure
+ 1122 00e4 4FF00002 		mov	r2, #0
+ 1123 00e8 1A61     		str	r2, [r3, #16]
+ 477:../src/selftest.c ****   ADC_InitStructure.ADC_NbrOfConversion = 1;
+ 1124              		.loc 1 477 0
+ 1125 00ea 40F20003 		movw	r3, #:lower16:ADC_InitStructure
+ 1126 00ee C0F20003 		movt	r3, #:upper16:ADC_InitStructure
+ 1127 00f2 4FF00102 		mov	r2, #1
+ 1128 00f6 1A75     		strb	r2, [r3, #20]
+ 478:../src/selftest.c ****   ADC_Init(ADC1, &ADC_InitStructure);
+ 1129              		.loc 1 478 0
+ 1130 00f8 4FF40050 		mov	r0, #8192
+ 1131 00fc C4F20100 		movt	r0, 16385
+ 1132 0100 40F20001 		movw	r1, #:lower16:ADC_InitStructure
+ 1133 0104 C0F20001 		movt	r1, #:upper16:ADC_InitStructure
+ 1134 0108 FFF7FEFF 		bl	ADC_Init
+ 479:../src/selftest.c **** 
+ 480:../src/selftest.c ****   ADC_Init(ADC2, &ADC_InitStructure);
+ 1135              		.loc 1 480 0
+ 1136 010c 4FF40450 		mov	r0, #8448
+ 1137 0110 C4F20100 		movt	r0, 16385
+ 1138 0114 40F20001 		movw	r1, #:lower16:ADC_InitStructure
+ 1139 0118 C0F20001 		movt	r1, #:upper16:ADC_InitStructure
+ 1140 011c FFF7FEFF 		bl	ADC_Init
+ 481:../src/selftest.c ****   
+ 482:../src/selftest.c ****   /* Configure ADC Channels pin as analog input */
+ 483:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+ 1141              		.loc 1 483 0
+ 1142 0120 4FF00403 		mov	r3, #4
+ 1143 0124 7B60     		str	r3, [r7, #4]
+ 484:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 1144              		.loc 1 484 0
+ 1145 0126 4FF00203 		mov	r3, #2
+ 1146 012a 7B72     		strb	r3, [r7, #9]
+ 485:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AN;
+ 1147              		.loc 1 485 0
+ 1148 012c 4FF00303 		mov	r3, #3
+ 1149 0130 3B72     		strb	r3, [r7, #8]
+ 486:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
+ 1150              		.loc 1 486 0
+ 1151 0132 4FF00003 		mov	r3, #0
+ 1152 0136 FB72     		strb	r3, [r7, #11]
+ 487:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 1153              		.loc 1 487 0
+ 1154 0138 4FF00000 		mov	r0, #0
+ 1155 013c C4F20200 		movt	r0, 16386
+ 1156 0140 07F10403 		add	r3, r7, #4
+ 1157 0144 1946     		mov	r1, r3
+ 1158 0146 FFF7FEFF 		bl	GPIO_Init
+ 488:../src/selftest.c ****   
+ 489:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 ;
+ 1159              		.loc 1 489 0
+ 1160 014a 4FF00803 		mov	r3, #8
+ 1161 014e 7B60     		str	r3, [r7, #4]
+ 490:../src/selftest.c ****   GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 1162              		.loc 1 490 0
+ 1163 0150 4FF00000 		mov	r0, #0
+ 1164 0154 C4F20200 		movt	r0, 16386
+ 1165 0158 07F10403 		add	r3, r7, #4
+ 1166 015c 1946     		mov	r1, r3
+ 1167 015e FFF7FEFF 		bl	GPIO_Init
+ 491:../src/selftest.c ****   
+ 492:../src/selftest.c ****   counter1 = 0;
+ 1168              		.loc 1 492 0
+ 1169 0162 40F20003 		movw	r3, #:lower16:counter1
+ 1170 0166 C0F20003 		movt	r3, #:upper16:counter1
+ 1171 016a 4FF00002 		mov	r2, #0
+ 1172 016e 1A80     		strh	r2, [r3, #0]	@ movhi
+ 493:../src/selftest.c ****   counter0 = 0;
+ 1173              		.loc 1 493 0
+ 1174 0170 40F20003 		movw	r3, #:lower16:counter0
+ 1175 0174 C0F20003 		movt	r3, #:upper16:counter0
+ 1176 0178 4FF00002 		mov	r2, #0
+ 1177 017c 1A80     		strh	r2, [r3, #0]	@ movhi
+ 494:../src/selftest.c ****   audioteststatus = 0;
+ 1178              		.loc 1 494 0
+ 1179 017e 4FF00003 		mov	r3, #0
+ 1180 0182 FB73     		strb	r3, [r7, #15]
+ 495:../src/selftest.c ****   /* ADCperipheral[PerIdx] Regular Channel Config */  
+ 496:../src/selftest.c ****   ADC_RegularChannelConfig(ADC1, ADC_Channel_2, 1, ADC_SampleTime_56Cycles);
+ 1181              		.loc 1 496 0
+ 1182 0184 4FF40050 		mov	r0, #8192
+ 1183 0188 C4F20100 		movt	r0, 16385
+ 1184 018c 4FF00201 		mov	r1, #2
+ 1185 0190 4FF00102 		mov	r2, #1
+ 1186 0194 4FF00303 		mov	r3, #3
+ 1187 0198 FFF7FEFF 		bl	ADC_RegularChannelConfig
+ 497:../src/selftest.c ****   /* ADCperipheral[PerIdx] Regular Channel Config */  
+ 498:../src/selftest.c ****   ADC_RegularChannelConfig(ADC2, ADC_Channel_3, 1, ADC_SampleTime_56Cycles);
+ 1188              		.loc 1 498 0
+ 1189 019c 4FF40450 		mov	r0, #8448
+ 1190 01a0 C4F20100 		movt	r0, 16385
+ 1191 01a4 4FF00301 		mov	r1, #3
+ 1192 01a8 4FF00102 		mov	r2, #1
+ 1193 01ac 4FF00303 		mov	r3, #3
+ 1194 01b0 FFF7FEFF 		bl	ADC_RegularChannelConfig
+ 499:../src/selftest.c ****   /* Enable ADC1 */
+ 500:../src/selftest.c ****   ADC_Cmd(ADC1, ENABLE);
+ 1195              		.loc 1 500 0
+ 1196 01b4 4FF40050 		mov	r0, #8192
+ 1197 01b8 C4F20100 		movt	r0, 16385
+ 1198 01bc 4FF00101 		mov	r1, #1
+ 1199 01c0 FFF7FEFF 		bl	ADC_Cmd
+ 501:../src/selftest.c ****   ADC_Cmd(ADC2, ENABLE);
+ 1200              		.loc 1 501 0
+ 1201 01c4 4FF40450 		mov	r0, #8448
+ 1202 01c8 C4F20100 		movt	r0, 16385
+ 1203 01cc 4FF00101 		mov	r1, #1
+ 1204 01d0 FFF7FEFF 		bl	ADC_Cmd
+ 502:../src/selftest.c ****  
+ 503:../src/selftest.c ****   TimingDelay = 500;
+ 1205              		.loc 1 503 0
+ 1206 01d4 40F20003 		movw	r3, #:lower16:TimingDelay
+ 1207 01d8 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 1208 01dc 4FF4FA72 		mov	r2, #500
+ 1209 01e0 1A60     		str	r2, [r3, #0]
+ 504:../src/selftest.c ****   /* Wait until detecting 500 data*/
+ 505:../src/selftest.c ****   while((audioteststatus == 0)&&(TimingDelay != 0))
+ 1210              		.loc 1 505 0
+ 1211 01e2 A0E0     		b	.L29
+ 1212              	.L35:
+ 506:../src/selftest.c ****   {
+ 507:../src/selftest.c ****     ADC_SoftwareStartConv(ADC1);
+ 1213              		.loc 1 507 0
+ 1214 01e4 4FF40050 		mov	r0, #8192
+ 1215 01e8 C4F20100 		movt	r0, 16385
+ 1216 01ec FFF7FEFF 		bl	ADC_SoftwareStartConv
+ 508:../src/selftest.c ****     while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
+ 1217              		.loc 1 508 0
+ 1218 01f0 00BF     		nop
+ 1219              	.L30:
+ 1220              		.loc 1 508 0 is_stmt 0 discriminator 1
+ 1221 01f2 4FF40050 		mov	r0, #8192
+ 1222 01f6 C4F20100 		movt	r0, 16385
+ 1223 01fa 4FF00201 		mov	r1, #2
+ 1224 01fe FFF7FEFF 		bl	ADC_GetFlagStatus
+ 1225 0202 0346     		mov	r3, r0
+ 1226 0204 002B     		cmp	r3, #0
+ 1227 0206 F4D0     		beq	.L30
+ 509:../src/selftest.c ****     ConvData1 = ADC_GetConversionValue(ADC1); 
+ 1228              		.loc 1 509 0 is_stmt 1
+ 1229 0208 4FF40050 		mov	r0, #8192
+ 1230 020c C4F20100 		movt	r0, 16385
+ 1231 0210 FFF7FEFF 		bl	ADC_GetConversionValue
+ 1232 0214 0346     		mov	r3, r0
+ 1233 0216 1A46     		mov	r2, r3
+ 1234 0218 40F20003 		movw	r3, #:lower16:ConvData1
+ 1235 021c C0F20003 		movt	r3, #:upper16:ConvData1
+ 1236 0220 1A80     		strh	r2, [r3, #0]	@ movhi
+ 510:../src/selftest.c **** 
+ 511:../src/selftest.c ****     ADC_SoftwareStartConv(ADC2);
+ 1237              		.loc 1 511 0
+ 1238 0222 4FF40450 		mov	r0, #8448
+ 1239 0226 C4F20100 		movt	r0, 16385
+ 1240 022a FFF7FEFF 		bl	ADC_SoftwareStartConv
+ 512:../src/selftest.c ****     while(ADC_GetFlagStatus(ADC2, ADC_FLAG_EOC) == RESET);
+ 1241              		.loc 1 512 0
+ 1242 022e 00BF     		nop
+ 1243              	.L31:
+ 1244              		.loc 1 512 0 is_stmt 0 discriminator 1
+ 1245 0230 4FF40450 		mov	r0, #8448
+ 1246 0234 C4F20100 		movt	r0, 16385
+ 1247 0238 4FF00201 		mov	r1, #2
+ 1248 023c FFF7FEFF 		bl	ADC_GetFlagStatus
+ 1249 0240 0346     		mov	r3, r0
+ 1250 0242 002B     		cmp	r3, #0
+ 1251 0244 F4D0     		beq	.L31
+ 513:../src/selftest.c ****     ConvData2 = ADC_GetConversionValue(ADC2);
+ 1252              		.loc 1 513 0 is_stmt 1
+ 1253 0246 4FF40450 		mov	r0, #8448
+ 1254 024a C4F20100 		movt	r0, 16385
+ 1255 024e FFF7FEFF 		bl	ADC_GetConversionValue
+ 1256 0252 0346     		mov	r3, r0
+ 1257 0254 1A46     		mov	r2, r3
+ 1258 0256 40F20003 		movw	r3, #:lower16:ConvData2
+ 1259 025a C0F20003 		movt	r3, #:upper16:ConvData2
+ 1260 025e 1A80     		strh	r2, [r3, #0]	@ movhi
+ 514:../src/selftest.c ****     
+ 515:../src/selftest.c ****     /* 1.75V equals to 150 */
+ 516:../src/selftest.c ****     if ((ConvData1 > 150) && (ConvData2 < 10) && (counter1 != 500))
+ 1261              		.loc 1 516 0
+ 1262 0260 40F20003 		movw	r3, #:lower16:ConvData1
+ 1263 0264 C0F20003 		movt	r3, #:upper16:ConvData1
+ 1264 0268 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1265 026a 9BB2     		uxth	r3, r3
+ 1266 026c 962B     		cmp	r3, #150
+ 1267 026e 1ED9     		bls	.L32
+ 1268              		.loc 1 516 0 is_stmt 0 discriminator 1
+ 1269 0270 40F20003 		movw	r3, #:lower16:ConvData2
+ 1270 0274 C0F20003 		movt	r3, #:upper16:ConvData2
+ 1271 0278 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1272 027a 9BB2     		uxth	r3, r3
+ 1273 027c 092B     		cmp	r3, #9
+ 1274 027e 16D8     		bhi	.L32
+ 1275 0280 40F20003 		movw	r3, #:lower16:counter1
+ 1276 0284 C0F20003 		movt	r3, #:upper16:counter1
+ 1277 0288 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1278 028a 9BB2     		uxth	r3, r3
+ 1279 028c B3F5FA7F 		cmp	r3, #500
+ 1280 0290 0DD0     		beq	.L32
+ 517:../src/selftest.c ****     {
+ 518:../src/selftest.c ****       counter1 ++;
+ 1281              		.loc 1 518 0 is_stmt 1
+ 1282 0292 40F20003 		movw	r3, #:lower16:counter1
+ 1283 0296 C0F20003 		movt	r3, #:upper16:counter1
+ 1284 029a 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1285 029c 9BB2     		uxth	r3, r3
+ 1286 029e 03F10103 		add	r3, r3, #1
+ 1287 02a2 9AB2     		uxth	r2, r3
+ 1288 02a4 40F20003 		movw	r3, #:lower16:counter1
+ 1289 02a8 C0F20003 		movt	r3, #:upper16:counter1
+ 1290 02ac 1A80     		strh	r2, [r3, #0]	@ movhi
+ 1291              	.L32:
+ 519:../src/selftest.c ****     }
+ 520:../src/selftest.c ****     if ((ConvData1 < 10) && (ConvData2 > 150) && (counter0 != 500))
+ 1292              		.loc 1 520 0
+ 1293 02ae 40F20003 		movw	r3, #:lower16:ConvData1
+ 1294 02b2 C0F20003 		movt	r3, #:upper16:ConvData1
+ 1295 02b6 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1296 02b8 9BB2     		uxth	r3, r3
+ 1297 02ba 092B     		cmp	r3, #9
+ 1298 02bc 1ED8     		bhi	.L33
+ 1299              		.loc 1 520 0 is_stmt 0 discriminator 1
+ 1300 02be 40F20003 		movw	r3, #:lower16:ConvData2
+ 1301 02c2 C0F20003 		movt	r3, #:upper16:ConvData2
+ 1302 02c6 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1303 02c8 9BB2     		uxth	r3, r3
+ 1304 02ca 962B     		cmp	r3, #150
+ 1305 02cc 16D9     		bls	.L33
+ 1306 02ce 40F20003 		movw	r3, #:lower16:counter0
+ 1307 02d2 C0F20003 		movt	r3, #:upper16:counter0
+ 1308 02d6 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1309 02d8 9BB2     		uxth	r3, r3
+ 1310 02da B3F5FA7F 		cmp	r3, #500
+ 1311 02de 0DD0     		beq	.L33
+ 521:../src/selftest.c ****     {
+ 522:../src/selftest.c ****       counter0 ++;
+ 1312              		.loc 1 522 0 is_stmt 1
+ 1313 02e0 40F20003 		movw	r3, #:lower16:counter0
+ 1314 02e4 C0F20003 		movt	r3, #:upper16:counter0
+ 1315 02e8 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1316 02ea 9BB2     		uxth	r3, r3
+ 1317 02ec 03F10103 		add	r3, r3, #1
+ 1318 02f0 9AB2     		uxth	r2, r3
+ 1319 02f2 40F20003 		movw	r3, #:lower16:counter0
+ 1320 02f6 C0F20003 		movt	r3, #:upper16:counter0
+ 1321 02fa 1A80     		strh	r2, [r3, #0]	@ movhi
+ 1322              	.L33:
+ 523:../src/selftest.c ****     }
+ 524:../src/selftest.c ****     if((counter1 == 500) && (counter0 == 500))
+ 1323              		.loc 1 524 0
+ 1324 02fc 40F20003 		movw	r3, #:lower16:counter1
+ 1325 0300 C0F20003 		movt	r3, #:upper16:counter1
+ 1326 0304 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1327 0306 9BB2     		uxth	r3, r3
+ 1328 0308 B3F5FA7F 		cmp	r3, #500
+ 1329 030c 0BD1     		bne	.L29
+ 1330              		.loc 1 524 0 is_stmt 0 discriminator 1
+ 1331 030e 40F20003 		movw	r3, #:lower16:counter0
+ 1332 0312 C0F20003 		movt	r3, #:upper16:counter0
+ 1333 0316 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1334 0318 9BB2     		uxth	r3, r3
+ 1335 031a B3F5FA7F 		cmp	r3, #500
+ 1336 031e 02D1     		bne	.L29
+ 525:../src/selftest.c ****     {
+ 526:../src/selftest.c ****       audioteststatus = 1; 
+ 1337              		.loc 1 526 0 is_stmt 1
+ 1338 0320 4FF00103 		mov	r3, #1
+ 1339 0324 FB73     		strb	r3, [r7, #15]
+ 1340              	.L29:
+ 505:../src/selftest.c ****   while((audioteststatus == 0)&&(TimingDelay != 0))
+ 1341              		.loc 1 505 0 discriminator 1
+ 1342 0326 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1343 0328 002B     		cmp	r3, #0
+ 1344 032a 07D1     		bne	.L34
+ 505:../src/selftest.c ****   while((audioteststatus == 0)&&(TimingDelay != 0))
+ 1345              		.loc 1 505 0 is_stmt 0 discriminator 2
+ 1346 032c 40F20003 		movw	r3, #:lower16:TimingDelay
+ 1347 0330 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 1348 0334 1B68     		ldr	r3, [r3, #0]
+ 1349 0336 002B     		cmp	r3, #0
+ 1350 0338 7FF454AF 		bne	.L35
+ 1351              	.L34:
+ 527:../src/selftest.c ****     }
+ 528:../src/selftest.c ****   }
+ 529:../src/selftest.c ****   
+ 530:../src/selftest.c ****   /* Disable ADC Peripherals */ 
+ 531:../src/selftest.c ****   ADC_Cmd(ADC1, DISABLE);
+ 1352              		.loc 1 531 0 is_stmt 1
+ 1353 033c 4FF40050 		mov	r0, #8192
+ 1354 0340 C4F20100 		movt	r0, 16385
+ 1355 0344 4FF00001 		mov	r1, #0
+ 1356 0348 FFF7FEFF 		bl	ADC_Cmd
+ 532:../src/selftest.c ****   ADC_Cmd(ADC2, DISABLE);
+ 1357              		.loc 1 532 0
+ 1358 034c 4FF40450 		mov	r0, #8448
+ 1359 0350 C4F20100 		movt	r0, 16385
+ 1360 0354 4FF00001 		mov	r1, #0
+ 1361 0358 FFF7FEFF 		bl	ADC_Cmd
+ 533:../src/selftest.c ****   
+ 534:../src/selftest.c ****   /* Audio test status: FAIL */ 
+ 535:../src/selftest.c ****   if(audioteststatus == 0)
+ 1362              		.loc 1 535 0
+ 1363 035c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1364 035e 002B     		cmp	r3, #0
+ 1365 0360 01D1     		bne	.L36
+ 536:../src/selftest.c ****   {
+ 537:../src/selftest.c ****     Fail_Handler();
+ 1366              		.loc 1 537 0
+ 1367 0362 FFF7FEFF 		bl	Fail_Handler
+ 1368              	.L36:
+ 538:../src/selftest.c ****   }
+ 539:../src/selftest.c ****   
+ 540:../src/selftest.c ****   EVAL_AUDIO_DeInit();
+ 1369              		.loc 1 540 0
+ 1370 0366 FFF7FEFF 		bl	EVAL_AUDIO_DeInit
+ 541:../src/selftest.c ****   EVAL_AUDIO_SetAudioInterface(AUDIO_INTERFACE_DAC);
+ 1371              		.loc 1 541 0
+ 1372 036a 4FF00200 		mov	r0, #2
+ 1373 036e FFF7FEFF 		bl	EVAL_AUDIO_SetAudioInterface
+ 542:../src/selftest.c ****   /* Initialize the Audio codec and all related peripherals (I2S, I2C, IOs...) */  
+ 543:../src/selftest.c ****   if (EVAL_AUDIO_Init(OUTPUT_DEVICE_HEADPHONE, 100, I2S_AudioFreq_48k) !=0)
+ 1374              		.loc 1 543 0
+ 1375 0372 4FF00200 		mov	r0, #2
+ 1376 0376 4FF06401 		mov	r1, #100
+ 1377 037a 4BF68032 		movw	r2, #48000
+ 1378 037e FFF7FEFF 		bl	EVAL_AUDIO_Init
+ 1379 0382 0346     		mov	r3, r0
+ 1380 0384 002B     		cmp	r3, #0
+ 1381 0386 01D0     		beq	.L37
+ 544:../src/selftest.c ****   {
+ 545:../src/selftest.c ****     Fail_Handler();
+ 1382              		.loc 1 545 0
+ 1383 0388 FFF7FEFF 		bl	Fail_Handler
+ 1384              	.L37:
+ 546:../src/selftest.c ****   }
+ 547:../src/selftest.c ****   
+ 548:../src/selftest.c ****   /* DAC code to be exectued under the I2S interrupt */
+ 549:../src/selftest.c ****   DACTest = 1;
+ 1385              		.loc 1 549 0
+ 1386 038c 40F20003 		movw	r3, #:lower16:DACTest
+ 1387 0390 C0F20003 		movt	r3, #:upper16:DACTest
+ 1388 0394 4FF00102 		mov	r2, #1
+ 1389 0398 1A70     		strb	r2, [r3, #0]
+ 550:../src/selftest.c ****   counter1 = 0;
+ 1390              		.loc 1 550 0
+ 1391 039a 40F20003 		movw	r3, #:lower16:counter1
+ 1392 039e C0F20003 		movt	r3, #:upper16:counter1
+ 1393 03a2 4FF00002 		mov	r2, #0
+ 1394 03a6 1A80     		strh	r2, [r3, #0]	@ movhi
+ 551:../src/selftest.c ****   counter0 = 0;
+ 1395              		.loc 1 551 0
+ 1396 03a8 40F20003 		movw	r3, #:lower16:counter0
+ 1397 03ac C0F20003 		movt	r3, #:upper16:counter0
+ 1398 03b0 4FF00002 		mov	r2, #0
+ 1399 03b4 1A80     		strh	r2, [r3, #0]	@ movhi
+ 552:../src/selftest.c ****   audioteststatus = 0;
+ 1400              		.loc 1 552 0
+ 1401 03b6 4FF00003 		mov	r3, #0
+ 1402 03ba FB73     		strb	r3, [r7, #15]
+ 553:../src/selftest.c ****   
+ 554:../src/selftest.c ****   /* Enable ADC1 */
+ 555:../src/selftest.c ****   ADC_Cmd(ADC1, ENABLE);
+ 1403              		.loc 1 555 0
+ 1404 03bc 4FF40050 		mov	r0, #8192
+ 1405 03c0 C4F20100 		movt	r0, 16385
+ 1406 03c4 4FF00101 		mov	r1, #1
+ 1407 03c8 FFF7FEFF 		bl	ADC_Cmd
+ 556:../src/selftest.c ****   ADC_Cmd(ADC2, ENABLE);
+ 1408              		.loc 1 556 0
+ 1409 03cc 4FF40450 		mov	r0, #8448
+ 1410 03d0 C4F20100 		movt	r0, 16385
+ 1411 03d4 4FF00101 		mov	r1, #1
+ 1412 03d8 FFF7FEFF 		bl	ADC_Cmd
+ 557:../src/selftest.c ****   
+ 558:../src/selftest.c ****   TimingDelay = 500;
+ 1413              		.loc 1 558 0
+ 1414 03dc 40F20003 		movw	r3, #:lower16:TimingDelay
+ 1415 03e0 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 1416 03e4 4FF4FA72 		mov	r2, #500
+ 1417 03e8 1A60     		str	r2, [r3, #0]
+ 559:../src/selftest.c ****   /* Wait until detecting 50 data*/
+ 560:../src/selftest.c ****   while((audioteststatus == 0)&&(TimingDelay != 0))
+ 1418              		.loc 1 560 0
+ 1419 03ea A0E0     		b	.L38
+ 1420              	.L44:
+ 561:../src/selftest.c ****   {
+ 562:../src/selftest.c ****     
+ 563:../src/selftest.c ****     ADC_SoftwareStartConv(ADC1);
+ 1421              		.loc 1 563 0
+ 1422 03ec 4FF40050 		mov	r0, #8192
+ 1423 03f0 C4F20100 		movt	r0, 16385
+ 1424 03f4 FFF7FEFF 		bl	ADC_SoftwareStartConv
+ 564:../src/selftest.c ****     while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
+ 1425              		.loc 1 564 0
+ 1426 03f8 00BF     		nop
+ 1427              	.L39:
+ 1428              		.loc 1 564 0 is_stmt 0 discriminator 1
+ 1429 03fa 4FF40050 		mov	r0, #8192
+ 1430 03fe C4F20100 		movt	r0, 16385
+ 1431 0402 4FF00201 		mov	r1, #2
+ 1432 0406 FFF7FEFF 		bl	ADC_GetFlagStatus
+ 1433 040a 0346     		mov	r3, r0
+ 1434 040c 002B     		cmp	r3, #0
+ 1435 040e F4D0     		beq	.L39
+ 565:../src/selftest.c ****     
+ 566:../src/selftest.c ****     ConvData1 = ADC_GetConversionValue(ADC1); 
+ 1436              		.loc 1 566 0 is_stmt 1
+ 1437 0410 4FF40050 		mov	r0, #8192
+ 1438 0414 C4F20100 		movt	r0, 16385
+ 1439 0418 FFF7FEFF 		bl	ADC_GetConversionValue
+ 1440 041c 0346     		mov	r3, r0
+ 1441 041e 1A46     		mov	r2, r3
+ 1442 0420 40F20003 		movw	r3, #:lower16:ConvData1
+ 1443 0424 C0F20003 		movt	r3, #:upper16:ConvData1
+ 1444 0428 1A80     		strh	r2, [r3, #0]	@ movhi
+ 567:../src/selftest.c ****     
+ 568:../src/selftest.c ****     ADC_SoftwareStartConv(ADC2);
+ 1445              		.loc 1 568 0
+ 1446 042a 4FF40450 		mov	r0, #8448
+ 1447 042e C4F20100 		movt	r0, 16385
+ 1448 0432 FFF7FEFF 		bl	ADC_SoftwareStartConv
+ 569:../src/selftest.c ****     while(ADC_GetFlagStatus(ADC2, ADC_FLAG_EOC) == RESET);
+ 1449              		.loc 1 569 0
+ 1450 0436 00BF     		nop
+ 1451              	.L40:
+ 1452              		.loc 1 569 0 is_stmt 0 discriminator 1
+ 1453 0438 4FF40450 		mov	r0, #8448
+ 1454 043c C4F20100 		movt	r0, 16385
+ 1455 0440 4FF00201 		mov	r1, #2
+ 1456 0444 FFF7FEFF 		bl	ADC_GetFlagStatus
+ 1457 0448 0346     		mov	r3, r0
+ 1458 044a 002B     		cmp	r3, #0
+ 1459 044c F4D0     		beq	.L40
+ 570:../src/selftest.c ****     
+ 571:../src/selftest.c ****     ConvData2 = ADC_GetConversionValue(ADC2);
+ 1460              		.loc 1 571 0 is_stmt 1
+ 1461 044e 4FF40450 		mov	r0, #8448
+ 1462 0452 C4F20100 		movt	r0, 16385
+ 1463 0456 FFF7FEFF 		bl	ADC_GetConversionValue
+ 1464 045a 0346     		mov	r3, r0
+ 1465 045c 1A46     		mov	r2, r3
+ 1466 045e 40F20003 		movw	r3, #:lower16:ConvData2
+ 1467 0462 C0F20003 		movt	r3, #:upper16:ConvData2
+ 1468 0466 1A80     		strh	r2, [r3, #0]	@ movhi
+ 572:../src/selftest.c ****     
+ 573:../src/selftest.c ****     /* 2.0V equals to 170 */
+ 574:../src/selftest.c ****     if ((ConvData1 > 170) && (ConvData2 > 170) &&(counter1 != 500))
+ 1469              		.loc 1 574 0
+ 1470 0468 40F20003 		movw	r3, #:lower16:ConvData1
+ 1471 046c C0F20003 		movt	r3, #:upper16:ConvData1
+ 1472 0470 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1473 0472 9BB2     		uxth	r3, r3
+ 1474 0474 AA2B     		cmp	r3, #170
+ 1475 0476 1ED9     		bls	.L41
+ 1476              		.loc 1 574 0 is_stmt 0 discriminator 1
+ 1477 0478 40F20003 		movw	r3, #:lower16:ConvData2
+ 1478 047c C0F20003 		movt	r3, #:upper16:ConvData2
+ 1479 0480 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1480 0482 9BB2     		uxth	r3, r3
+ 1481 0484 AA2B     		cmp	r3, #170
+ 1482 0486 16D9     		bls	.L41
+ 1483 0488 40F20003 		movw	r3, #:lower16:counter1
+ 1484 048c C0F20003 		movt	r3, #:upper16:counter1
+ 1485 0490 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1486 0492 9BB2     		uxth	r3, r3
+ 1487 0494 B3F5FA7F 		cmp	r3, #500
+ 1488 0498 0DD0     		beq	.L41
+ 575:../src/selftest.c ****     {
+ 576:../src/selftest.c ****       counter1 ++;
+ 1489              		.loc 1 576 0 is_stmt 1
+ 1490 049a 40F20003 		movw	r3, #:lower16:counter1
+ 1491 049e C0F20003 		movt	r3, #:upper16:counter1
+ 1492 04a2 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1493 04a4 9BB2     		uxth	r3, r3
+ 1494 04a6 03F10103 		add	r3, r3, #1
+ 1495 04aa 9AB2     		uxth	r2, r3
+ 1496 04ac 40F20003 		movw	r3, #:lower16:counter1
+ 1497 04b0 C0F20003 		movt	r3, #:upper16:counter1
+ 1498 04b4 1A80     		strh	r2, [r3, #0]	@ movhi
+ 1499              	.L41:
+ 577:../src/selftest.c ****     }
+ 578:../src/selftest.c ****     if ((ConvData1 < 10) && (ConvData2 < 10) && (counter0 != 500))
+ 1500              		.loc 1 578 0
+ 1501 04b6 40F20003 		movw	r3, #:lower16:ConvData1
+ 1502 04ba C0F20003 		movt	r3, #:upper16:ConvData1
+ 1503 04be 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1504 04c0 9BB2     		uxth	r3, r3
+ 1505 04c2 092B     		cmp	r3, #9
+ 1506 04c4 1ED8     		bhi	.L42
+ 1507              		.loc 1 578 0 is_stmt 0 discriminator 1
+ 1508 04c6 40F20003 		movw	r3, #:lower16:ConvData2
+ 1509 04ca C0F20003 		movt	r3, #:upper16:ConvData2
+ 1510 04ce 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1511 04d0 9BB2     		uxth	r3, r3
+ 1512 04d2 092B     		cmp	r3, #9
+ 1513 04d4 16D8     		bhi	.L42
+ 1514 04d6 40F20003 		movw	r3, #:lower16:counter0
+ 1515 04da C0F20003 		movt	r3, #:upper16:counter0
+ 1516 04de 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1517 04e0 9BB2     		uxth	r3, r3
+ 1518 04e2 B3F5FA7F 		cmp	r3, #500
+ 1519 04e6 0DD0     		beq	.L42
+ 579:../src/selftest.c ****     {
+ 580:../src/selftest.c ****       counter0 ++;
+ 1520              		.loc 1 580 0 is_stmt 1
+ 1521 04e8 40F20003 		movw	r3, #:lower16:counter0
+ 1522 04ec C0F20003 		movt	r3, #:upper16:counter0
+ 1523 04f0 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1524 04f2 9BB2     		uxth	r3, r3
+ 1525 04f4 03F10103 		add	r3, r3, #1
+ 1526 04f8 9AB2     		uxth	r2, r3
+ 1527 04fa 40F20003 		movw	r3, #:lower16:counter0
+ 1528 04fe C0F20003 		movt	r3, #:upper16:counter0
+ 1529 0502 1A80     		strh	r2, [r3, #0]	@ movhi
+ 1530              	.L42:
+ 581:../src/selftest.c ****     }
+ 582:../src/selftest.c ****     if((counter1 == 500) && (counter0 == 500))
+ 1531              		.loc 1 582 0
+ 1532 0504 40F20003 		movw	r3, #:lower16:counter1
+ 1533 0508 C0F20003 		movt	r3, #:upper16:counter1
+ 1534 050c 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1535 050e 9BB2     		uxth	r3, r3
+ 1536 0510 B3F5FA7F 		cmp	r3, #500
+ 1537 0514 0BD1     		bne	.L38
+ 1538              		.loc 1 582 0 is_stmt 0 discriminator 1
+ 1539 0516 40F20003 		movw	r3, #:lower16:counter0
+ 1540 051a C0F20003 		movt	r3, #:upper16:counter0
+ 1541 051e 1B88     		ldrh	r3, [r3, #0]	@ movhi
+ 1542 0520 9BB2     		uxth	r3, r3
+ 1543 0522 B3F5FA7F 		cmp	r3, #500
+ 1544 0526 02D1     		bne	.L38
+ 583:../src/selftest.c ****     {
+ 584:../src/selftest.c ****       audioteststatus = 1; 
+ 1545              		.loc 1 584 0 is_stmt 1
+ 1546 0528 4FF00103 		mov	r3, #1
+ 1547 052c FB73     		strb	r3, [r7, #15]
+ 1548              	.L38:
+ 560:../src/selftest.c ****   while((audioteststatus == 0)&&(TimingDelay != 0))
+ 1549              		.loc 1 560 0 discriminator 1
+ 1550 052e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1551 0530 002B     		cmp	r3, #0
+ 1552 0532 07D1     		bne	.L43
+ 560:../src/selftest.c ****   while((audioteststatus == 0)&&(TimingDelay != 0))
+ 1553              		.loc 1 560 0 is_stmt 0 discriminator 2
+ 1554 0534 40F20003 		movw	r3, #:lower16:TimingDelay
+ 1555 0538 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 1556 053c 1B68     		ldr	r3, [r3, #0]
+ 1557 053e 002B     		cmp	r3, #0
+ 1558 0540 7FF454AF 		bne	.L44
+ 1559              	.L43:
+ 585:../src/selftest.c ****     }
+ 586:../src/selftest.c ****   }
+ 587:../src/selftest.c ****   
+ 588:../src/selftest.c ****   /* Audio test status: FAIL */ 
+ 589:../src/selftest.c ****   if(audioteststatus == 0x00)
+ 1560              		.loc 1 589 0 is_stmt 1
+ 1561 0544 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1562 0546 002B     		cmp	r3, #0
+ 1563 0548 01D1     		bne	.L45
+ 590:../src/selftest.c ****   {
+ 591:../src/selftest.c ****     Fail_Handler();
+ 1564              		.loc 1 591 0
+ 1565 054a FFF7FEFF 		bl	Fail_Handler
+ 1566              	.L45:
+ 592:../src/selftest.c ****   }
+ 593:../src/selftest.c ****   
+ 594:../src/selftest.c ****   /* Turn Green LED ON: signaling Audio USB Test part2 PASS */
+ 595:../src/selftest.c ****   STM_EVAL_LEDOn(LED4);
+ 1567              		.loc 1 595 0
+ 1568 054e 4FF00000 		mov	r0, #0
+ 1569 0552 FFF7FEFF 		bl	STM_EVAL_LEDOn
+ 596:../src/selftest.c ****   
+ 597:../src/selftest.c ****   /* Waiting User_Button pressed */
+ 598:../src/selftest.c ****   while (STM_EVAL_PBGetState(BUTTON_USER) == Bit_RESET)
+ 1570              		.loc 1 598 0
+ 1571 0556 00BF     		nop
+ 1572              	.L46:
+ 1573              		.loc 1 598 0 is_stmt 0 discriminator 1
+ 1574 0558 4FF00000 		mov	r0, #0
+ 1575 055c FFF7FEFF 		bl	STM_EVAL_PBGetState
+ 1576 0560 0346     		mov	r3, r0
+ 1577 0562 002B     		cmp	r3, #0
+ 1578 0564 F8D0     		beq	.L46
+ 599:../src/selftest.c ****   {}
+ 600:../src/selftest.c ****   
+ 601:../src/selftest.c ****   /* Turn Green LED OFF: signaling the end of Audio USB Test part2 */
+ 602:../src/selftest.c ****   STM_EVAL_LEDOff(LED4);
+ 1579              		.loc 1 602 0 is_stmt 1
+ 1580 0566 4FF00000 		mov	r0, #0
+ 1581 056a FFF7FEFF 		bl	STM_EVAL_LEDOff
+ 603:../src/selftest.c **** }
+ 1582              		.loc 1 603 0
+ 1583 056e 07F11007 		add	r7, r7, #16
+ 1584 0572 BD46     		mov	sp, r7
+ 1585 0574 80BD     		pop	{r7, pc}
+ 1586              		.cfi_endproc
+ 1587              	.LFE112:
+ 1589 0576 00BF     		.section	.text.Microphone_MEMS_Test,"ax",%progbits
+ 1590              		.align	2
+ 1591              		.global	Microphone_MEMS_Test
+ 1592              		.thumb
+ 1593              		.thumb_func
+ 1595              	Microphone_MEMS_Test:
+ 1596              	.LFB113:
+ 604:../src/selftest.c **** 
+ 605:../src/selftest.c **** /**
+ 606:../src/selftest.c ****   * @brief Test Micophone MEMS Hardware.
+ 607:../src/selftest.c ****   *   The main objectif of this test is to check the hardware connection of the 
+ 608:../src/selftest.c ****   *   Microphone MEMS peripheral.
+ 609:../src/selftest.c ****   * @param None
+ 610:../src/selftest.c ****   * @retval None
+ 611:../src/selftest.c ****   */
+ 612:../src/selftest.c **** void Microphone_MEMS_Test(void)
+ 613:../src/selftest.c **** {
+ 1597              		.loc 1 613 0
+ 1598              		.cfi_startproc
+ 1599              		@ args = 0, pretend = 0, frame = 32
+ 1600              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1601 0000 80B5     		push	{r7, lr}
+ 1602              	.LCFI9:
+ 1603              		.cfi_def_cfa_offset 8
+ 1604              		.cfi_offset 14, -4
+ 1605              		.cfi_offset 7, -8
+ 1606 0002 88B0     		sub	sp, sp, #32
+ 1607              	.LCFI10:
+ 1608              		.cfi_def_cfa_offset 40
+ 1609 0004 00AF     		add	r7, sp, #0
+ 1610              	.LCFI11:
+ 1611              		.cfi_def_cfa_register 7
+ 614:../src/selftest.c ****   uint16_t data = 0x00;
+ 1612              		.loc 1 614 0
+ 1613 0006 4FF00003 		mov	r3, #0
+ 1614 000a BB83     		strh	r3, [r7, #28]	@ movhi
+ 615:../src/selftest.c ****   uint8_t index = 0x00;
+ 1615              		.loc 1 615 0
+ 1616 000c 4FF00003 		mov	r3, #0
+ 1617 0010 FB77     		strb	r3, [r7, #31]
+ 616:../src/selftest.c ****   I2S_InitTypeDef  I2S_InitStructure;
+ 617:../src/selftest.c ****   GPIO_InitTypeDef GPIO_InitStructure;
+ 618:../src/selftest.c **** 
+ 619:../src/selftest.c ****   /* Enable the SPI clock */
+ 620:../src/selftest.c ****   RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, ENABLE);
+ 1618              		.loc 1 620 0
+ 1619 0012 4FF48040 		mov	r0, #16384
+ 1620 0016 4FF00101 		mov	r1, #1
+ 1621 001a FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 621:../src/selftest.c **** 
+ 622:../src/selftest.c ****   /* Enable GPIO clocks */
+ 623:../src/selftest.c ****   RCC_AHB1PeriphClockCmd(SPI_SCK_GPIO_CLK | SPI_MOSI_GPIO_CLK, ENABLE);
+ 1622              		.loc 1 623 0
+ 1623 001e 4FF00600 		mov	r0, #6
+ 1624 0022 4FF00101 		mov	r1, #1
+ 1625 0026 FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+ 624:../src/selftest.c **** 
+ 625:../src/selftest.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+ 1626              		.loc 1 625 0
+ 1627 002a 4FF00203 		mov	r3, #2
+ 1628 002e 3B72     		strb	r3, [r7, #8]
+ 626:../src/selftest.c ****   GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+ 1629              		.loc 1 626 0
+ 1630 0030 4FF00003 		mov	r3, #0
+ 1631 0034 BB72     		strb	r3, [r7, #10]
+ 627:../src/selftest.c ****   GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_UP;
+ 1632              		.loc 1 627 0
+ 1633 0036 4FF00103 		mov	r3, #1
+ 1634 003a FB72     		strb	r3, [r7, #11]
+ 628:../src/selftest.c ****   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_25MHz;
+ 1635              		.loc 1 628 0
+ 1636 003c 4FF00103 		mov	r3, #1
+ 1637 0040 7B72     		strb	r3, [r7, #9]
+ 629:../src/selftest.c **** 
+ 630:../src/selftest.c ****   /* SPI SCK pin configuration */
+ 631:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin = SPI_SCK_PIN;
+ 1638              		.loc 1 631 0
+ 1639 0042 4FF48063 		mov	r3, #1024
+ 1640 0046 7B60     		str	r3, [r7, #4]
+ 632:../src/selftest.c ****   GPIO_Init(SPI_SCK_GPIO_PORT, &GPIO_InitStructure);
+ 1641              		.loc 1 632 0
+ 1642 0048 4FF48060 		mov	r0, #1024
+ 1643 004c C4F20200 		movt	r0, 16386
+ 1644 0050 07F10403 		add	r3, r7, #4
+ 1645 0054 1946     		mov	r1, r3
+ 1646 0056 FFF7FEFF 		bl	GPIO_Init
+ 633:../src/selftest.c ****   
+ 634:../src/selftest.c ****   /* Connect SPI pins to AF5 */  
+ 635:../src/selftest.c ****   GPIO_PinAFConfig(SPI_SCK_GPIO_PORT, SPI_SCK_SOURCE, SPI_SCK_AF);
+ 1647              		.loc 1 635 0
+ 1648 005a 4FF48060 		mov	r0, #1024
+ 1649 005e C4F20200 		movt	r0, 16386
+ 1650 0062 4FF00A01 		mov	r1, #10
+ 1651 0066 4FF00502 		mov	r2, #5
+ 1652 006a FFF7FEFF 		bl	GPIO_PinAFConfig
+ 636:../src/selftest.c ****   
+ 637:../src/selftest.c ****   /* SPI MOSI pin configuration */
+ 638:../src/selftest.c ****   GPIO_InitStructure.GPIO_Pin =  SPI_MOSI_PIN;
+ 1653              		.loc 1 638 0
+ 1654 006e 4FF00803 		mov	r3, #8
+ 1655 0072 7B60     		str	r3, [r7, #4]
+ 639:../src/selftest.c ****   GPIO_Init(SPI_MOSI_GPIO_PORT, &GPIO_InitStructure);
+ 1656              		.loc 1 639 0
+ 1657 0074 4FF40060 		mov	r0, #2048
+ 1658 0078 C4F20200 		movt	r0, 16386
+ 1659 007c 07F10403 		add	r3, r7, #4
+ 1660 0080 1946     		mov	r1, r3
+ 1661 0082 FFF7FEFF 		bl	GPIO_Init
+ 640:../src/selftest.c ****   
+ 641:../src/selftest.c ****   GPIO_PinAFConfig(SPI_MOSI_GPIO_PORT, SPI_MOSI_SOURCE, SPI_MOSI_AF);
+ 1662              		.loc 1 641 0
+ 1663 0086 4FF40060 		mov	r0, #2048
+ 1664 008a C4F20200 		movt	r0, 16386
+ 1665 008e 4FF00301 		mov	r1, #3
+ 1666 0092 4FF00502 		mov	r2, #5
+ 1667 0096 FFF7FEFF 		bl	GPIO_PinAFConfig
+ 642:../src/selftest.c ****   
+ 643:../src/selftest.c ****   /* I2S configuration -------------------------------------------------------*/
+ 644:../src/selftest.c ****   SPI_I2S_DeInit(SPI2);
+ 1668              		.loc 1 644 0
+ 1669 009a 4FF46050 		mov	r0, #14336
+ 1670 009e C4F20000 		movt	r0, 16384
+ 1671 00a2 FFF7FEFF 		bl	SPI_I2S_DeInit
+ 645:../src/selftest.c ****   I2S_InitStructure.I2S_AudioFreq = 64000;
+ 1672              		.loc 1 645 0
+ 1673 00a6 4FF47A43 		mov	r3, #64000
+ 1674 00aa 7B61     		str	r3, [r7, #20]
+ 646:../src/selftest.c ****   I2S_InitStructure.I2S_Standard = I2S_Standard_MSB;
+ 1675              		.loc 1 646 0
+ 1676 00ac 4FF01003 		mov	r3, #16
+ 1677 00b0 FB81     		strh	r3, [r7, #14]	@ movhi
+ 647:../src/selftest.c ****   I2S_InitStructure.I2S_DataFormat = I2S_DataFormat_16b;
+ 1678              		.loc 1 647 0
+ 1679 00b2 4FF00003 		mov	r3, #0
+ 1680 00b6 3B82     		strh	r3, [r7, #16]	@ movhi
+ 648:../src/selftest.c ****   I2S_InitStructure.I2S_CPOL = I2S_CPOL_Low;
+ 1681              		.loc 1 648 0
+ 1682 00b8 4FF00003 		mov	r3, #0
+ 1683 00bc 3B83     		strh	r3, [r7, #24]	@ movhi
+ 649:../src/selftest.c ****   I2S_InitStructure.I2S_Mode = I2S_Mode_MasterRx;
+ 1684              		.loc 1 649 0
+ 1685 00be 4FF44073 		mov	r3, #768
+ 1686 00c2 BB81     		strh	r3, [r7, #12]	@ movhi
+ 650:../src/selftest.c ****   I2S_InitStructure.I2S_MCLKOutput = I2S_MCLKOutput_Disable;
+ 1687              		.loc 1 650 0
+ 1688 00c4 4FF00003 		mov	r3, #0
+ 1689 00c8 7B82     		strh	r3, [r7, #18]	@ movhi
+ 651:../src/selftest.c ****   /* Initialize the I2S peripheral with the structure above */
+ 652:../src/selftest.c ****   I2S_Init(SPI2, &I2S_InitStructure);
+ 1690              		.loc 1 652 0
+ 1691 00ca 4FF46050 		mov	r0, #14336
+ 1692 00ce C4F20000 		movt	r0, 16384
+ 1693 00d2 07F10C03 		add	r3, r7, #12
+ 1694 00d6 1946     		mov	r1, r3
+ 1695 00d8 FFF7FEFF 		bl	I2S_Init
+ 653:../src/selftest.c ****   
+ 654:../src/selftest.c ****   /* Enable the I2S peripheral */
+ 655:../src/selftest.c ****   I2S_Cmd(SPI2, ENABLE);
+ 1696              		.loc 1 655 0
+ 1697 00dc 4FF46050 		mov	r0, #14336
+ 1698 00e0 C4F20000 		movt	r0, 16384
+ 1699 00e4 4FF00101 		mov	r1, #1
+ 1700 00e8 FFF7FEFF 		bl	I2S_Cmd
+ 656:../src/selftest.c ****   
+ 657:../src/selftest.c ****   /* Waiting until MEMS microphone ready : Wake-up Time */
+ 658:../src/selftest.c ****   Delay(10);
+ 1701              		.loc 1 658 0
+ 1702 00ec 4FF00A00 		mov	r0, #10
+ 1703 00f0 FFF7FEFF 		bl	Delay
+ 659:../src/selftest.c ****   
+ 660:../src/selftest.c ****   TimingDelay = 500;
+ 1704              		.loc 1 660 0
+ 1705 00f4 40F20003 		movw	r3, #:lower16:TimingDelay
+ 1706 00f8 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 1707 00fc 4FF4FA72 		mov	r2, #500
+ 1708 0100 1A60     		str	r2, [r3, #0]
+ 661:../src/selftest.c ****   /* Wait until detect the click on the MEMS microphone or TimeOut delay*/
+ 662:../src/selftest.c ****   while((index < 30) && (TimingDelay != 0x00))
+ 1709              		.loc 1 662 0
+ 1710 0102 23E0     		b	.L48
+ 1711              	.L54:
+ 663:../src/selftest.c ****   { 
+ 664:../src/selftest.c ****     /* Waiting RXNE Flag or TimeOut delay */
+ 665:../src/selftest.c ****     while((SPI_I2S_GetFlagStatus(SPI2, SPI_FLAG_RXNE) == RESET)&& (TimingDelay != 0x00))
+ 1712              		.loc 1 665 0
+ 1713 0104 00BF     		nop
+ 1714              	.L50:
+ 1715              		.loc 1 665 0 is_stmt 0 discriminator 1
+ 1716 0106 4FF46050 		mov	r0, #14336
+ 1717 010a C4F20000 		movt	r0, 16384
+ 1718 010e 4FF00101 		mov	r1, #1
+ 1719 0112 FFF7FEFF 		bl	SPI_I2S_GetFlagStatus
+ 1720 0116 0346     		mov	r3, r0
+ 1721 0118 002B     		cmp	r3, #0
+ 1722 011a 06D1     		bne	.L49
+ 1723              		.loc 1 665 0 discriminator 2
+ 1724 011c 40F20003 		movw	r3, #:lower16:TimingDelay
+ 1725 0120 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 1726 0124 1B68     		ldr	r3, [r3, #0]
+ 1727 0126 002B     		cmp	r3, #0
+ 1728 0128 EDD1     		bne	.L50
+ 1729              	.L49:
+ 666:../src/selftest.c ****     {}
+ 667:../src/selftest.c ****     data = SPI_I2S_ReceiveData(SPI2);
+ 1730              		.loc 1 667 0 is_stmt 1
+ 1731 012a 4FF46050 		mov	r0, #14336
+ 1732 012e C4F20000 		movt	r0, 16384
+ 1733 0132 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 1734 0136 0346     		mov	r3, r0
+ 1735 0138 BB83     		strh	r3, [r7, #28]	@ movhi
+ 668:../src/selftest.c ****     if (data == 0xFFFF)
+ 1736              		.loc 1 668 0
+ 1737 013a BA8B     		ldrh	r2, [r7, #28]
+ 1738 013c 4FF6FF73 		movw	r3, #65535
+ 1739 0140 9A42     		cmp	r2, r3
+ 1740 0142 03D1     		bne	.L48
+ 669:../src/selftest.c ****     {
+ 670:../src/selftest.c ****       index++;  
+ 1741              		.loc 1 670 0
+ 1742 0144 FB7F     		ldrb	r3, [r7, #31]
+ 1743 0146 03F10103 		add	r3, r3, #1
+ 1744 014a FB77     		strb	r3, [r7, #31]
+ 1745              	.L48:
+ 662:../src/selftest.c ****   while((index < 30) && (TimingDelay != 0x00))
+ 1746              		.loc 1 662 0 discriminator 1
+ 1747 014c FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 1748 014e 1D2B     		cmp	r3, #29
+ 1749 0150 06D8     		bhi	.L51
+ 662:../src/selftest.c ****   while((index < 30) && (TimingDelay != 0x00))
+ 1750              		.loc 1 662 0 is_stmt 0 discriminator 2
+ 1751 0152 40F20003 		movw	r3, #:lower16:TimingDelay
+ 1752 0156 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 1753 015a 1B68     		ldr	r3, [r3, #0]
+ 1754 015c 002B     		cmp	r3, #0
+ 1755 015e D1D1     		bne	.L54
+ 1756              	.L51:
+ 671:../src/selftest.c ****     }
+ 672:../src/selftest.c ****   }
+ 673:../src/selftest.c ****   
+ 674:../src/selftest.c ****   /* MEMS microphone test status: Timeout occurs */
+ 675:../src/selftest.c ****   if(index != 30)
+ 1757              		.loc 1 675 0 is_stmt 1
+ 1758 0160 FB7F     		ldrb	r3, [r7, #31]	@ zero_extendqisi2
+ 1759 0162 1E2B     		cmp	r3, #30
+ 1760 0164 01D0     		beq	.L47
+ 676:../src/selftest.c ****   {
+ 677:../src/selftest.c ****     Fail_Handler();
+ 1761              		.loc 1 677 0
+ 1762 0166 FFF7FEFF 		bl	Fail_Handler
+ 1763              	.L47:
+ 678:../src/selftest.c ****   }
+ 679:../src/selftest.c **** }
+ 1764              		.loc 1 679 0
+ 1765 016a 07F12007 		add	r7, r7, #32
+ 1766 016e BD46     		mov	sp, r7
+ 1767 0170 80BD     		pop	{r7, pc}
+ 1768              		.cfi_endproc
+ 1769              	.LFE113:
+ 1771 0172 00BF     		.section	.text.EVAL_AUDIO_TransferComplete_CallBack,"ax",%progbits
+ 1772              		.align	2
+ 1773              		.global	EVAL_AUDIO_TransferComplete_CallBack
+ 1774              		.thumb
+ 1775              		.thumb_func
+ 1777              	EVAL_AUDIO_TransferComplete_CallBack:
+ 1778              	.LFB114:
+ 680:../src/selftest.c **** 
+ 681:../src/selftest.c **** /*--------------------------------
+ 682:../src/selftest.c ****        Callbacks implementation:
+ 683:../src/selftest.c ****            the callbacks prototypes are defined in the stm324xg_eval_audio_codec.h file
+ 684:../src/selftest.c ****            and their implementation should be done in the user code if they are needed.
+ 685:../src/selftest.c ****            Below some examples of callback implementations.
+ 686:../src/selftest.c ****                                      --------------------------------------------------------*/
+ 687:../src/selftest.c **** /**
+ 688:../src/selftest.c ****   * @brief  Calculates the remaining file size and new position of the pointer.
+ 689:../src/selftest.c ****   * @param  None
+ 690:../src/selftest.c ****   * @retval None
+ 691:../src/selftest.c ****   */
+ 692:../src/selftest.c **** void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size)
+ 693:../src/selftest.c **** {
+ 1779              		.loc 1 693 0
+ 1780              		.cfi_startproc
+ 1781              		@ args = 0, pretend = 0, frame = 8
+ 1782              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1783              		@ link register save eliminated.
+ 1784 0000 80B4     		push	{r7}
+ 1785              	.LCFI12:
+ 1786              		.cfi_def_cfa_offset 4
+ 1787              		.cfi_offset 7, -4
+ 1788 0002 83B0     		sub	sp, sp, #12
+ 1789              	.LCFI13:
+ 1790              		.cfi_def_cfa_offset 16
+ 1791 0004 00AF     		add	r7, sp, #0
+ 1792              	.LCFI14:
+ 1793              		.cfi_def_cfa_register 7
+ 1794 0006 7860     		str	r0, [r7, #4]
+ 1795 0008 3960     		str	r1, [r7, #0]
+ 694:../src/selftest.c ****   /* Calculate the remaining audio data in the file and the new size 
+ 695:../src/selftest.c ****      for the DMA transfer. If the Audio files size is less than the DMA max 
+ 696:../src/selftest.c ****      data transfer size, so there is no calculation to be done, just restart 
+ 697:../src/selftest.c ****      from the beginning of the file ... */
+ 698:../src/selftest.c ****   /* Check if the end of file has been reached */
+ 699:../src/selftest.c **** 
+ 700:../src/selftest.c **** }
+ 1796              		.loc 1 700 0
+ 1797 000a 07F10C07 		add	r7, r7, #12
+ 1798 000e BD46     		mov	sp, r7
+ 1799 0010 80BC     		pop	{r7}
+ 1800 0012 7047     		bx	lr
+ 1801              		.cfi_endproc
+ 1802              	.LFE114:
+ 1804              		.section	.text.EVAL_AUDIO_HalfTransfer_CallBack,"ax",%progbits
+ 1805              		.align	2
+ 1806              		.global	EVAL_AUDIO_HalfTransfer_CallBack
+ 1807              		.thumb
+ 1808              		.thumb_func
+ 1810              	EVAL_AUDIO_HalfTransfer_CallBack:
+ 1811              	.LFB115:
+ 701:../src/selftest.c **** 
+ 702:../src/selftest.c **** /**
+ 703:../src/selftest.c ****   * @brief  Manages the DMA Half Transfer complete interrupt.
+ 704:../src/selftest.c ****   * @param  None
+ 705:../src/selftest.c ****   * @retval None
+ 706:../src/selftest.c ****   */
+ 707:../src/selftest.c **** void EVAL_AUDIO_HalfTransfer_CallBack(uint32_t pBuffer, uint32_t Size)
+ 708:../src/selftest.c **** {  
+ 1812              		.loc 1 708 0
+ 1813              		.cfi_startproc
+ 1814              		@ args = 0, pretend = 0, frame = 8
+ 1815              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1816              		@ link register save eliminated.
+ 1817 0000 80B4     		push	{r7}
+ 1818              	.LCFI15:
+ 1819              		.cfi_def_cfa_offset 4
+ 1820              		.cfi_offset 7, -4
+ 1821 0002 83B0     		sub	sp, sp, #12
+ 1822              	.LCFI16:
+ 1823              		.cfi_def_cfa_offset 16
+ 1824 0004 00AF     		add	r7, sp, #0
+ 1825              	.LCFI17:
+ 1826              		.cfi_def_cfa_register 7
+ 1827 0006 7860     		str	r0, [r7, #4]
+ 1828 0008 3960     		str	r1, [r7, #0]
+ 709:../src/selftest.c **** #ifdef AUDIO_MAL_MODE_CIRCULAR
+ 710:../src/selftest.c ****   
+ 711:../src/selftest.c ****   /* Display message on the LCD screen */
+ 712:../src/selftest.c ****   LCD_DisplayStringLine(Line8, " 1/2 Buffer Reached "); 
+ 713:../src/selftest.c ****   
+ 714:../src/selftest.c **** #endif /* AUDIO_MAL_MODE_CIRCULAR */
+ 715:../src/selftest.c ****   
+ 716:../src/selftest.c ****   /* Generally this interrupt routine is used to load the buffer when 
+ 717:../src/selftest.c ****   a streaming scheme is used: When first Half buffer is already transferred load 
+ 718:../src/selftest.c ****   the new data to the first half of buffer while DMA is transferring data from 
+ 719:../src/selftest.c ****   the second half. And when Transfer complete occurs, load the second half of 
+ 720:../src/selftest.c ****   the buffer while the DMA is transferring from the first half ... */
+ 721:../src/selftest.c ****   /* 
+ 722:../src/selftest.c ****     ...........
+ 723:../src/selftest.c ****                    */
+ 724:../src/selftest.c **** }
+ 1829              		.loc 1 724 0
+ 1830 000a 07F10C07 		add	r7, r7, #12
+ 1831 000e BD46     		mov	sp, r7
+ 1832 0010 80BC     		pop	{r7}
+ 1833 0012 7047     		bx	lr
+ 1834              		.cfi_endproc
+ 1835              	.LFE115:
+ 1837              		.section	.text.EVAL_AUDIO_GetSampleCallBack,"ax",%progbits
+ 1838              		.align	2
+ 1839              		.global	EVAL_AUDIO_GetSampleCallBack
+ 1840              		.thumb
+ 1841              		.thumb_func
+ 1843              	EVAL_AUDIO_GetSampleCallBack:
+ 1844              	.LFB116:
+ 725:../src/selftest.c **** /**
+ 726:../src/selftest.c ****   * @brief  Get next data sample callback
+ 727:../src/selftest.c ****   * @param  None
+ 728:../src/selftest.c ****   * @retval Next data sample to be sent
+ 729:../src/selftest.c ****   */
+ 730:../src/selftest.c **** uint16_t EVAL_AUDIO_GetSampleCallBack(void)
+ 731:../src/selftest.c **** {
+ 1845              		.loc 1 731 0
+ 1846              		.cfi_startproc
+ 1847              		@ args = 0, pretend = 0, frame = 8
+ 1848              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1849              		@ link register save eliminated.
+ 1850 0000 80B4     		push	{r7}
+ 1851              	.LCFI18:
+ 1852              		.cfi_def_cfa_offset 4
+ 1853              		.cfi_offset 7, -4
+ 1854 0002 83B0     		sub	sp, sp, #12
+ 1855              	.LCFI19:
+ 1856              		.cfi_def_cfa_offset 16
+ 1857 0004 00AF     		add	r7, sp, #0
+ 1858              	.LCFI20:
+ 1859              		.cfi_def_cfa_register 7
+ 732:../src/selftest.c ****   uint16_t data = 0;
+ 1860              		.loc 1 732 0
+ 1861 0006 4FF00003 		mov	r3, #0
+ 1862 000a FB80     		strh	r3, [r7, #6]	@ movhi
+ 733:../src/selftest.c ****   
+ 734:../src/selftest.c ****   if (DACTest == 0)
+ 1863              		.loc 1 734 0
+ 1864 000c 40F20003 		movw	r3, #:lower16:DACTest
+ 1865 0010 C0F20003 		movt	r3, #:upper16:DACTest
+ 1866 0014 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1867 0016 002B     		cmp	r3, #0
+ 1868 0018 5CD1     		bne	.L58
+ 735:../src/selftest.c ****   {
+ 736:../src/selftest.c ****     if (Left_Right==0)
+ 1869              		.loc 1 736 0
+ 1870 001a 40F20003 		movw	r3, #:lower16:Left_Right
+ 1871 001e C0F20003 		movt	r3, #:upper16:Left_Right
+ 1872 0022 1B88     		ldrh	r3, [r3, #0]
+ 1873 0024 002B     		cmp	r3, #0
+ 1874 0026 2AD1     		bne	.L59
+ 737:../src/selftest.c ****     {
+ 738:../src/selftest.c ****       /* Get the next sample to be sent */
+ 739:../src/selftest.c ****       data = sinebuf[count++];
+ 1875              		.loc 1 739 0
+ 1876 0028 40F20003 		movw	r3, #:lower16:count
+ 1877 002c C0F20003 		movt	r3, #:upper16:count
+ 1878 0030 1A88     		ldrh	r2, [r3, #0]
+ 1879 0032 1146     		mov	r1, r2
+ 1880 0034 40F20003 		movw	r3, #:lower16:sinebuf
+ 1881 0038 C0F20003 		movt	r3, #:upper16:sinebuf
+ 1882 003c 33F81130 		ldrh	r3, [r3, r1, lsl #1]
+ 1883 0040 FB80     		strh	r3, [r7, #6]	@ movhi
+ 1884 0042 02F10103 		add	r3, r2, #1
+ 1885 0046 9AB2     		uxth	r2, r3
+ 1886 0048 40F20003 		movw	r3, #:lower16:count
+ 1887 004c C0F20003 		movt	r3, #:upper16:count
+ 1888 0050 1A80     		strh	r2, [r3, #0]	@ movhi
+ 740:../src/selftest.c ****       
+ 741:../src/selftest.c ****       if (count == 48)
+ 1889              		.loc 1 741 0
+ 1890 0052 40F20003 		movw	r3, #:lower16:count
+ 1891 0056 C0F20003 		movt	r3, #:upper16:count
+ 1892 005a 1B88     		ldrh	r3, [r3, #0]
+ 1893 005c 302B     		cmp	r3, #48
+ 1894 005e 06D1     		bne	.L60
+ 742:../src/selftest.c ****       {
+ 743:../src/selftest.c ****         count = 0x00;
+ 1895              		.loc 1 743 0
+ 1896 0060 40F20003 		movw	r3, #:lower16:count
+ 1897 0064 C0F20003 		movt	r3, #:upper16:count
+ 1898 0068 4FF00002 		mov	r2, #0
+ 1899 006c 1A80     		strh	r2, [r3, #0]	@ movhi
+ 1900              	.L60:
+ 744:../src/selftest.c ****       }
+ 745:../src/selftest.c ****       Left_Right = 1;
+ 1901              		.loc 1 745 0
+ 1902 006e 40F20003 		movw	r3, #:lower16:Left_Right
+ 1903 0072 C0F20003 		movt	r3, #:upper16:Left_Right
+ 1904 0076 4FF00102 		mov	r2, #1
+ 1905 007a 1A80     		strh	r2, [r3, #0]	@ movhi
+ 1906 007c 50E0     		b	.L61
+ 1907              	.L59:
+ 746:../src/selftest.c ****     }
+ 747:../src/selftest.c ****     else
+ 748:../src/selftest.c ****     {
+ 749:../src/selftest.c ****       /* Get the next sample to be sent */
+ 750:../src/selftest.c ****       data = sinebuf[count1++];
+ 1908              		.loc 1 750 0
+ 1909 007e 40F20003 		movw	r3, #:lower16:count1
+ 1910 0082 C0F20003 		movt	r3, #:upper16:count1
+ 1911 0086 1A88     		ldrh	r2, [r3, #0]
+ 1912 0088 1146     		mov	r1, r2
+ 1913 008a 40F20003 		movw	r3, #:lower16:sinebuf
+ 1914 008e C0F20003 		movt	r3, #:upper16:sinebuf
+ 1915 0092 33F81130 		ldrh	r3, [r3, r1, lsl #1]
+ 1916 0096 FB80     		strh	r3, [r7, #6]	@ movhi
+ 1917 0098 02F10103 		add	r3, r2, #1
+ 1918 009c 9AB2     		uxth	r2, r3
+ 1919 009e 40F20003 		movw	r3, #:lower16:count1
+ 1920 00a2 C0F20003 		movt	r3, #:upper16:count1
+ 1921 00a6 1A80     		strh	r2, [r3, #0]	@ movhi
+ 751:../src/selftest.c ****       
+ 752:../src/selftest.c ****       if (count1 == 48)
+ 1922              		.loc 1 752 0
+ 1923 00a8 40F20003 		movw	r3, #:lower16:count1
+ 1924 00ac C0F20003 		movt	r3, #:upper16:count1
+ 1925 00b0 1B88     		ldrh	r3, [r3, #0]
+ 1926 00b2 302B     		cmp	r3, #48
+ 1927 00b4 06D1     		bne	.L62
+ 753:../src/selftest.c ****       {
+ 754:../src/selftest.c ****         count1 = 0x00;
+ 1928              		.loc 1 754 0
+ 1929 00b6 40F20003 		movw	r3, #:lower16:count1
+ 1930 00ba C0F20003 		movt	r3, #:upper16:count1
+ 1931 00be 4FF00002 		mov	r2, #0
+ 1932 00c2 1A80     		strh	r2, [r3, #0]	@ movhi
+ 1933              	.L62:
+ 755:../src/selftest.c ****       }
+ 756:../src/selftest.c ****       Left_Right = 0;
+ 1934              		.loc 1 756 0
+ 1935 00c4 40F20003 		movw	r3, #:lower16:Left_Right
+ 1936 00c8 C0F20003 		movt	r3, #:upper16:Left_Right
+ 1937 00cc 4FF00002 		mov	r2, #0
+ 1938 00d0 1A80     		strh	r2, [r3, #0]	@ movhi
+ 1939 00d2 25E0     		b	.L61
+ 1940              	.L58:
+ 757:../src/selftest.c ****     }
+ 758:../src/selftest.c ****   }
+ 759:../src/selftest.c ****   else
+ 760:../src/selftest.c ****   {
+ 761:../src/selftest.c ****     /* Get the next sample to be sent */
+ 762:../src/selftest.c ****     data = 32768 + sinebuf[count++];
+ 1941              		.loc 1 762 0
+ 1942 00d4 40F20003 		movw	r3, #:lower16:count
+ 1943 00d8 C0F20003 		movt	r3, #:upper16:count
+ 1944 00dc 1A88     		ldrh	r2, [r3, #0]
+ 1945 00de 1146     		mov	r1, r2
+ 1946 00e0 40F20003 		movw	r3, #:lower16:sinebuf
+ 1947 00e4 C0F20003 		movt	r3, #:upper16:sinebuf
+ 1948 00e8 33F81130 		ldrh	r3, [r3, r1, lsl #1]
+ 1949 00ec 9BB2     		uxth	r3, r3
+ 1950 00ee A3F50043 		sub	r3, r3, #32768
+ 1951 00f2 FB80     		strh	r3, [r7, #6]	@ movhi
+ 1952 00f4 02F10103 		add	r3, r2, #1
+ 1953 00f8 9AB2     		uxth	r2, r3
+ 1954 00fa 40F20003 		movw	r3, #:lower16:count
+ 1955 00fe C0F20003 		movt	r3, #:upper16:count
+ 1956 0102 1A80     		strh	r2, [r3, #0]	@ movhi
+ 763:../src/selftest.c **** 
+ 764:../src/selftest.c ****     if (count == 48)
+ 1957              		.loc 1 764 0
+ 1958 0104 40F20003 		movw	r3, #:lower16:count
+ 1959 0108 C0F20003 		movt	r3, #:upper16:count
+ 1960 010c 1B88     		ldrh	r3, [r3, #0]
+ 1961 010e 302B     		cmp	r3, #48
+ 1962 0110 06D1     		bne	.L61
+ 765:../src/selftest.c ****     {
+ 766:../src/selftest.c ****       count = 0x00;
+ 1963              		.loc 1 766 0
+ 1964 0112 40F20003 		movw	r3, #:lower16:count
+ 1965 0116 C0F20003 		movt	r3, #:upper16:count
+ 1966 011a 4FF00002 		mov	r2, #0
+ 1967 011e 1A80     		strh	r2, [r3, #0]	@ movhi
+ 1968              	.L61:
+ 767:../src/selftest.c ****     }
+ 768:../src/selftest.c ****   }
+ 769:../src/selftest.c ****   return data;
+ 1969              		.loc 1 769 0
+ 1970 0120 FB88     		ldrh	r3, [r7, #6]
+ 770:../src/selftest.c **** }
+ 1971              		.loc 1 770 0
+ 1972 0122 1846     		mov	r0, r3
+ 1973 0124 07F10C07 		add	r7, r7, #12
+ 1974 0128 BD46     		mov	sp, r7
+ 1975 012a 80BC     		pop	{r7}
+ 1976 012c 7047     		bx	lr
+ 1977              		.cfi_endproc
+ 1978              	.LFE116:
+ 1980 012e 00BF     		.section	.text.EVAL_AUDIO_Error_CallBack,"ax",%progbits
+ 1981              		.align	2
+ 1982              		.global	EVAL_AUDIO_Error_CallBack
+ 1983              		.thumb
+ 1984              		.thumb_func
+ 1986              	EVAL_AUDIO_Error_CallBack:
+ 1987              	.LFB117:
+ 771:../src/selftest.c **** 
+ 772:../src/selftest.c **** 
+ 773:../src/selftest.c **** /**
+ 774:../src/selftest.c ****   * @brief  Manages the DMA FIFO error interrupt.
+ 775:../src/selftest.c ****   * @param  None
+ 776:../src/selftest.c ****   * @retval None
+ 777:../src/selftest.c ****   */
+ 778:../src/selftest.c **** void EVAL_AUDIO_Error_CallBack(void* pData)
+ 779:../src/selftest.c **** {
+ 1988              		.loc 1 779 0
+ 1989              		.cfi_startproc
+ 1990              		@ args = 0, pretend = 0, frame = 8
+ 1991              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1992              		@ link register save eliminated.
+ 1993 0000 80B4     		push	{r7}
+ 1994              	.LCFI21:
+ 1995              		.cfi_def_cfa_offset 4
+ 1996              		.cfi_offset 7, -4
+ 1997 0002 83B0     		sub	sp, sp, #12
+ 1998              	.LCFI22:
+ 1999              		.cfi_def_cfa_offset 16
+ 2000 0004 00AF     		add	r7, sp, #0
+ 2001              	.LCFI23:
+ 2002              		.cfi_def_cfa_register 7
+ 2003 0006 7860     		str	r0, [r7, #4]
+ 2004              	.L64:
+ 780:../src/selftest.c ****   /* Stop the program with an infinite loop */
+ 781:../src/selftest.c ****   while (1)
+ 782:../src/selftest.c ****   {}
+ 2005              		.loc 1 782 0 discriminator 1
+ 2006 0008 FEE7     		b	.L64
+ 2007              		.cfi_endproc
+ 2008              	.LFE117:
+ 2010 000a 00BF     		.section	.text.Codec_TIMEOUT_UserCallback,"ax",%progbits
+ 2011              		.align	2
+ 2012              		.global	Codec_TIMEOUT_UserCallback
+ 2013              		.thumb
+ 2014              		.thumb_func
+ 2016              	Codec_TIMEOUT_UserCallback:
+ 2017              	.LFB118:
+ 783:../src/selftest.c ****   
+ 784:../src/selftest.c ****   /* could also generate a system reset to recover from the error */
+ 785:../src/selftest.c ****   /* .... */
+ 786:../src/selftest.c **** }
+ 787:../src/selftest.c **** 
+ 788:../src/selftest.c **** #ifndef USE_DEFAULT_TIMEOUT_CALLBACK
+ 789:../src/selftest.c **** /**
+ 790:../src/selftest.c ****   * @brief  Basic management of the timeout situation.
+ 791:../src/selftest.c ****   * @param  None.
+ 792:../src/selftest.c ****   * @retval None.
+ 793:../src/selftest.c ****   */
+ 794:../src/selftest.c **** uint32_t Codec_TIMEOUT_UserCallback(void)
+ 795:../src/selftest.c **** {   
+ 2018              		.loc 1 795 0
+ 2019              		.cfi_startproc
+ 2020              		@ args = 0, pretend = 0, frame = 0
+ 2021              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2022              		@ link register save eliminated.
+ 2023 0000 80B4     		push	{r7}
+ 2024              	.LCFI24:
+ 2025              		.cfi_def_cfa_offset 4
+ 2026              		.cfi_offset 7, -4
+ 2027 0002 00AF     		add	r7, sp, #0
+ 2028              	.LCFI25:
+ 2029              		.cfi_def_cfa_register 7
+ 2030              	.L66:
+ 796:../src/selftest.c ****   /* Block communication and all processes */
+ 797:../src/selftest.c ****   while (1)
+ 798:../src/selftest.c ****   {   
+ 799:../src/selftest.c ****   }
+ 2031              		.loc 1 799 0 discriminator 1
+ 2032 0004 FEE7     		b	.L66
+ 2033              		.cfi_endproc
+ 2034              	.LFE118:
+ 2036 0006 00BF     		.text
+ 2037              	.Letext0:
+ 2038              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 2039              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\ST\\
+ 2040              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 2041              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 2042              		.file 6 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 2043              		.file 7 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 2044              		.file 8 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Utilities\\STM32F4-Dis
+ 2045              		.file 9 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Utilities\\STM32F4-Dis
+ 2046              		.file 10 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Inc
+DEFINED SYMBOLS
+                            *ABS*:00000000 selftest.c
+                            *COM*:00000010 RCC_Clocks
+                            *COM*:00000018 ADC_InitStructure
+                            *COM*:00000010 ADC_CommonInitStructure
+                            *COM*:00000002 ConvData1
+                            *COM*:00000002 ConvData2
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:28     .bss.counter0:00000000 counter0
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:25     .bss.counter0:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:35     .bss.counter1:00000000 counter1
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:32     .bss.counter1:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:42     .bss.Idx:00000000 Idx
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:39     .bss.Idx:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:49     .data.ADC_Channel:00000000 ADC_Channel
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:46     .data.ADC_Channel:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:56     .bss.DACTest:00000000 DACTest
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:57     .bss.DACTest:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:63     .data.GPIO_Pin:00000000 GPIO_Pin
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:60     .data.GPIO_Pin:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:71     .bss.count:00000000 count
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:68     .bss.count:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:78     .data.count1:00000000 count1
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:75     .data.count1:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:85     .bss.Left_Right:00000000 Left_Right
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:82     .bss.Left_Right:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:92     .rodata.sinebuf:00000000 sinebuf
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:89     .rodata.sinebuf:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:142    .text.Accelerometer_MEMS_Test:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:147    .text.Accelerometer_MEMS_Test:00000000 Accelerometer_MEMS_Test
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:334    .text.USB_Test:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:339    .text.USB_Test:00000000 USB_Test
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1019   .text.Audio_Test:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1024   .text.Audio_Test:00000000 Audio_Test
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1590   .text.Microphone_MEMS_Test:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1595   .text.Microphone_MEMS_Test:00000000 Microphone_MEMS_Test
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1772   .text.EVAL_AUDIO_TransferComplete_CallBack:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1777   .text.EVAL_AUDIO_TransferComplete_CallBack:00000000 EVAL_AUDIO_TransferComplete_CallBack
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1805   .text.EVAL_AUDIO_HalfTransfer_CallBack:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1810   .text.EVAL_AUDIO_HalfTransfer_CallBack:00000000 EVAL_AUDIO_HalfTransfer_CallBack
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1838   .text.EVAL_AUDIO_GetSampleCallBack:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1843   .text.EVAL_AUDIO_GetSampleCallBack:00000000 EVAL_AUDIO_GetSampleCallBack
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1981   .text.EVAL_AUDIO_Error_CallBack:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:1986   .text.EVAL_AUDIO_Error_CallBack:00000000 EVAL_AUDIO_Error_CallBack
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:2011   .text.Codec_TIMEOUT_UserCallback:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccPzjZzW.s:2016   .text.Codec_TIMEOUT_UserCallback:00000000 Codec_TIMEOUT_UserCallback
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+LIS302DL_InitStruct
+LIS302DL_Init
+LIS302DL_FilterStruct
+LIS302DL_FilterConfig
+Delay
+LIS302DL_Read
+Fail_Handler
+TimingDelay
+Buffer
+STM_EVAL_LEDOn
+STM_EVAL_PBGetState
+STM_EVAL_LEDOff
+RCC_AHB1PeriphClockCmd
+GPIO_Init
+GPIO_ResetBits
+GPIO_ReadInputDataBit
+GPIO_SetBits
+RCC_APB2PeriphClockCmd
+EVAL_AUDIO_SetAudioInterface
+EVAL_AUDIO_Init
+ADC_CommonInit
+ADC_StructInit
+ADC_Init
+ADC_RegularChannelConfig
+ADC_Cmd
+ADC_SoftwareStartConv
+ADC_GetFlagStatus
+ADC_GetConversionValue
+EVAL_AUDIO_DeInit
+RCC_APB1PeriphClockCmd
+GPIO_PinAFConfig
+SPI_I2S_DeInit
+I2S_Init
+I2S_Cmd
+SPI_I2S_GetFlagStatus
+SPI_I2S_ReceiveData

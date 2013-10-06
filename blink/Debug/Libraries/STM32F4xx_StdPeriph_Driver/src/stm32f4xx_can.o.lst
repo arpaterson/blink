@@ -27,8 +27,8 @@
    2:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c ****   ******************************************************************************
    3:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c ****   * @file    stm32f4xx_can.c
    4:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c ****   * @author  MCD Application Team
-   5:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c ****   * @version V1.0.0RC1
-   6:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c ****   * @date    25-August-2011
+   5:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c ****   * @version V1.0.0
+   6:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c ****   * @date    30-September-2011
    7:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c ****   * @brief   This file provides firmware functions to manage the following 
    8:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c ****   *          functionalities of the Controller area network (CAN) peripheral:           
    9:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c ****   *           - Initialization and Configuration 
@@ -4620,61 +4620,61 @@
  2949 0036 00BF     		.text
  2950              	.Letext0:
  2951              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 2952              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 2952              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Device\\STM32F4xx\\Inc
  2953              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
  2954              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_can.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:19     .text.CAN_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:24     .text.CAN_DeInit:00000000 CAN_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:76     .text.CAN_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:81     .text.CAN_Init:00000000 CAN_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:358    .text.CAN_FilterInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:363    .text.CAN_FilterInit:00000000 CAN_FilterInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:601    .text.CAN_StructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:606    .text.CAN_StructInit:00000000 CAN_StructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:677    .text.CAN_SlaveStartBank:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:682    .text.CAN_SlaveStartBank:00000000 CAN_SlaveStartBank
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:745    .text.CAN_DBGFreeze:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:750    .text.CAN_DBGFreeze:00000000 CAN_DBGFreeze
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:798    .text.CAN_TTComModeCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:803    .text.CAN_TTComModeCmd:00000000 CAN_TTComModeCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:887    .text.CAN_Transmit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:892    .text.CAN_Transmit:00000000 CAN_Transmit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1147   .text.CAN_TransmitStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1152   .text.CAN_TransmitStatus:00000000 CAN_TransmitStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1317   .text.CAN_CancelTransmit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1322   .text.CAN_CancelTransmit:00000000 CAN_CancelTransmit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1390   .text.CAN_Receive:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1395   .text.CAN_Receive:00000000 CAN_Receive
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1605   .text.CAN_FIFORelease:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1610   .text.CAN_FIFORelease:00000000 CAN_FIFORelease
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1658   .text.CAN_MessagePending:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1663   .text.CAN_MessagePending:00000000 CAN_MessagePending
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1726   .text.CAN_OperatingModeRequest:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1731   .text.CAN_OperatingModeRequest:00000000 CAN_OperatingModeRequest
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1910   .text.CAN_Sleep:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1915   .text.CAN_Sleep:00000000 CAN_Sleep
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1965   .text.CAN_WakeUp:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:1970   .text.CAN_WakeUp:00000000 CAN_WakeUp
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2041   .text.CAN_GetLastErrorCode:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2046   .text.CAN_GetLastErrorCode:00000000 CAN_GetLastErrorCode
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2085   .text.CAN_GetReceiveErrorCounter:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2090   .text.CAN_GetReceiveErrorCounter:00000000 CAN_GetReceiveErrorCounter
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2128   .text.CAN_GetLSBTransmitErrorCounter:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2133   .text.CAN_GetLSBTransmitErrorCounter:00000000 CAN_GetLSBTransmitErrorCounter
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2172   .text.CAN_ITConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2177   .text.CAN_ITConfig:00000000 CAN_ITConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2229   .text.CAN_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2234   .text.CAN_GetFlagStatus:00000000 CAN_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2382   .text.CAN_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2387   .text.CAN_ClearFlag:00000000 CAN_ClearFlag
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2473   .text.CAN_GetITStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2478   .text.CAN_GetITStatus:00000000 CAN_GetITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2901   .text.CheckITStatus:00000000 CheckITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2728   .text.CAN_ClearITPendingBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2733   .text.CAN_ClearITPendingBit:00000000 CAN_ClearITPendingBit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccMheFZE.s:2897   .text.CheckITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:19     .text.CAN_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:24     .text.CAN_DeInit:00000000 CAN_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:76     .text.CAN_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:81     .text.CAN_Init:00000000 CAN_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:358    .text.CAN_FilterInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:363    .text.CAN_FilterInit:00000000 CAN_FilterInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:601    .text.CAN_StructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:606    .text.CAN_StructInit:00000000 CAN_StructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:677    .text.CAN_SlaveStartBank:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:682    .text.CAN_SlaveStartBank:00000000 CAN_SlaveStartBank
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:745    .text.CAN_DBGFreeze:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:750    .text.CAN_DBGFreeze:00000000 CAN_DBGFreeze
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:798    .text.CAN_TTComModeCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:803    .text.CAN_TTComModeCmd:00000000 CAN_TTComModeCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:887    .text.CAN_Transmit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:892    .text.CAN_Transmit:00000000 CAN_Transmit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1147   .text.CAN_TransmitStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1152   .text.CAN_TransmitStatus:00000000 CAN_TransmitStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1317   .text.CAN_CancelTransmit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1322   .text.CAN_CancelTransmit:00000000 CAN_CancelTransmit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1390   .text.CAN_Receive:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1395   .text.CAN_Receive:00000000 CAN_Receive
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1605   .text.CAN_FIFORelease:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1610   .text.CAN_FIFORelease:00000000 CAN_FIFORelease
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1658   .text.CAN_MessagePending:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1663   .text.CAN_MessagePending:00000000 CAN_MessagePending
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1726   .text.CAN_OperatingModeRequest:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1731   .text.CAN_OperatingModeRequest:00000000 CAN_OperatingModeRequest
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1910   .text.CAN_Sleep:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1915   .text.CAN_Sleep:00000000 CAN_Sleep
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1965   .text.CAN_WakeUp:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:1970   .text.CAN_WakeUp:00000000 CAN_WakeUp
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2041   .text.CAN_GetLastErrorCode:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2046   .text.CAN_GetLastErrorCode:00000000 CAN_GetLastErrorCode
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2085   .text.CAN_GetReceiveErrorCounter:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2090   .text.CAN_GetReceiveErrorCounter:00000000 CAN_GetReceiveErrorCounter
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2128   .text.CAN_GetLSBTransmitErrorCounter:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2133   .text.CAN_GetLSBTransmitErrorCounter:00000000 CAN_GetLSBTransmitErrorCounter
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2172   .text.CAN_ITConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2177   .text.CAN_ITConfig:00000000 CAN_ITConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2229   .text.CAN_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2234   .text.CAN_GetFlagStatus:00000000 CAN_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2382   .text.CAN_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2387   .text.CAN_ClearFlag:00000000 CAN_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2473   .text.CAN_GetITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2478   .text.CAN_GetITStatus:00000000 CAN_GetITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2901   .text.CheckITStatus:00000000 CheckITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2728   .text.CAN_ClearITPendingBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2733   .text.CAN_ClearITPendingBit:00000000 CAN_ClearITPendingBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cccsv6sX.s:2897   .text.CheckITStatus:00000000 $t
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

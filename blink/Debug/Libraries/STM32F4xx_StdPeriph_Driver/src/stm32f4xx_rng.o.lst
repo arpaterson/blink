@@ -27,8 +27,8 @@
    2:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c ****   ******************************************************************************
    3:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c ****   * @file    stm32f4xx_rng.c
    4:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c ****   * @author  MCD Application Team
-   5:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c ****   * @version V1.0.0RC1
-   6:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c ****   * @date    25-August-2011
+   5:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c ****   * @version V1.0.0
+   6:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c ****   * @date    30-September-2011
    7:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c ****     * @brief This file provides firmware functions to manage the following 
    8:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c ****   *          functionalities of the Random Number Generator (RNG) peripheral:           
    9:../Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c ****   *           - Initialization and Configuration 
@@ -752,26 +752,26 @@
  388 0026 00BF     		.text
  389              	.Letext0:
  390              		.file 2 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
- 391              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\Device\\STM
+ 391              		.file 3 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Device\\STM32F4xx\\Inc
  392              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_rng.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:19     .text.RNG_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:24     .text.RNG_DeInit:00000000 RNG_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:53     .text.RNG_Cmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:58     .text.RNG_Cmd:00000000 RNG_Cmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:109    .text.RNG_GetRandomNumber:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:114    .text.RNG_GetRandomNumber:00000000 RNG_GetRandomNumber
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:141    .text.RNG_ITConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:146    .text.RNG_ITConfig:00000000 RNG_ITConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:197    .text.RNG_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:202    .text.RNG_GetFlagStatus:00000000 RNG_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:253    .text.RNG_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:258    .text.RNG_ClearFlag:00000000 RNG_ClearFlag
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:293    .text.RNG_GetITStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:298    .text.RNG_GetITStatus:00000000 RNG_GetITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:349    .text.RNG_ClearITPendingBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccAkywhg.s:354    .text.RNG_ClearITPendingBit:00000000 RNG_ClearITPendingBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:19     .text.RNG_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:24     .text.RNG_DeInit:00000000 RNG_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:53     .text.RNG_Cmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:58     .text.RNG_Cmd:00000000 RNG_Cmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:109    .text.RNG_GetRandomNumber:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:114    .text.RNG_GetRandomNumber:00000000 RNG_GetRandomNumber
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:141    .text.RNG_ITConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:146    .text.RNG_ITConfig:00000000 RNG_ITConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:197    .text.RNG_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:202    .text.RNG_GetFlagStatus:00000000 RNG_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:253    .text.RNG_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:258    .text.RNG_ClearFlag:00000000 RNG_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:293    .text.RNG_GetITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:298    .text.RNG_GetITStatus:00000000 RNG_GetITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:349    .text.RNG_ClearITPendingBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccUng0lx.s:354    .text.RNG_ClearITPendingBit:00000000 RNG_ClearITPendingBit
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

@@ -1,0 +1,2990 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"waveplayer.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.bss.wavelen,"aw",%nobits
+  19              		.align	2
+  22              	wavelen:
+  23 0000 00000000 		.space	4
+  24              		.section	.bss.WaveFileName,"aw",%nobits
+  25              		.align	2
+  28              	WaveFileName:
+  29 0000 00000000 		.space	4
+  30              		.section	.bss.SpeechDataOffset,"aw",%nobits
+  31              		.align	2
+  34              	SpeechDataOffset:
+  35 0000 00000000 		.space	4
+  36              		.global	WaveFileStatus
+  37              		.section	.data.WaveFileStatus,"aw",%progbits
+  40              	WaveFileStatus:
+  41 0000 01       		.byte	1
+  42              		.comm	BytesRead,4,4
+  43              		.comm	WAVE_Format,24,4
+  44              		.global	buffer1
+  45              		.section	.bss.buffer1,"aw",%nobits
+  46              		.align	2
+  49              	buffer1:
+  50 0000 00000000 		.space	2048
+  50      00000000 
+  50      00000000 
+  50      00000000 
+  50      00000000 
+  51              		.global	buffer2
+  52              		.section	.bss.buffer2,"aw",%nobits
+  53              		.align	2
+  56              	buffer2:
+  57 0000 00000000 		.space	2048
+  57      00000000 
+  57      00000000 
+  57      00000000 
+  57      00000000 
+  58              		.global	buffer_switch
+  59              		.section	.data.buffer_switch,"aw",%progbits
+  62              	buffer_switch:
+  63 0000 01       		.byte	1
+  64              		.global	XferCplt
+  65              		.section	.bss.XferCplt,"aw",%nobits
+  66              		.align	2
+  69              	XferCplt:
+  70 0000 00000000 		.space	4
+  71              		.global	volume
+  72              		.section	.data.volume,"aw",%progbits
+  75              	volume:
+  76 0000 46       		.byte	70
+  77              		.global	AudioPlayStart
+  78              		.section	.bss.AudioPlayStart,"aw",%nobits
+  81              	AudioPlayStart:
+  82 0000 00       		.space	1
+  83              		.comm	WaveCounter,4,4
+  84              		.comm	Buffer,6,4
+  85              		.global	WaveDataLength
+  86              		.section	.bss.WaveDataLength,"aw",%nobits
+  87              		.align	2
+  90              	WaveDataLength:
+  91 0000 00000000 		.space	4
+  92              		.section	.bss.TimingDelay,"aw",%nobits
+  93              		.align	2
+  96              	TimingDelay:
+  97 0000 00000000 		.space	4
+  98              		.section	.text.WavePlayBack,"ax",%progbits
+  99              		.align	2
+ 100              		.global	WavePlayBack
+ 101              		.thumb
+ 102              		.thumb_func
+ 104              	WavePlayBack:
+ 105              	.LFB110:
+ 106              		.file 1 "../src/waveplayer.c"
+   1:../src/waveplayer.c **** /**
+   2:../src/waveplayer.c ****   ******************************************************************************
+   3:../src/waveplayer.c ****   * @file    Audio_playback_and_record/src/waveplayer.c 
+   4:../src/waveplayer.c ****   * @author  MCD Application Team
+   5:../src/waveplayer.c ****   * @version V1.0.0
+   6:../src/waveplayer.c ****   * @date    28-October-2011
+   7:../src/waveplayer.c ****   * @brief   I2S audio program 
+   8:../src/waveplayer.c ****   ******************************************************************************
+   9:../src/waveplayer.c ****   * @attention
+  10:../src/waveplayer.c ****   *
+  11:../src/waveplayer.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:../src/waveplayer.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:../src/waveplayer.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:../src/waveplayer.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:../src/waveplayer.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:../src/waveplayer.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:../src/waveplayer.c ****   *
+  18:../src/waveplayer.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:../src/waveplayer.c ****   ******************************************************************************
+  20:../src/waveplayer.c ****   */
+  21:../src/waveplayer.c **** 
+  22:../src/waveplayer.c **** /* Includes ------------------------------------------------------------------*/
+  23:../src/waveplayer.c **** #include "main.h"
+  24:../src/waveplayer.c **** 
+  25:../src/waveplayer.c **** /** @addtogroup STM32F4-Discovery_Audio_Player_Recorder
+  26:../src/waveplayer.c **** * @{
+  27:../src/waveplayer.c **** */ 
+  28:../src/waveplayer.c **** 
+  29:../src/waveplayer.c **** /* Private typedef -----------------------------------------------------------*/
+  30:../src/waveplayer.c **** /* Private define ------------------------------------------------------------*/
+  31:../src/waveplayer.c **** #if defined MEDIA_IntFLASH
+  32:../src/waveplayer.c ****  /* This is an audio file stored in the Flash memory as a constant table of 16-bit data.
+  33:../src/waveplayer.c ****     The audio format should be WAV (raw / PCM) 16-bits, Stereo (sampling rate may be modified) */
+  34:../src/waveplayer.c **** extern uint16_t AUDIO_SAMPLE[];
+  35:../src/waveplayer.c **** /* Audio file size and start address are defined here since the audio file is 
+  36:../src/waveplayer.c ****     stored in Flash memory as a constant table of 16-bit data */
+  37:../src/waveplayer.c **** #define AUDIO_FILE_SZE          990000
+  38:../src/waveplayer.c **** #define AUIDO_START_ADDRESS     58 /* Offset relative to audio file header size */
+  39:../src/waveplayer.c **** #endif
+  40:../src/waveplayer.c **** 
+  41:../src/waveplayer.c **** /* Private macro -------------------------------------------------------------*/
+  42:../src/waveplayer.c **** /* Private variables ---------------------------------------------------------*/
+  43:../src/waveplayer.c **** #if defined MEDIA_USB_KEY
+  44:../src/waveplayer.c ****  extern __IO uint8_t Command_index;
+  45:../src/waveplayer.c ****  static uint32_t wavelen = 0;
+  46:../src/waveplayer.c ****  static char* WaveFileName ;
+  47:../src/waveplayer.c ****  static __IO uint32_t SpeechDataOffset = 0x00;
+  48:../src/waveplayer.c ****  __IO ErrorCode WaveFileStatus = Unvalid_RIFF_ID;
+  49:../src/waveplayer.c ****  UINT BytesRead;
+  50:../src/waveplayer.c ****  WAVE_FormatTypeDef WAVE_Format;
+  51:../src/waveplayer.c ****  uint16_t buffer1[_MAX_SS] ={0x00};
+  52:../src/waveplayer.c ****  uint16_t buffer2[_MAX_SS] ={0x00};
+  53:../src/waveplayer.c ****  uint8_t buffer_switch = 1;
+  54:../src/waveplayer.c ****  extern FATFS fatfs;
+  55:../src/waveplayer.c ****  extern FIL file;
+  56:../src/waveplayer.c ****  extern FIL fileR;
+  57:../src/waveplayer.c ****  extern DIR dir;
+  58:../src/waveplayer.c ****  extern FILINFO fno;
+  59:../src/waveplayer.c ****  extern uint16_t *CurrentPos;
+  60:../src/waveplayer.c ****  extern USB_OTG_CORE_HANDLE USB_OTG_Core;
+  61:../src/waveplayer.c ****  extern uint8_t WaveRecStatus;
+  62:../src/waveplayer.c **** #endif
+  63:../src/waveplayer.c **** 
+  64:../src/waveplayer.c **** __IO uint32_t XferCplt = 0;
+  65:../src/waveplayer.c **** __IO uint8_t volume = 70, AudioPlayStart = 0;
+  66:../src/waveplayer.c **** __IO uint32_t WaveCounter;
+  67:../src/waveplayer.c **** uint8_t Buffer[6];
+  68:../src/waveplayer.c **** __IO uint32_t WaveDataLength = 0;
+  69:../src/waveplayer.c **** extern __IO uint8_t Count;
+  70:../src/waveplayer.c **** extern __IO uint8_t RepeatState ;
+  71:../src/waveplayer.c **** extern __IO uint8_t LED_Toggle;
+  72:../src/waveplayer.c **** extern __IO uint8_t PauseResumeStatus ;
+  73:../src/waveplayer.c **** extern uint32_t AudioRemSize; 
+  74:../src/waveplayer.c **** static __IO uint32_t TimingDelay;
+  75:../src/waveplayer.c **** 
+  76:../src/waveplayer.c **** /* Private function prototypes -----------------------------------------------*/
+  77:../src/waveplayer.c **** static void Mems_Config(void);
+  78:../src/waveplayer.c **** static void EXTILine_Config(void);
+  79:../src/waveplayer.c **** #if defined MEDIA_USB_KEY
+  80:../src/waveplayer.c ****  static ErrorCode WavePlayer_WaveParsing(uint32_t *FileLen);
+  81:../src/waveplayer.c **** #endif
+  82:../src/waveplayer.c **** 
+  83:../src/waveplayer.c **** /* Private functions ---------------------------------------------------------*/
+  84:../src/waveplayer.c **** 
+  85:../src/waveplayer.c **** /**
+  86:../src/waveplayer.c ****   * @brief  Play wave from a mass storge
+  87:../src/waveplayer.c ****   * @param  AudioFreq: Audio Sampling Frequency
+  88:../src/waveplayer.c ****   * @retval None
+  89:../src/waveplayer.c **** */
+  90:../src/waveplayer.c **** 
+  91:../src/waveplayer.c **** void WavePlayBack(uint32_t AudioFreq)
+  92:../src/waveplayer.c **** { 
+ 107              		.loc 1 92 0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 8
+ 110              		@ frame_needed = 1, uses_anonymous_args = 0
+ 111 0000 80B5     		push	{r7, lr}
+ 112              	.LCFI0:
+ 113              		.cfi_def_cfa_offset 8
+ 114              		.cfi_offset 14, -4
+ 115              		.cfi_offset 7, -8
+ 116 0002 82B0     		sub	sp, sp, #8
+ 117              	.LCFI1:
+ 118              		.cfi_def_cfa_offset 16
+ 119 0004 00AF     		add	r7, sp, #0
+ 120              	.LCFI2:
+ 121              		.cfi_def_cfa_register 7
+ 122 0006 7860     		str	r0, [r7, #4]
+  93:../src/waveplayer.c ****   /* 
+  94:../src/waveplayer.c ****   Normal mode description:
+  95:../src/waveplayer.c ****   Start playing the audio file (using DMA stream) .
+  96:../src/waveplayer.c ****   Using this mode, the application can run other tasks in parallel since 
+  97:../src/waveplayer.c ****   the DMA is handling the Audio Transfer instead of the CPU.
+  98:../src/waveplayer.c ****   The only task remaining for the CPU will be the management of the DMA 
+  99:../src/waveplayer.c ****   Transfer Complete interrupt or the Half Transfer Complete interrupt in 
+ 100:../src/waveplayer.c ****   order to load again the buffer and to calculate the remaining data.  
+ 101:../src/waveplayer.c ****   Circular mode description:
+ 102:../src/waveplayer.c ****   Start playing the file from a circular buffer, once the DMA is enabled it 
+ 103:../src/waveplayer.c ****   always run. User has to fill periodically the buffer with the audio data 
+ 104:../src/waveplayer.c ****   using Transfer complete and/or half transfer complete interrupts callbacks 
+ 105:../src/waveplayer.c ****   (EVAL_AUDIO_TransferComplete_CallBack() or EVAL_AUDIO_HalfTransfer_CallBack()...
+ 106:../src/waveplayer.c ****   In this case the audio data file is smaller than the DMA max buffer 
+ 107:../src/waveplayer.c ****   size 65535 so there is no need to load buffer continuously or manage the 
+ 108:../src/waveplayer.c ****   transfer complete or Half transfer interrupts callbacks. */  
+ 109:../src/waveplayer.c ****   
+ 110:../src/waveplayer.c ****   /* Start playing */
+ 111:../src/waveplayer.c ****   AudioPlayStart = 1;
+ 123              		.loc 1 111 0
+ 124 0008 40F20003 		movw	r3, #:lower16:AudioPlayStart
+ 125 000c C0F20003 		movt	r3, #:upper16:AudioPlayStart
+ 126 0010 4FF00102 		mov	r2, #1
+ 127 0014 1A70     		strb	r2, [r3, #0]
+ 112:../src/waveplayer.c ****   RepeatState =0;
+ 128              		.loc 1 112 0
+ 129 0016 40F20003 		movw	r3, #:lower16:RepeatState
+ 130 001a C0F20003 		movt	r3, #:upper16:RepeatState
+ 131 001e 4FF00002 		mov	r2, #0
+ 132 0022 1A70     		strb	r2, [r3, #0]
+ 113:../src/waveplayer.c **** #if defined MEDIA_IntFLASH 
+ 114:../src/waveplayer.c ****   
+ 115:../src/waveplayer.c ****   /* Initialize wave player (Codec, DMA, I2C) */
+ 116:../src/waveplayer.c ****   WavePlayerInit(AudioFreq);
+ 117:../src/waveplayer.c ****   
+ 118:../src/waveplayer.c ****   /* Play on */
+ 119:../src/waveplayer.c ****   AudioFlashPlay((uint16_t*)(AUDIO_SAMPLE + AUIDO_START_ADDRESS),AUDIO_FILE_SZE,AUIDO_START_ADDRESS
+ 120:../src/waveplayer.c ****   
+ 121:../src/waveplayer.c ****   /* LED Blue Start toggling */
+ 122:../src/waveplayer.c ****   LED_Toggle = 6;
+ 123:../src/waveplayer.c ****   
+ 124:../src/waveplayer.c ****   /* Infinite loop */
+ 125:../src/waveplayer.c ****   while(1)
+ 126:../src/waveplayer.c ****   { 
+ 127:../src/waveplayer.c ****     /* check on the repeate status */
+ 128:../src/waveplayer.c ****     if (RepeatState == 0)
+ 129:../src/waveplayer.c ****     {
+ 130:../src/waveplayer.c ****       if (PauseResumeStatus == 0)
+ 131:../src/waveplayer.c ****       {
+ 132:../src/waveplayer.c ****         /* LED Blue Stop Toggling */
+ 133:../src/waveplayer.c ****         LED_Toggle = 0;
+ 134:../src/waveplayer.c ****         /* Pause playing */
+ 135:../src/waveplayer.c ****         WavePlayerPauseResume(PauseResumeStatus);
+ 136:../src/waveplayer.c ****         PauseResumeStatus = 2;
+ 137:../src/waveplayer.c ****       }
+ 138:../src/waveplayer.c ****       else if (PauseResumeStatus == 1)
+ 139:../src/waveplayer.c ****       {
+ 140:../src/waveplayer.c ****         /* LED Blue Toggling */
+ 141:../src/waveplayer.c ****         LED_Toggle = 6;
+ 142:../src/waveplayer.c ****         /* Resume playing */
+ 143:../src/waveplayer.c ****         WavePlayerPauseResume(PauseResumeStatus);
+ 144:../src/waveplayer.c ****         PauseResumeStatus = 2;
+ 145:../src/waveplayer.c ****       }
+ 146:../src/waveplayer.c ****     }
+ 147:../src/waveplayer.c ****     else
+ 148:../src/waveplayer.c ****     {
+ 149:../src/waveplayer.c ****       /* Stop playing */
+ 150:../src/waveplayer.c ****       WavePlayerStop();
+ 151:../src/waveplayer.c ****       /* Green LED toggling */
+ 152:../src/waveplayer.c ****       LED_Toggle = 4;
+ 153:../src/waveplayer.c ****     }
+ 154:../src/waveplayer.c ****   }
+ 155:../src/waveplayer.c ****   
+ 156:../src/waveplayer.c **** #elif defined MEDIA_USB_KEY
+ 157:../src/waveplayer.c ****   /* Initialize wave player (Codec, DMA, I2C) */
+ 158:../src/waveplayer.c ****   WavePlayerInit(AudioFreq);
+ 133              		.loc 1 158 0
+ 134 0024 7868     		ldr	r0, [r7, #4]
+ 135 0026 FFF7FEFF 		bl	WavePlayerInit
+ 159:../src/waveplayer.c ****   AudioRemSize   = 0; 
+ 136              		.loc 1 159 0
+ 137 002a 40F20003 		movw	r3, #:lower16:AudioRemSize
+ 138 002e C0F20003 		movt	r3, #:upper16:AudioRemSize
+ 139 0032 4FF00002 		mov	r2, #0
+ 140 0036 1A60     		str	r2, [r3, #0]
+ 160:../src/waveplayer.c **** 
+ 161:../src/waveplayer.c ****   /* Get Data from USB Key */
+ 162:../src/waveplayer.c ****   f_lseek(&fileR, WaveCounter);
+ 141              		.loc 1 162 0
+ 142 0038 40F20003 		movw	r3, #:lower16:WaveCounter
+ 143 003c C0F20003 		movt	r3, #:upper16:WaveCounter
+ 144 0040 1B68     		ldr	r3, [r3, #0]
+ 145 0042 40F20000 		movw	r0, #:lower16:fileR
+ 146 0046 C0F20000 		movt	r0, #:upper16:fileR
+ 147 004a 1946     		mov	r1, r3
+ 148 004c FFF7FEFF 		bl	f_lseek
+ 163:../src/waveplayer.c ****   f_read (&fileR, buffer1, _MAX_SS, &BytesRead); 
+ 149              		.loc 1 163 0
+ 150 0050 40F20000 		movw	r0, #:lower16:fileR
+ 151 0054 C0F20000 		movt	r0, #:upper16:fileR
+ 152 0058 40F20001 		movw	r1, #:lower16:buffer1
+ 153 005c C0F20001 		movt	r1, #:upper16:buffer1
+ 154 0060 4FF48062 		mov	r2, #1024
+ 155 0064 40F20003 		movw	r3, #:lower16:BytesRead
+ 156 0068 C0F20003 		movt	r3, #:upper16:BytesRead
+ 157 006c FFF7FEFF 		bl	f_read
+ 164:../src/waveplayer.c ****   f_read (&fileR, buffer2, _MAX_SS, &BytesRead);
+ 158              		.loc 1 164 0
+ 159 0070 40F20000 		movw	r0, #:lower16:fileR
+ 160 0074 C0F20000 		movt	r0, #:upper16:fileR
+ 161 0078 40F20001 		movw	r1, #:lower16:buffer2
+ 162 007c C0F20001 		movt	r1, #:upper16:buffer2
+ 163 0080 4FF48062 		mov	r2, #1024
+ 164 0084 40F20003 		movw	r3, #:lower16:BytesRead
+ 165 0088 C0F20003 		movt	r3, #:upper16:BytesRead
+ 166 008c FFF7FEFF 		bl	f_read
+ 165:../src/waveplayer.c ****  
+ 166:../src/waveplayer.c ****   /* Start playing wave */
+ 167:../src/waveplayer.c ****   Audio_MAL_Play((uint32_t)buffer1, _MAX_SS);
+ 167              		.loc 1 167 0
+ 168 0090 40F20003 		movw	r3, #:lower16:buffer1
+ 169 0094 C0F20003 		movt	r3, #:upper16:buffer1
+ 170 0098 1846     		mov	r0, r3
+ 171 009a 4FF48061 		mov	r1, #1024
+ 172 009e FFF7FEFF 		bl	Audio_MAL_Play
+ 168:../src/waveplayer.c ****   buffer_switch = 1;
+ 173              		.loc 1 168 0
+ 174 00a2 40F20003 		movw	r3, #:lower16:buffer_switch
+ 175 00a6 C0F20003 		movt	r3, #:upper16:buffer_switch
+ 176 00aa 4FF00102 		mov	r2, #1
+ 177 00ae 1A70     		strb	r2, [r3, #0]
+ 169:../src/waveplayer.c ****   XferCplt = 0;
+ 178              		.loc 1 169 0
+ 179 00b0 40F20003 		movw	r3, #:lower16:XferCplt
+ 180 00b4 C0F20003 		movt	r3, #:upper16:XferCplt
+ 181 00b8 4FF00002 		mov	r2, #0
+ 182 00bc 1A60     		str	r2, [r3, #0]
+ 170:../src/waveplayer.c ****   LED_Toggle = 6;
+ 183              		.loc 1 170 0
+ 184 00be 40F20003 		movw	r3, #:lower16:LED_Toggle
+ 185 00c2 C0F20003 		movt	r3, #:upper16:LED_Toggle
+ 186 00c6 4FF00602 		mov	r2, #6
+ 187 00ca 1A70     		strb	r2, [r3, #0]
+ 171:../src/waveplayer.c ****   PauseResumeStatus = 1;
+ 188              		.loc 1 171 0
+ 189 00cc 40F20003 		movw	r3, #:lower16:PauseResumeStatus
+ 190 00d0 C0F20003 		movt	r3, #:upper16:PauseResumeStatus
+ 191 00d4 4FF00102 		mov	r2, #1
+ 192 00d8 1A70     		strb	r2, [r3, #0]
+ 172:../src/waveplayer.c ****   Count = 0;
+ 193              		.loc 1 172 0
+ 194 00da 40F20003 		movw	r3, #:lower16:Count
+ 195 00de C0F20003 		movt	r3, #:upper16:Count
+ 196 00e2 4FF00002 		mov	r2, #0
+ 197 00e6 1A70     		strb	r2, [r3, #0]
+ 173:../src/waveplayer.c ****  
+ 174:../src/waveplayer.c ****   while((WaveDataLength != 0) &&  HCD_IsDeviceConnected(&USB_OTG_Core))
+ 198              		.loc 1 174 0
+ 199 00e8 B9E0     		b	.L2
+ 200              	.L10:
+ 175:../src/waveplayer.c ****   { 
+ 176:../src/waveplayer.c ****     /* Test on the command: Playing */
+ 177:../src/waveplayer.c ****     if (Command_index == 0)
+ 201              		.loc 1 177 0
+ 202 00ea 40F20003 		movw	r3, #:lower16:Command_index
+ 203 00ee C0F20003 		movt	r3, #:upper16:Command_index
+ 204 00f2 1B78     		ldrb	r3, [r3, #0]
+ 205 00f4 DBB2     		uxtb	r3, r3
+ 206 00f6 002B     		cmp	r3, #0
+ 207 00f8 40F0A080 		bne	.L3
+ 178:../src/waveplayer.c ****     { 
+ 179:../src/waveplayer.c ****       /* wait for DMA transfert complete */
+ 180:../src/waveplayer.c ****       while((XferCplt == 0) &&  HCD_IsDeviceConnected(&USB_OTG_Core))
+ 208              		.loc 1 180 0
+ 209 00fc 3EE0     		b	.L4
+ 210              	.L7:
+ 181:../src/waveplayer.c ****       {
+ 182:../src/waveplayer.c ****         if (PauseResumeStatus == 0)
+ 211              		.loc 1 182 0
+ 212 00fe 40F20003 		movw	r3, #:lower16:PauseResumeStatus
+ 213 0102 C0F20003 		movt	r3, #:upper16:PauseResumeStatus
+ 214 0106 1B78     		ldrb	r3, [r3, #0]
+ 215 0108 DBB2     		uxtb	r3, r3
+ 216 010a 002B     		cmp	r3, #0
+ 217 010c 17D1     		bne	.L5
+ 183:../src/waveplayer.c ****         {
+ 184:../src/waveplayer.c ****           /* Pause Playing wave */
+ 185:../src/waveplayer.c ****           LED_Toggle = 0;
+ 218              		.loc 1 185 0
+ 219 010e 40F20003 		movw	r3, #:lower16:LED_Toggle
+ 220 0112 C0F20003 		movt	r3, #:upper16:LED_Toggle
+ 221 0116 4FF00002 		mov	r2, #0
+ 222 011a 1A70     		strb	r2, [r3, #0]
+ 186:../src/waveplayer.c ****           WavePlayerPauseResume(PauseResumeStatus);
+ 223              		.loc 1 186 0
+ 224 011c 40F20003 		movw	r3, #:lower16:PauseResumeStatus
+ 225 0120 C0F20003 		movt	r3, #:upper16:PauseResumeStatus
+ 226 0124 1B78     		ldrb	r3, [r3, #0]
+ 227 0126 DBB2     		uxtb	r3, r3
+ 228 0128 1846     		mov	r0, r3
+ 229 012a FFF7FEFF 		bl	WavePlayerPauseResume
+ 187:../src/waveplayer.c ****           PauseResumeStatus = 2;
+ 230              		.loc 1 187 0
+ 231 012e 40F20003 		movw	r3, #:lower16:PauseResumeStatus
+ 232 0132 C0F20003 		movt	r3, #:upper16:PauseResumeStatus
+ 233 0136 4FF00202 		mov	r2, #2
+ 234 013a 1A70     		strb	r2, [r3, #0]
+ 235 013c 1EE0     		b	.L4
+ 236              	.L5:
+ 188:../src/waveplayer.c ****         }
+ 189:../src/waveplayer.c ****         else if (PauseResumeStatus == 1)
+ 237              		.loc 1 189 0
+ 238 013e 40F20003 		movw	r3, #:lower16:PauseResumeStatus
+ 239 0142 C0F20003 		movt	r3, #:upper16:PauseResumeStatus
+ 240 0146 1B78     		ldrb	r3, [r3, #0]
+ 241 0148 DBB2     		uxtb	r3, r3
+ 242 014a 012B     		cmp	r3, #1
+ 243 014c 16D1     		bne	.L4
+ 190:../src/waveplayer.c ****         {
+ 191:../src/waveplayer.c ****           LED_Toggle = 6;
+ 244              		.loc 1 191 0
+ 245 014e 40F20003 		movw	r3, #:lower16:LED_Toggle
+ 246 0152 C0F20003 		movt	r3, #:upper16:LED_Toggle
+ 247 0156 4FF00602 		mov	r2, #6
+ 248 015a 1A70     		strb	r2, [r3, #0]
+ 192:../src/waveplayer.c ****           /* Resume Playing wave */
+ 193:../src/waveplayer.c ****           WavePlayerPauseResume(PauseResumeStatus);
+ 249              		.loc 1 193 0
+ 250 015c 40F20003 		movw	r3, #:lower16:PauseResumeStatus
+ 251 0160 C0F20003 		movt	r3, #:upper16:PauseResumeStatus
+ 252 0164 1B78     		ldrb	r3, [r3, #0]
+ 253 0166 DBB2     		uxtb	r3, r3
+ 254 0168 1846     		mov	r0, r3
+ 255 016a FFF7FEFF 		bl	WavePlayerPauseResume
+ 194:../src/waveplayer.c ****           PauseResumeStatus = 2;
+ 256              		.loc 1 194 0
+ 257 016e 40F20003 		movw	r3, #:lower16:PauseResumeStatus
+ 258 0172 C0F20003 		movt	r3, #:upper16:PauseResumeStatus
+ 259 0176 4FF00202 		mov	r2, #2
+ 260 017a 1A70     		strb	r2, [r3, #0]
+ 261              	.L4:
+ 180:../src/waveplayer.c ****       while((XferCplt == 0) &&  HCD_IsDeviceConnected(&USB_OTG_Core))
+ 262              		.loc 1 180 0 discriminator 1
+ 263 017c 40F20003 		movw	r3, #:lower16:XferCplt
+ 264 0180 C0F20003 		movt	r3, #:upper16:XferCplt
+ 265 0184 1B68     		ldr	r3, [r3, #0]
+ 266 0186 002B     		cmp	r3, #0
+ 267 0188 08D1     		bne	.L6
+ 180:../src/waveplayer.c ****       while((XferCplt == 0) &&  HCD_IsDeviceConnected(&USB_OTG_Core))
+ 268              		.loc 1 180 0 is_stmt 0 discriminator 2
+ 269 018a 40F20000 		movw	r0, #:lower16:USB_OTG_Core
+ 270 018e C0F20000 		movt	r0, #:upper16:USB_OTG_Core
+ 271 0192 FFF7FEFF 		bl	HCD_IsDeviceConnected
+ 272 0196 0346     		mov	r3, r0
+ 273 0198 002B     		cmp	r3, #0
+ 274 019a B0D1     		bne	.L7
+ 275              	.L6:
+ 195:../src/waveplayer.c ****         }  
+ 196:../src/waveplayer.c ****       }
+ 197:../src/waveplayer.c ****       XferCplt = 0;
+ 276              		.loc 1 197 0 is_stmt 1
+ 277 019c 40F20003 		movw	r3, #:lower16:XferCplt
+ 278 01a0 C0F20003 		movt	r3, #:upper16:XferCplt
+ 279 01a4 4FF00002 		mov	r2, #0
+ 280 01a8 1A60     		str	r2, [r3, #0]
+ 198:../src/waveplayer.c **** 
+ 199:../src/waveplayer.c ****       if(buffer_switch == 0)
+ 281              		.loc 1 199 0
+ 282 01aa 40F20003 		movw	r3, #:lower16:buffer_switch
+ 283 01ae C0F20003 		movt	r3, #:upper16:buffer_switch
+ 284 01b2 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 285 01b4 002B     		cmp	r3, #0
+ 286 01b6 20D1     		bne	.L8
+ 200:../src/waveplayer.c ****       {
+ 201:../src/waveplayer.c ****         /* Play data from buffer1 */
+ 202:../src/waveplayer.c ****         Audio_MAL_Play((uint32_t)buffer1, _MAX_SS);
+ 287              		.loc 1 202 0
+ 288 01b8 40F20003 		movw	r3, #:lower16:buffer1
+ 289 01bc C0F20003 		movt	r3, #:upper16:buffer1
+ 290 01c0 1846     		mov	r0, r3
+ 291 01c2 4FF48061 		mov	r1, #1024
+ 292 01c6 FFF7FEFF 		bl	Audio_MAL_Play
+ 203:../src/waveplayer.c ****         /* Store data in buffer2 */
+ 204:../src/waveplayer.c ****         f_read (&fileR, buffer2, _MAX_SS, &BytesRead);
+ 293              		.loc 1 204 0
+ 294 01ca 40F20000 		movw	r0, #:lower16:fileR
+ 295 01ce C0F20000 		movt	r0, #:upper16:fileR
+ 296 01d2 40F20001 		movw	r1, #:lower16:buffer2
+ 297 01d6 C0F20001 		movt	r1, #:upper16:buffer2
+ 298 01da 4FF48062 		mov	r2, #1024
+ 299 01de 40F20003 		movw	r3, #:lower16:BytesRead
+ 300 01e2 C0F20003 		movt	r3, #:upper16:BytesRead
+ 301 01e6 FFF7FEFF 		bl	f_read
+ 205:../src/waveplayer.c ****         buffer_switch = 1;
+ 302              		.loc 1 205 0
+ 303 01ea 40F20003 		movw	r3, #:lower16:buffer_switch
+ 304 01ee C0F20003 		movt	r3, #:upper16:buffer_switch
+ 305 01f2 4FF00102 		mov	r2, #1
+ 306 01f6 1A70     		strb	r2, [r3, #0]
+ 307 01f8 31E0     		b	.L2
+ 308              	.L8:
+ 206:../src/waveplayer.c ****       }
+ 207:../src/waveplayer.c ****       else 
+ 208:../src/waveplayer.c ****       {   
+ 209:../src/waveplayer.c ****         /* Play data from buffer2 */
+ 210:../src/waveplayer.c ****         Audio_MAL_Play((uint32_t)buffer2, _MAX_SS);
+ 309              		.loc 1 210 0
+ 310 01fa 40F20003 		movw	r3, #:lower16:buffer2
+ 311 01fe C0F20003 		movt	r3, #:upper16:buffer2
+ 312 0202 1846     		mov	r0, r3
+ 313 0204 4FF48061 		mov	r1, #1024
+ 314 0208 FFF7FEFF 		bl	Audio_MAL_Play
+ 211:../src/waveplayer.c ****         /* Store data in buffer1 */
+ 212:../src/waveplayer.c ****         f_read (&fileR, buffer1, _MAX_SS, &BytesRead);
+ 315              		.loc 1 212 0
+ 316 020c 40F20000 		movw	r0, #:lower16:fileR
+ 317 0210 C0F20000 		movt	r0, #:upper16:fileR
+ 318 0214 40F20001 		movw	r1, #:lower16:buffer1
+ 319 0218 C0F20001 		movt	r1, #:upper16:buffer1
+ 320 021c 4FF48062 		mov	r2, #1024
+ 321 0220 40F20003 		movw	r3, #:lower16:BytesRead
+ 322 0224 C0F20003 		movt	r3, #:upper16:BytesRead
+ 323 0228 FFF7FEFF 		bl	f_read
+ 213:../src/waveplayer.c ****         buffer_switch = 0;
+ 324              		.loc 1 213 0
+ 325 022c 40F20003 		movw	r3, #:lower16:buffer_switch
+ 326 0230 C0F20003 		movt	r3, #:upper16:buffer_switch
+ 327 0234 4FF00002 		mov	r2, #0
+ 328 0238 1A70     		strb	r2, [r3, #0]
+ 329 023a 10E0     		b	.L2
+ 330              	.L3:
+ 214:../src/waveplayer.c ****       } 
+ 215:../src/waveplayer.c ****     }
+ 216:../src/waveplayer.c ****     else 
+ 217:../src/waveplayer.c ****     {
+ 218:../src/waveplayer.c ****       WavePlayerStop();
+ 331              		.loc 1 218 0
+ 332 023c FFF7FEFF 		bl	WavePlayerStop
+ 219:../src/waveplayer.c ****       WaveDataLength = 0;
+ 333              		.loc 1 219 0
+ 334 0240 40F20003 		movw	r3, #:lower16:WaveDataLength
+ 335 0244 C0F20003 		movt	r3, #:upper16:WaveDataLength
+ 336 0248 4FF00002 		mov	r2, #0
+ 337 024c 1A60     		str	r2, [r3, #0]
+ 220:../src/waveplayer.c ****       RepeatState =0;
+ 338              		.loc 1 220 0
+ 339 024e 40F20003 		movw	r3, #:lower16:RepeatState
+ 340 0252 C0F20003 		movt	r3, #:upper16:RepeatState
+ 341 0256 4FF00002 		mov	r2, #0
+ 342 025a 1A70     		strb	r2, [r3, #0]
+ 221:../src/waveplayer.c ****       break;
+ 343              		.loc 1 221 0
+ 344 025c 10E0     		b	.L9
+ 345              	.L2:
+ 174:../src/waveplayer.c ****   while((WaveDataLength != 0) &&  HCD_IsDeviceConnected(&USB_OTG_Core))
+ 346              		.loc 1 174 0 discriminator 1
+ 347 025e 40F20003 		movw	r3, #:lower16:WaveDataLength
+ 348 0262 C0F20003 		movt	r3, #:upper16:WaveDataLength
+ 349 0266 1B68     		ldr	r3, [r3, #0]
+ 350 0268 002B     		cmp	r3, #0
+ 351 026a 09D0     		beq	.L9
+ 174:../src/waveplayer.c ****   while((WaveDataLength != 0) &&  HCD_IsDeviceConnected(&USB_OTG_Core))
+ 352              		.loc 1 174 0 is_stmt 0 discriminator 2
+ 353 026c 40F20000 		movw	r0, #:lower16:USB_OTG_Core
+ 354 0270 C0F20000 		movt	r0, #:upper16:USB_OTG_Core
+ 355 0274 FFF7FEFF 		bl	HCD_IsDeviceConnected
+ 356 0278 0346     		mov	r3, r0
+ 357 027a 002B     		cmp	r3, #0
+ 358 027c 7FF435AF 		bne	.L10
+ 359              	.L9:
+ 222:../src/waveplayer.c ****     }
+ 223:../src/waveplayer.c ****   }
+ 224:../src/waveplayer.c **** #if defined PLAY_REPEAT_OFF 
+ 225:../src/waveplayer.c ****   RepeatState = 1;
+ 226:../src/waveplayer.c ****   WavePlayerStop();
+ 227:../src/waveplayer.c ****   if (Command_index == 0)
+ 228:../src/waveplayer.c ****     LED_Toggle = 4;
+ 229:../src/waveplayer.c **** #else 
+ 230:../src/waveplayer.c ****   LED_Toggle = 7;
+ 360              		.loc 1 230 0 is_stmt 1
+ 361 0280 40F20003 		movw	r3, #:lower16:LED_Toggle
+ 362 0284 C0F20003 		movt	r3, #:upper16:LED_Toggle
+ 363 0288 4FF00702 		mov	r2, #7
+ 364 028c 1A70     		strb	r2, [r3, #0]
+ 231:../src/waveplayer.c ****   RepeatState = 0;
+ 365              		.loc 1 231 0
+ 366 028e 40F20003 		movw	r3, #:lower16:RepeatState
+ 367 0292 C0F20003 		movt	r3, #:upper16:RepeatState
+ 368 0296 4FF00002 		mov	r2, #0
+ 369 029a 1A70     		strb	r2, [r3, #0]
+ 232:../src/waveplayer.c ****   AudioPlayStart = 0;
+ 370              		.loc 1 232 0
+ 371 029c 40F20003 		movw	r3, #:lower16:AudioPlayStart
+ 372 02a0 C0F20003 		movt	r3, #:upper16:AudioPlayStart
+ 373 02a4 4FF00002 		mov	r2, #0
+ 374 02a8 1A70     		strb	r2, [r3, #0]
+ 233:../src/waveplayer.c ****   WavePlayerStop();
+ 375              		.loc 1 233 0
+ 376 02aa FFF7FEFF 		bl	WavePlayerStop
+ 234:../src/waveplayer.c **** #endif
+ 235:../src/waveplayer.c **** #endif 
+ 236:../src/waveplayer.c **** 
+ 237:../src/waveplayer.c **** }
+ 377              		.loc 1 237 0
+ 378 02ae 07F10807 		add	r7, r7, #8
+ 379 02b2 BD46     		mov	sp, r7
+ 380 02b4 80BD     		pop	{r7, pc}
+ 381              		.cfi_endproc
+ 382              	.LFE110:
+ 384 02b6 00BF     		.section	.text.WavePlayerPauseResume,"ax",%progbits
+ 385              		.align	2
+ 386              		.global	WavePlayerPauseResume
+ 387              		.thumb
+ 388              		.thumb_func
+ 390              	WavePlayerPauseResume:
+ 391              	.LFB111:
+ 238:../src/waveplayer.c **** 
+ 239:../src/waveplayer.c **** /**
+ 240:../src/waveplayer.c ****   * @brief  Pause or Resume a played wave
+ 241:../src/waveplayer.c ****   * @param  state: if it is equal to 0 pause Playing else resume playing
+ 242:../src/waveplayer.c ****   * @retval None
+ 243:../src/waveplayer.c ****   */
+ 244:../src/waveplayer.c **** void WavePlayerPauseResume(uint8_t state)
+ 245:../src/waveplayer.c **** { 
+ 392              		.loc 1 245 0
+ 393              		.cfi_startproc
+ 394              		@ args = 0, pretend = 0, frame = 8
+ 395              		@ frame_needed = 1, uses_anonymous_args = 0
+ 396 0000 80B5     		push	{r7, lr}
+ 397              	.LCFI3:
+ 398              		.cfi_def_cfa_offset 8
+ 399              		.cfi_offset 14, -4
+ 400              		.cfi_offset 7, -8
+ 401 0002 82B0     		sub	sp, sp, #8
+ 402              	.LCFI4:
+ 403              		.cfi_def_cfa_offset 16
+ 404 0004 00AF     		add	r7, sp, #0
+ 405              	.LCFI5:
+ 406              		.cfi_def_cfa_register 7
+ 407 0006 0346     		mov	r3, r0
+ 408 0008 FB71     		strb	r3, [r7, #7]
+ 246:../src/waveplayer.c ****   EVAL_AUDIO_PauseResume(state);   
+ 409              		.loc 1 246 0
+ 410 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 411 000c 1846     		mov	r0, r3
+ 412 000e FFF7FEFF 		bl	EVAL_AUDIO_PauseResume
+ 247:../src/waveplayer.c **** }
+ 413              		.loc 1 247 0
+ 414 0012 07F10807 		add	r7, r7, #8
+ 415 0016 BD46     		mov	sp, r7
+ 416 0018 80BD     		pop	{r7, pc}
+ 417              		.cfi_endproc
+ 418              	.LFE111:
+ 420 001a 00BF     		.section	.text.WaveplayerCtrlVolume,"ax",%progbits
+ 421              		.align	2
+ 422              		.global	WaveplayerCtrlVolume
+ 423              		.thumb
+ 424              		.thumb_func
+ 426              	WaveplayerCtrlVolume:
+ 427              	.LFB112:
+ 248:../src/waveplayer.c **** 
+ 249:../src/waveplayer.c **** /**
+ 250:../src/waveplayer.c ****   * @brief  Configure the volune
+ 251:../src/waveplayer.c ****   * @param  vol: volume value
+ 252:../src/waveplayer.c ****   * @retval None
+ 253:../src/waveplayer.c ****   */
+ 254:../src/waveplayer.c **** uint8_t WaveplayerCtrlVolume(uint8_t vol)
+ 255:../src/waveplayer.c **** { 
+ 428              		.loc 1 255 0
+ 429              		.cfi_startproc
+ 430              		@ args = 0, pretend = 0, frame = 8
+ 431              		@ frame_needed = 1, uses_anonymous_args = 0
+ 432 0000 80B5     		push	{r7, lr}
+ 433              	.LCFI6:
+ 434              		.cfi_def_cfa_offset 8
+ 435              		.cfi_offset 14, -4
+ 436              		.cfi_offset 7, -8
+ 437 0002 82B0     		sub	sp, sp, #8
+ 438              	.LCFI7:
+ 439              		.cfi_def_cfa_offset 16
+ 440 0004 00AF     		add	r7, sp, #0
+ 441              	.LCFI8:
+ 442              		.cfi_def_cfa_register 7
+ 443 0006 0346     		mov	r3, r0
+ 444 0008 FB71     		strb	r3, [r7, #7]
+ 256:../src/waveplayer.c ****   EVAL_AUDIO_VolumeCtl(vol);
+ 445              		.loc 1 256 0
+ 446 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 447 000c 1846     		mov	r0, r3
+ 448 000e FFF7FEFF 		bl	EVAL_AUDIO_VolumeCtl
+ 257:../src/waveplayer.c ****   return 0;
+ 449              		.loc 1 257 0
+ 450 0012 4FF00003 		mov	r3, #0
+ 258:../src/waveplayer.c **** }
+ 451              		.loc 1 258 0
+ 452 0016 1846     		mov	r0, r3
+ 453 0018 07F10807 		add	r7, r7, #8
+ 454 001c BD46     		mov	sp, r7
+ 455 001e 80BD     		pop	{r7, pc}
+ 456              		.cfi_endproc
+ 457              	.LFE112:
+ 459              		.section	.text.WavePlayerStop,"ax",%progbits
+ 460              		.align	2
+ 461              		.global	WavePlayerStop
+ 462              		.thumb
+ 463              		.thumb_func
+ 465              	WavePlayerStop:
+ 466              	.LFB113:
+ 259:../src/waveplayer.c **** 
+ 260:../src/waveplayer.c **** 
+ 261:../src/waveplayer.c **** /**
+ 262:../src/waveplayer.c ****   * @brief  Stop playing wave
+ 263:../src/waveplayer.c ****   * @param  None
+ 264:../src/waveplayer.c ****   * @retval None
+ 265:../src/waveplayer.c ****   */
+ 266:../src/waveplayer.c **** void WavePlayerStop(void)
+ 267:../src/waveplayer.c **** { 
+ 467              		.loc 1 267 0
+ 468              		.cfi_startproc
+ 469              		@ args = 0, pretend = 0, frame = 0
+ 470              		@ frame_needed = 1, uses_anonymous_args = 0
+ 471 0000 80B5     		push	{r7, lr}
+ 472              	.LCFI9:
+ 473              		.cfi_def_cfa_offset 8
+ 474              		.cfi_offset 14, -4
+ 475              		.cfi_offset 7, -8
+ 476 0002 00AF     		add	r7, sp, #0
+ 477              	.LCFI10:
+ 478              		.cfi_def_cfa_register 7
+ 268:../src/waveplayer.c ****   EVAL_AUDIO_Stop(CODEC_PDWN_SW);
+ 479              		.loc 1 268 0
+ 480 0004 4FF00200 		mov	r0, #2
+ 481 0008 FFF7FEFF 		bl	EVAL_AUDIO_Stop
+ 269:../src/waveplayer.c **** }
+ 482              		.loc 1 269 0
+ 483 000c 80BD     		pop	{r7, pc}
+ 484              		.cfi_endproc
+ 485              	.LFE113:
+ 487 000e 00BF     		.section	.text.WavePlayerInit,"ax",%progbits
+ 488              		.align	2
+ 489              		.global	WavePlayerInit
+ 490              		.thumb
+ 491              		.thumb_func
+ 493              	WavePlayerInit:
+ 494              	.LFB114:
+ 270:../src/waveplayer.c ****  
+ 271:../src/waveplayer.c **** /**
+ 272:../src/waveplayer.c **** * @brief  Initializes the wave player
+ 273:../src/waveplayer.c **** * @param  AudioFreq: Audio sampling frequency
+ 274:../src/waveplayer.c **** * @retval None
+ 275:../src/waveplayer.c **** */
+ 276:../src/waveplayer.c **** int WavePlayerInit(uint32_t AudioFreq)
+ 277:../src/waveplayer.c **** { 
+ 495              		.loc 1 277 0
+ 496              		.cfi_startproc
+ 497              		@ args = 0, pretend = 0, frame = 8
+ 498              		@ frame_needed = 1, uses_anonymous_args = 0
+ 499 0000 80B5     		push	{r7, lr}
+ 500              	.LCFI11:
+ 501              		.cfi_def_cfa_offset 8
+ 502              		.cfi_offset 14, -4
+ 503              		.cfi_offset 7, -8
+ 504 0002 82B0     		sub	sp, sp, #8
+ 505              	.LCFI12:
+ 506              		.cfi_def_cfa_offset 16
+ 507 0004 00AF     		add	r7, sp, #0
+ 508              	.LCFI13:
+ 509              		.cfi_def_cfa_register 7
+ 510 0006 7860     		str	r0, [r7, #4]
+ 278:../src/waveplayer.c ****   
+ 279:../src/waveplayer.c ****   /* MEMS Accelerometre configure to manage PAUSE, RESUME and Controle Volume operation */
+ 280:../src/waveplayer.c ****   Mems_Config();
+ 511              		.loc 1 280 0
+ 512 0008 FFF7FEFF 		bl	Mems_Config
+ 281:../src/waveplayer.c ****   
+ 282:../src/waveplayer.c ****   /* EXTI configue to detect interrupts on Z axis click and on Y axis high event */
+ 283:../src/waveplayer.c ****   EXTILine_Config();  
+ 513              		.loc 1 283 0
+ 514 000c FFF7FEFF 		bl	EXTILine_Config
+ 284:../src/waveplayer.c ****     
+ 285:../src/waveplayer.c ****   /* Initialize I2S interface */  
+ 286:../src/waveplayer.c ****   EVAL_AUDIO_SetAudioInterface(AUDIO_INTERFACE_I2S);
+ 515              		.loc 1 286 0
+ 516 0010 4FF00100 		mov	r0, #1
+ 517 0014 FFF7FEFF 		bl	EVAL_AUDIO_SetAudioInterface
+ 287:../src/waveplayer.c ****   
+ 288:../src/waveplayer.c ****   /* Initialize the Audio codec and all related peripherals (I2S, I2C, IOExpander, IOs...) */  
+ 289:../src/waveplayer.c ****   EVAL_AUDIO_Init(OUTPUT_DEVICE_AUTO, volume, AudioFreq );  
+ 518              		.loc 1 289 0
+ 519 0018 40F20003 		movw	r3, #:lower16:volume
+ 520 001c C0F20003 		movt	r3, #:upper16:volume
+ 521 0020 1B78     		ldrb	r3, [r3, #0]
+ 522 0022 DBB2     		uxtb	r3, r3
+ 523 0024 4FF00400 		mov	r0, #4
+ 524 0028 1946     		mov	r1, r3
+ 525 002a 7A68     		ldr	r2, [r7, #4]
+ 526 002c FFF7FEFF 		bl	EVAL_AUDIO_Init
+ 290:../src/waveplayer.c ****   
+ 291:../src/waveplayer.c ****   return 0;
+ 527              		.loc 1 291 0
+ 528 0030 4FF00003 		mov	r3, #0
+ 292:../src/waveplayer.c **** }
+ 529              		.loc 1 292 0
+ 530 0034 1846     		mov	r0, r3
+ 531 0036 07F10807 		add	r7, r7, #8
+ 532 003a BD46     		mov	sp, r7
+ 533 003c 80BD     		pop	{r7, pc}
+ 534              		.cfi_endproc
+ 535              	.LFE114:
+ 537 003e 00BF     		.section	.text.LIS302DL_TIMEOUT_UserCallback,"ax",%progbits
+ 538              		.align	2
+ 539              		.global	LIS302DL_TIMEOUT_UserCallback
+ 540              		.thumb
+ 541              		.thumb_func
+ 543              	LIS302DL_TIMEOUT_UserCallback:
+ 544              	.LFB115:
+ 293:../src/waveplayer.c **** 
+ 294:../src/waveplayer.c **** /**
+ 295:../src/waveplayer.c ****   * @brief  MEMS accelerometre management of the timeout situation.
+ 296:../src/waveplayer.c ****   * @param  None.
+ 297:../src/waveplayer.c ****   * @retval None.
+ 298:../src/waveplayer.c ****   */
+ 299:../src/waveplayer.c **** uint32_t LIS302DL_TIMEOUT_UserCallback(void)
+ 300:../src/waveplayer.c **** {
+ 545              		.loc 1 300 0
+ 546              		.cfi_startproc
+ 547              		@ args = 0, pretend = 0, frame = 0
+ 548              		@ frame_needed = 1, uses_anonymous_args = 0
+ 549              		@ link register save eliminated.
+ 550 0000 80B4     		push	{r7}
+ 551              	.LCFI14:
+ 552              		.cfi_def_cfa_offset 4
+ 553              		.cfi_offset 7, -4
+ 554 0002 00AF     		add	r7, sp, #0
+ 555              	.LCFI15:
+ 556              		.cfi_def_cfa_register 7
+ 557              	.L16:
+ 301:../src/waveplayer.c ****   /* MEMS Accelerometer Timeout error occured */
+ 302:../src/waveplayer.c ****   while (1)
+ 303:../src/waveplayer.c ****   {   
+ 304:../src/waveplayer.c ****   }
+ 558              		.loc 1 304 0 discriminator 1
+ 559 0004 FEE7     		b	.L16
+ 560              		.cfi_endproc
+ 561              	.LFE115:
+ 563 0006 00BF     		.section	.text.AudioFlashPlay,"ax",%progbits
+ 564              		.align	2
+ 565              		.global	AudioFlashPlay
+ 566              		.thumb
+ 567              		.thumb_func
+ 569              	AudioFlashPlay:
+ 570              	.LFB116:
+ 305:../src/waveplayer.c **** }
+ 306:../src/waveplayer.c **** 
+ 307:../src/waveplayer.c **** /**
+ 308:../src/waveplayer.c **** * @brief  Play wave file from internal Flash
+ 309:../src/waveplayer.c **** * @param  None
+ 310:../src/waveplayer.c **** * @retval None
+ 311:../src/waveplayer.c **** */
+ 312:../src/waveplayer.c **** uint32_t AudioFlashPlay(uint16_t* pBuffer, uint32_t FullSize, uint32_t StartAdd)
+ 313:../src/waveplayer.c **** { 
+ 571              		.loc 1 313 0
+ 572              		.cfi_startproc
+ 573              		@ args = 0, pretend = 0, frame = 16
+ 574              		@ frame_needed = 1, uses_anonymous_args = 0
+ 575 0000 80B5     		push	{r7, lr}
+ 576              	.LCFI16:
+ 577              		.cfi_def_cfa_offset 8
+ 578              		.cfi_offset 14, -4
+ 579              		.cfi_offset 7, -8
+ 580 0002 84B0     		sub	sp, sp, #16
+ 581              	.LCFI17:
+ 582              		.cfi_def_cfa_offset 24
+ 583 0004 00AF     		add	r7, sp, #0
+ 584              	.LCFI18:
+ 585              		.cfi_def_cfa_register 7
+ 586 0006 F860     		str	r0, [r7, #12]
+ 587 0008 B960     		str	r1, [r7, #8]
+ 588 000a 7A60     		str	r2, [r7, #4]
+ 314:../src/waveplayer.c ****   EVAL_AUDIO_Play((uint16_t*)pBuffer, (FullSize - StartAdd));
+ 589              		.loc 1 314 0
+ 590 000c BA68     		ldr	r2, [r7, #8]
+ 591 000e 7B68     		ldr	r3, [r7, #4]
+ 592 0010 D31A     		subs	r3, r2, r3
+ 593 0012 F868     		ldr	r0, [r7, #12]
+ 594 0014 1946     		mov	r1, r3
+ 595 0016 FFF7FEFF 		bl	EVAL_AUDIO_Play
+ 315:../src/waveplayer.c ****   return 0;
+ 596              		.loc 1 315 0
+ 597 001a 4FF00003 		mov	r3, #0
+ 316:../src/waveplayer.c **** }
+ 598              		.loc 1 316 0
+ 599 001e 1846     		mov	r0, r3
+ 600 0020 07F11007 		add	r7, r7, #16
+ 601 0024 BD46     		mov	sp, r7
+ 602 0026 80BD     		pop	{r7, pc}
+ 603              		.cfi_endproc
+ 604              	.LFE116:
+ 606              		.section	.text.EVAL_AUDIO_TransferComplete_CallBack,"ax",%progbits
+ 607              		.align	2
+ 608              		.global	EVAL_AUDIO_TransferComplete_CallBack
+ 609              		.thumb
+ 610              		.thumb_func
+ 612              	EVAL_AUDIO_TransferComplete_CallBack:
+ 613              	.LFB117:
+ 317:../src/waveplayer.c **** 
+ 318:../src/waveplayer.c **** /*--------------------------------
+ 319:../src/waveplayer.c **** Callbacks implementation:
+ 320:../src/waveplayer.c **** the callbacks prototypes are defined in the stm324xg_eval_audio_codec.h file
+ 321:../src/waveplayer.c **** and their implementation should be done in the user code if they are needed.
+ 322:../src/waveplayer.c **** Below some examples of callback implementations.
+ 323:../src/waveplayer.c **** --------------------------------------------------------*/
+ 324:../src/waveplayer.c **** /**
+ 325:../src/waveplayer.c **** * @brief  Calculates the remaining file size and new position of the pointer.
+ 326:../src/waveplayer.c **** * @param  None
+ 327:../src/waveplayer.c **** * @retval None
+ 328:../src/waveplayer.c **** */
+ 329:../src/waveplayer.c **** void EVAL_AUDIO_TransferComplete_CallBack(uint32_t pBuffer, uint32_t Size)
+ 330:../src/waveplayer.c **** {
+ 614              		.loc 1 330 0
+ 615              		.cfi_startproc
+ 616              		@ args = 0, pretend = 0, frame = 8
+ 617              		@ frame_needed = 1, uses_anonymous_args = 0
+ 618              		@ link register save eliminated.
+ 619 0000 80B4     		push	{r7}
+ 620              	.LCFI19:
+ 621              		.cfi_def_cfa_offset 4
+ 622              		.cfi_offset 7, -4
+ 623 0002 83B0     		sub	sp, sp, #12
+ 624              	.LCFI20:
+ 625              		.cfi_def_cfa_offset 16
+ 626 0004 00AF     		add	r7, sp, #0
+ 627              	.LCFI21:
+ 628              		.cfi_def_cfa_register 7
+ 629 0006 7860     		str	r0, [r7, #4]
+ 630 0008 3960     		str	r1, [r7, #0]
+ 331:../src/waveplayer.c ****   /* Calculate the remaining audio data in the file and the new size 
+ 332:../src/waveplayer.c ****   for the DMA transfer. If the Audio files size is less than the DMA max 
+ 333:../src/waveplayer.c ****   data transfer size, so there is no calculation to be done, just restart 
+ 334:../src/waveplayer.c ****   from the beginning of the file ... */
+ 335:../src/waveplayer.c ****   /* Check if the end of file has been reached */
+ 336:../src/waveplayer.c ****   
+ 337:../src/waveplayer.c **** #ifdef AUDIO_MAL_MODE_NORMAL  
+ 338:../src/waveplayer.c ****   
+ 339:../src/waveplayer.c **** #if defined MEDIA_IntFLASH
+ 340:../src/waveplayer.c **** 
+ 341:../src/waveplayer.c **** #if defined PLAY_REPEAT_OFF
+ 342:../src/waveplayer.c ****   LED_Toggle = 4;
+ 343:../src/waveplayer.c ****   RepeatState = 1;
+ 344:../src/waveplayer.c ****   EVAL_AUDIO_Stop(CODEC_PDWN_HW);
+ 345:../src/waveplayer.c **** #else
+ 346:../src/waveplayer.c ****   /* Replay from the beginning */
+ 347:../src/waveplayer.c ****   AudioFlashPlay((uint16_t*)(AUDIO_SAMPLE + AUIDO_START_ADDRESS),AUDIO_FILE_SZE,AUIDO_START_ADDRESS
+ 348:../src/waveplayer.c **** #endif  
+ 349:../src/waveplayer.c ****   
+ 350:../src/waveplayer.c **** #elif defined MEDIA_USB_KEY  
+ 351:../src/waveplayer.c ****   XferCplt = 1;
+ 631              		.loc 1 351 0
+ 632 000a 40F20003 		movw	r3, #:lower16:XferCplt
+ 633 000e C0F20003 		movt	r3, #:upper16:XferCplt
+ 634 0012 4FF00102 		mov	r2, #1
+ 635 0016 1A60     		str	r2, [r3, #0]
+ 352:../src/waveplayer.c ****   if (WaveDataLength) WaveDataLength -= _MAX_SS;
+ 636              		.loc 1 352 0
+ 637 0018 40F20003 		movw	r3, #:lower16:WaveDataLength
+ 638 001c C0F20003 		movt	r3, #:upper16:WaveDataLength
+ 639 0020 1B68     		ldr	r3, [r3, #0]
+ 640 0022 002B     		cmp	r3, #0
+ 641 0024 0BD0     		beq	.L19
+ 642              		.loc 1 352 0 is_stmt 0 discriminator 1
+ 643 0026 40F20003 		movw	r3, #:lower16:WaveDataLength
+ 644 002a C0F20003 		movt	r3, #:upper16:WaveDataLength
+ 645 002e 1B68     		ldr	r3, [r3, #0]
+ 646 0030 A3F58062 		sub	r2, r3, #1024
+ 647 0034 40F20003 		movw	r3, #:lower16:WaveDataLength
+ 648 0038 C0F20003 		movt	r3, #:upper16:WaveDataLength
+ 649 003c 1A60     		str	r2, [r3, #0]
+ 650              	.L19:
+ 353:../src/waveplayer.c ****   if (WaveDataLength < _MAX_SS) WaveDataLength = 0;
+ 651              		.loc 1 353 0 is_stmt 1
+ 652 003e 40F20003 		movw	r3, #:lower16:WaveDataLength
+ 653 0042 C0F20003 		movt	r3, #:upper16:WaveDataLength
+ 654 0046 1A68     		ldr	r2, [r3, #0]
+ 655 0048 40F2FF33 		movw	r3, #1023
+ 656 004c 9A42     		cmp	r2, r3
+ 657 004e 06D8     		bhi	.L18
+ 658              		.loc 1 353 0 is_stmt 0 discriminator 1
+ 659 0050 40F20003 		movw	r3, #:lower16:WaveDataLength
+ 660 0054 C0F20003 		movt	r3, #:upper16:WaveDataLength
+ 661 0058 4FF00002 		mov	r2, #0
+ 662 005c 1A60     		str	r2, [r3, #0]
+ 663              	.L18:
+ 354:../src/waveplayer.c ****     
+ 355:../src/waveplayer.c **** #endif 
+ 356:../src/waveplayer.c ****     
+ 357:../src/waveplayer.c **** #else /* #ifdef AUDIO_MAL_MODE_CIRCULAR */
+ 358:../src/waveplayer.c ****   
+ 359:../src/waveplayer.c ****   
+ 360:../src/waveplayer.c **** #endif /* AUDIO_MAL_MODE_CIRCULAR */
+ 361:../src/waveplayer.c **** }
+ 664              		.loc 1 361 0 is_stmt 1
+ 665 005e 07F10C07 		add	r7, r7, #12
+ 666 0062 BD46     		mov	sp, r7
+ 667 0064 80BC     		pop	{r7}
+ 668 0066 7047     		bx	lr
+ 669              		.cfi_endproc
+ 670              	.LFE117:
+ 672              		.section	.text.EVAL_AUDIO_HalfTransfer_CallBack,"ax",%progbits
+ 673              		.align	2
+ 674              		.global	EVAL_AUDIO_HalfTransfer_CallBack
+ 675              		.thumb
+ 676              		.thumb_func
+ 678              	EVAL_AUDIO_HalfTransfer_CallBack:
+ 679              	.LFB118:
+ 362:../src/waveplayer.c **** 
+ 363:../src/waveplayer.c **** /**
+ 364:../src/waveplayer.c **** * @brief  Manages the DMA Half Transfer complete interrupt.
+ 365:../src/waveplayer.c **** * @param  None
+ 366:../src/waveplayer.c **** * @retval None
+ 367:../src/waveplayer.c **** */
+ 368:../src/waveplayer.c **** void EVAL_AUDIO_HalfTransfer_CallBack(uint32_t pBuffer, uint32_t Size)
+ 369:../src/waveplayer.c **** {  
+ 680              		.loc 1 369 0
+ 681              		.cfi_startproc
+ 682              		@ args = 0, pretend = 0, frame = 8
+ 683              		@ frame_needed = 1, uses_anonymous_args = 0
+ 684              		@ link register save eliminated.
+ 685 0000 80B4     		push	{r7}
+ 686              	.LCFI22:
+ 687              		.cfi_def_cfa_offset 4
+ 688              		.cfi_offset 7, -4
+ 689 0002 83B0     		sub	sp, sp, #12
+ 690              	.LCFI23:
+ 691              		.cfi_def_cfa_offset 16
+ 692 0004 00AF     		add	r7, sp, #0
+ 693              	.LCFI24:
+ 694              		.cfi_def_cfa_register 7
+ 695 0006 7860     		str	r0, [r7, #4]
+ 696 0008 3960     		str	r1, [r7, #0]
+ 370:../src/waveplayer.c **** #ifdef AUDIO_MAL_MODE_CIRCULAR
+ 371:../src/waveplayer.c ****     
+ 372:../src/waveplayer.c **** #endif /* AUDIO_MAL_MODE_CIRCULAR */
+ 373:../src/waveplayer.c ****   
+ 374:../src/waveplayer.c ****   /* Generally this interrupt routine is used to load the buffer when 
+ 375:../src/waveplayer.c ****   a streaming scheme is used: When first Half buffer is already transferred load 
+ 376:../src/waveplayer.c ****   the new data to the first half of buffer while DMA is transferring data from 
+ 377:../src/waveplayer.c ****   the second half. And when Transfer complete occurs, load the second half of 
+ 378:../src/waveplayer.c ****   the buffer while the DMA is transferring from the first half ... */
+ 379:../src/waveplayer.c ****   /* 
+ 380:../src/waveplayer.c ****   ...........
+ 381:../src/waveplayer.c ****   */
+ 382:../src/waveplayer.c **** }
+ 697              		.loc 1 382 0
+ 698 000a 07F10C07 		add	r7, r7, #12
+ 699 000e BD46     		mov	sp, r7
+ 700 0010 80BC     		pop	{r7}
+ 701 0012 7047     		bx	lr
+ 702              		.cfi_endproc
+ 703              	.LFE118:
+ 705              		.section	.text.EVAL_AUDIO_Error_CallBack,"ax",%progbits
+ 706              		.align	2
+ 707              		.global	EVAL_AUDIO_Error_CallBack
+ 708              		.thumb
+ 709              		.thumb_func
+ 711              	EVAL_AUDIO_Error_CallBack:
+ 712              	.LFB119:
+ 383:../src/waveplayer.c **** 
+ 384:../src/waveplayer.c **** /**
+ 385:../src/waveplayer.c **** * @brief  Manages the DMA FIFO error interrupt.
+ 386:../src/waveplayer.c **** * @param  None
+ 387:../src/waveplayer.c **** * @retval None
+ 388:../src/waveplayer.c **** */
+ 389:../src/waveplayer.c **** void EVAL_AUDIO_Error_CallBack(void* pData)
+ 390:../src/waveplayer.c **** {
+ 713              		.loc 1 390 0
+ 714              		.cfi_startproc
+ 715              		@ args = 0, pretend = 0, frame = 8
+ 716              		@ frame_needed = 1, uses_anonymous_args = 0
+ 717              		@ link register save eliminated.
+ 718 0000 80B4     		push	{r7}
+ 719              	.LCFI25:
+ 720              		.cfi_def_cfa_offset 4
+ 721              		.cfi_offset 7, -4
+ 722 0002 83B0     		sub	sp, sp, #12
+ 723              	.LCFI26:
+ 724              		.cfi_def_cfa_offset 16
+ 725 0004 00AF     		add	r7, sp, #0
+ 726              	.LCFI27:
+ 727              		.cfi_def_cfa_register 7
+ 728 0006 7860     		str	r0, [r7, #4]
+ 729              	.L23:
+ 391:../src/waveplayer.c ****   /* Stop the program with an infinite loop */
+ 392:../src/waveplayer.c ****   while (1)
+ 393:../src/waveplayer.c ****   {}
+ 730              		.loc 1 393 0 discriminator 1
+ 731 0008 FEE7     		b	.L23
+ 732              		.cfi_endproc
+ 733              	.LFE119:
+ 735 000a 00BF     		.section	.text.EVAL_AUDIO_GetSampleCallBack,"ax",%progbits
+ 736              		.align	2
+ 737              		.global	EVAL_AUDIO_GetSampleCallBack
+ 738              		.thumb
+ 739              		.thumb_func
+ 741              	EVAL_AUDIO_GetSampleCallBack:
+ 742              	.LFB120:
+ 394:../src/waveplayer.c ****   
+ 395:../src/waveplayer.c ****   /* could also generate a system reset to recover from the error */
+ 396:../src/waveplayer.c ****   /* .... */
+ 397:../src/waveplayer.c **** }
+ 398:../src/waveplayer.c **** 
+ 399:../src/waveplayer.c **** /**
+ 400:../src/waveplayer.c **** * @brief  Get next data sample callback
+ 401:../src/waveplayer.c **** * @param  None
+ 402:../src/waveplayer.c **** * @retval Next data sample to be sent
+ 403:../src/waveplayer.c **** */
+ 404:../src/waveplayer.c **** uint16_t EVAL_AUDIO_GetSampleCallBack(void)
+ 405:../src/waveplayer.c **** {
+ 743              		.loc 1 405 0
+ 744              		.cfi_startproc
+ 745              		@ args = 0, pretend = 0, frame = 0
+ 746              		@ frame_needed = 1, uses_anonymous_args = 0
+ 747              		@ link register save eliminated.
+ 748 0000 80B4     		push	{r7}
+ 749              	.LCFI28:
+ 750              		.cfi_def_cfa_offset 4
+ 751              		.cfi_offset 7, -4
+ 752 0002 00AF     		add	r7, sp, #0
+ 753              	.LCFI29:
+ 754              		.cfi_def_cfa_register 7
+ 406:../src/waveplayer.c ****   return 0;
+ 755              		.loc 1 406 0
+ 756 0004 4FF00003 		mov	r3, #0
+ 407:../src/waveplayer.c **** }
+ 757              		.loc 1 407 0
+ 758 0008 1846     		mov	r0, r3
+ 759 000a BD46     		mov	sp, r7
+ 760 000c 80BC     		pop	{r7}
+ 761 000e 7047     		bx	lr
+ 762              		.cfi_endproc
+ 763              	.LFE120:
+ 765              		.section	.text.Codec_TIMEOUT_UserCallback,"ax",%progbits
+ 766              		.align	2
+ 767              		.global	Codec_TIMEOUT_UserCallback
+ 768              		.thumb
+ 769              		.thumb_func
+ 771              	Codec_TIMEOUT_UserCallback:
+ 772              	.LFB121:
+ 408:../src/waveplayer.c **** 
+ 409:../src/waveplayer.c **** 
+ 410:../src/waveplayer.c **** #ifndef USE_DEFAULT_TIMEOUT_CALLBACK
+ 411:../src/waveplayer.c **** /**
+ 412:../src/waveplayer.c ****   * @brief  Basic management of the timeout situation.
+ 413:../src/waveplayer.c ****   * @param  None.
+ 414:../src/waveplayer.c ****   * @retval None.
+ 415:../src/waveplayer.c ****   */
+ 416:../src/waveplayer.c **** uint32_t Codec_TIMEOUT_UserCallback(void)
+ 417:../src/waveplayer.c **** {   
+ 773              		.loc 1 417 0
+ 774              		.cfi_startproc
+ 775              		@ args = 0, pretend = 0, frame = 0
+ 776              		@ frame_needed = 1, uses_anonymous_args = 0
+ 777              		@ link register save eliminated.
+ 778 0000 80B4     		push	{r7}
+ 779              	.LCFI30:
+ 780              		.cfi_def_cfa_offset 4
+ 781              		.cfi_offset 7, -4
+ 782 0002 00AF     		add	r7, sp, #0
+ 783              	.LCFI31:
+ 784              		.cfi_def_cfa_register 7
+ 418:../src/waveplayer.c ****   return (0);
+ 785              		.loc 1 418 0
+ 786 0004 4FF00003 		mov	r3, #0
+ 419:../src/waveplayer.c **** }
+ 787              		.loc 1 419 0
+ 788 0008 1846     		mov	r0, r3
+ 789 000a BD46     		mov	sp, r7
+ 790 000c 80BC     		pop	{r7}
+ 791 000e 7047     		bx	lr
+ 792              		.cfi_endproc
+ 793              	.LFE121:
+ 795              		.section	.text.Delay,"ax",%progbits
+ 796              		.align	2
+ 797              		.global	Delay
+ 798              		.thumb
+ 799              		.thumb_func
+ 801              	Delay:
+ 802              	.LFB122:
+ 420:../src/waveplayer.c **** #endif /* USE_DEFAULT_TIMEOUT_CALLBACK */
+ 421:../src/waveplayer.c **** /*----------------------------------------------------------------------------*/
+ 422:../src/waveplayer.c **** 
+ 423:../src/waveplayer.c **** /**
+ 424:../src/waveplayer.c ****   * @brief  Inserts a delay time.
+ 425:../src/waveplayer.c ****   * @param  nTime: specifies the delay time length, in 10 ms.
+ 426:../src/waveplayer.c ****   * @retval None
+ 427:../src/waveplayer.c ****   */
+ 428:../src/waveplayer.c **** void Delay(__IO uint32_t nTime)
+ 429:../src/waveplayer.c **** {
+ 803              		.loc 1 429 0
+ 804              		.cfi_startproc
+ 805              		@ args = 0, pretend = 0, frame = 8
+ 806              		@ frame_needed = 1, uses_anonymous_args = 0
+ 807              		@ link register save eliminated.
+ 808 0000 80B4     		push	{r7}
+ 809              	.LCFI32:
+ 810              		.cfi_def_cfa_offset 4
+ 811              		.cfi_offset 7, -4
+ 812 0002 83B0     		sub	sp, sp, #12
+ 813              	.LCFI33:
+ 814              		.cfi_def_cfa_offset 16
+ 815 0004 00AF     		add	r7, sp, #0
+ 816              	.LCFI34:
+ 817              		.cfi_def_cfa_register 7
+ 818 0006 7860     		str	r0, [r7, #4]
+ 430:../src/waveplayer.c ****   TimingDelay = nTime;
+ 819              		.loc 1 430 0
+ 820 0008 7A68     		ldr	r2, [r7, #4]
+ 821 000a 40F20003 		movw	r3, #:lower16:TimingDelay
+ 822 000e C0F20003 		movt	r3, #:upper16:TimingDelay
+ 823 0012 1A60     		str	r2, [r3, #0]
+ 431:../src/waveplayer.c ****   
+ 432:../src/waveplayer.c ****   while(TimingDelay != 0);
+ 824              		.loc 1 432 0
+ 825 0014 00BF     		nop
+ 826              	.L27:
+ 827              		.loc 1 432 0 is_stmt 0 discriminator 1
+ 828 0016 40F20003 		movw	r3, #:lower16:TimingDelay
+ 829 001a C0F20003 		movt	r3, #:upper16:TimingDelay
+ 830 001e 1B68     		ldr	r3, [r3, #0]
+ 831 0020 002B     		cmp	r3, #0
+ 832 0022 F8D1     		bne	.L27
+ 433:../src/waveplayer.c **** }
+ 833              		.loc 1 433 0 is_stmt 1
+ 834 0024 07F10C07 		add	r7, r7, #12
+ 835 0028 BD46     		mov	sp, r7
+ 836 002a 80BC     		pop	{r7}
+ 837 002c 7047     		bx	lr
+ 838              		.cfi_endproc
+ 839              	.LFE122:
+ 841 002e 00BF     		.section	.text.TimingDelay_Decrement,"ax",%progbits
+ 842              		.align	2
+ 843              		.global	TimingDelay_Decrement
+ 844              		.thumb
+ 845              		.thumb_func
+ 847              	TimingDelay_Decrement:
+ 848              	.LFB123:
+ 434:../src/waveplayer.c **** 
+ 435:../src/waveplayer.c **** /**
+ 436:../src/waveplayer.c ****   * @brief  Decrements the TimingDelay variable.
+ 437:../src/waveplayer.c ****   * @param  None
+ 438:../src/waveplayer.c ****   * @retval None
+ 439:../src/waveplayer.c ****   */
+ 440:../src/waveplayer.c **** void TimingDelay_Decrement(void)
+ 441:../src/waveplayer.c **** {
+ 849              		.loc 1 441 0
+ 850              		.cfi_startproc
+ 851              		@ args = 0, pretend = 0, frame = 0
+ 852              		@ frame_needed = 1, uses_anonymous_args = 0
+ 853              		@ link register save eliminated.
+ 854 0000 80B4     		push	{r7}
+ 855              	.LCFI35:
+ 856              		.cfi_def_cfa_offset 4
+ 857              		.cfi_offset 7, -4
+ 858 0002 00AF     		add	r7, sp, #0
+ 859              	.LCFI36:
+ 860              		.cfi_def_cfa_register 7
+ 442:../src/waveplayer.c ****   if (TimingDelay != 0x00)
+ 861              		.loc 1 442 0
+ 862 0004 40F20003 		movw	r3, #:lower16:TimingDelay
+ 863 0008 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 864 000c 1B68     		ldr	r3, [r3, #0]
+ 865 000e 002B     		cmp	r3, #0
+ 866 0010 0BD0     		beq	.L28
+ 443:../src/waveplayer.c ****   { 
+ 444:../src/waveplayer.c ****     TimingDelay--;
+ 867              		.loc 1 444 0
+ 868 0012 40F20003 		movw	r3, #:lower16:TimingDelay
+ 869 0016 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 870 001a 1B68     		ldr	r3, [r3, #0]
+ 871 001c 03F1FF32 		add	r2, r3, #-1
+ 872 0020 40F20003 		movw	r3, #:lower16:TimingDelay
+ 873 0024 C0F20003 		movt	r3, #:upper16:TimingDelay
+ 874 0028 1A60     		str	r2, [r3, #0]
+ 875              	.L28:
+ 445:../src/waveplayer.c ****   }
+ 446:../src/waveplayer.c **** }
+ 876              		.loc 1 446 0
+ 877 002a BD46     		mov	sp, r7
+ 878 002c 80BC     		pop	{r7}
+ 879 002e 7047     		bx	lr
+ 880              		.cfi_endproc
+ 881              	.LFE123:
+ 883              		.section	.rodata
+ 884              		.align	2
+ 885              	.LC0:
+ 886 0000 303A7265 		.ascii	"0:rec.wav\000"
+ 886      632E7761 
+ 886      7600
+ 887 000a 0000     		.align	2
+ 888              	.LC1:
+ 889 000c 303A6175 		.ascii	"0:audio.wav\000"
+ 889      64696F2E 
+ 889      77617600 
+ 890              		.section	.text.WavePlayerStart,"ax",%progbits
+ 891              		.align	2
+ 892              		.global	WavePlayerStart
+ 893              		.thumb
+ 894              		.thumb_func
+ 896              	WavePlayerStart:
+ 897              	.LFB124:
+ 447:../src/waveplayer.c **** 
+ 448:../src/waveplayer.c **** #if defined MEDIA_USB_KEY
+ 449:../src/waveplayer.c **** 
+ 450:../src/waveplayer.c **** /**
+ 451:../src/waveplayer.c ****   * @brief  Start wave player
+ 452:../src/waveplayer.c ****   * @param  None
+ 453:../src/waveplayer.c ****   * @retval None
+ 454:../src/waveplayer.c ****   */
+ 455:../src/waveplayer.c **** void WavePlayerStart(void)
+ 456:../src/waveplayer.c **** {
+ 898              		.loc 1 456 0
+ 899              		.cfi_startproc
+ 900              		@ args = 0, pretend = 0, frame = 8
+ 901              		@ frame_needed = 1, uses_anonymous_args = 0
+ 902 0000 80B5     		push	{r7, lr}
+ 903              	.LCFI37:
+ 904              		.cfi_def_cfa_offset 8
+ 905              		.cfi_offset 14, -4
+ 906              		.cfi_offset 7, -8
+ 907 0002 82B0     		sub	sp, sp, #8
+ 908              	.LCFI38:
+ 909              		.cfi_def_cfa_offset 16
+ 910 0004 00AF     		add	r7, sp, #0
+ 911              	.LCFI39:
+ 912              		.cfi_def_cfa_register 7
+ 457:../src/waveplayer.c ****   char path[] = "0:/";
+ 913              		.loc 1 457 0
+ 914 0006 43F63023 		movw	r3, #14896
+ 915 000a C0F22F03 		movt	r3, 47
+ 916 000e 7B60     		str	r3, [r7, #4]
+ 458:../src/waveplayer.c ****   
+ 459:../src/waveplayer.c ****   buffer_switch = 1;
+ 917              		.loc 1 459 0
+ 918 0010 40F20003 		movw	r3, #:lower16:buffer_switch
+ 919 0014 C0F20003 		movt	r3, #:upper16:buffer_switch
+ 920 0018 4FF00102 		mov	r2, #1
+ 921 001c 1A70     		strb	r2, [r3, #0]
+ 460:../src/waveplayer.c ****   
+ 461:../src/waveplayer.c ****   /* Get the read out protection status */
+ 462:../src/waveplayer.c ****   if (f_opendir(&dir, path)!= FR_OK)
+ 922              		.loc 1 462 0
+ 923 001e 40F20000 		movw	r0, #:lower16:dir
+ 924 0022 C0F20000 		movt	r0, #:upper16:dir
+ 925 0026 07F10403 		add	r3, r7, #4
+ 926 002a 1946     		mov	r1, r3
+ 927 002c FFF7FEFF 		bl	f_opendir
+ 928 0030 0346     		mov	r3, r0
+ 929 0032 002B     		cmp	r3, #0
+ 930 0034 08D0     		beq	.L31
+ 931              	.L32:
+ 463:../src/waveplayer.c ****   {
+ 464:../src/waveplayer.c ****     while(1)
+ 465:../src/waveplayer.c ****     {
+ 466:../src/waveplayer.c ****       STM_EVAL_LEDToggle(LED5);
+ 932              		.loc 1 466 0 discriminator 1
+ 933 0036 4FF00200 		mov	r0, #2
+ 934 003a FFF7FEFF 		bl	STM_EVAL_LEDToggle
+ 467:../src/waveplayer.c ****       Delay(10);
+ 935              		.loc 1 467 0 discriminator 1
+ 936 003e 4FF00A00 		mov	r0, #10
+ 937 0042 FFF7FEFF 		bl	Delay
+ 468:../src/waveplayer.c ****     }    
+ 938              		.loc 1 468 0 discriminator 1
+ 939 0046 F6E7     		b	.L32
+ 940              	.L31:
+ 469:../src/waveplayer.c ****   }
+ 470:../src/waveplayer.c ****   else
+ 471:../src/waveplayer.c ****   {
+ 472:../src/waveplayer.c ****     if (WaveRecStatus == 1)
+ 941              		.loc 1 472 0
+ 942 0048 40F20003 		movw	r3, #:lower16:WaveRecStatus
+ 943 004c C0F20003 		movt	r3, #:upper16:WaveRecStatus
+ 944 0050 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 945 0052 012B     		cmp	r3, #1
+ 946 0054 09D1     		bne	.L33
+ 473:../src/waveplayer.c ****     {
+ 474:../src/waveplayer.c ****       WaveFileName = REC_WAVE_NAME;
+ 947              		.loc 1 474 0
+ 948 0056 40F20003 		movw	r3, #:lower16:WaveFileName
+ 949 005a C0F20003 		movt	r3, #:upper16:WaveFileName
+ 950 005e 40F20002 		movw	r2, #:lower16:.LC0
+ 951 0062 C0F20002 		movt	r2, #:upper16:.LC0
+ 952 0066 1A60     		str	r2, [r3, #0]
+ 953 0068 08E0     		b	.L34
+ 954              	.L33:
+ 475:../src/waveplayer.c ****     }
+ 476:../src/waveplayer.c ****     else
+ 477:../src/waveplayer.c ****     {
+ 478:../src/waveplayer.c ****       WaveFileName = WAVE_NAME; 
+ 955              		.loc 1 478 0
+ 956 006a 40F20003 		movw	r3, #:lower16:WaveFileName
+ 957 006e C0F20003 		movt	r3, #:upper16:WaveFileName
+ 958 0072 40F20002 		movw	r2, #:lower16:.LC1
+ 959 0076 C0F20002 		movt	r2, #:upper16:.LC1
+ 960 007a 1A60     		str	r2, [r3, #0]
+ 961              	.L34:
+ 479:../src/waveplayer.c ****     }
+ 480:../src/waveplayer.c ****     /* Open the wave file to be played */
+ 481:../src/waveplayer.c ****     if (f_open(&fileR, WaveFileName , FA_READ) != FR_OK)
+ 962              		.loc 1 481 0
+ 963 007c 40F20003 		movw	r3, #:lower16:WaveFileName
+ 964 0080 C0F20003 		movt	r3, #:upper16:WaveFileName
+ 965 0084 1B68     		ldr	r3, [r3, #0]
+ 966 0086 40F20000 		movw	r0, #:lower16:fileR
+ 967 008a C0F20000 		movt	r0, #:upper16:fileR
+ 968 008e 1946     		mov	r1, r3
+ 969 0090 4FF00102 		mov	r2, #1
+ 970 0094 FFF7FEFF 		bl	f_open
+ 971 0098 0346     		mov	r3, r0
+ 972 009a 002B     		cmp	r3, #0
+ 973 009c 0BD0     		beq	.L35
+ 482:../src/waveplayer.c ****     {
+ 483:../src/waveplayer.c ****       STM_EVAL_LEDOn(LED5);
+ 974              		.loc 1 483 0
+ 975 009e 4FF00200 		mov	r0, #2
+ 976 00a2 FFF7FEFF 		bl	STM_EVAL_LEDOn
+ 484:../src/waveplayer.c ****       Command_index = 1;
+ 977              		.loc 1 484 0
+ 978 00a6 40F20003 		movw	r3, #:lower16:Command_index
+ 979 00aa C0F20003 		movt	r3, #:upper16:Command_index
+ 980 00ae 4FF00102 		mov	r2, #1
+ 981 00b2 1A70     		strb	r2, [r3, #0]
+ 982 00b4 40E0     		b	.L30
+ 983              	.L35:
+ 485:../src/waveplayer.c ****     }
+ 486:../src/waveplayer.c ****     else
+ 487:../src/waveplayer.c ****     {    
+ 488:../src/waveplayer.c ****       /* Read data(_MAX_SS byte) from the selected file */
+ 489:../src/waveplayer.c ****       f_read (&fileR, buffer1, _MAX_SS, &BytesRead);
+ 984              		.loc 1 489 0
+ 985 00b6 40F20000 		movw	r0, #:lower16:fileR
+ 986 00ba C0F20000 		movt	r0, #:upper16:fileR
+ 987 00be 40F20001 		movw	r1, #:lower16:buffer1
+ 988 00c2 C0F20001 		movt	r1, #:upper16:buffer1
+ 989 00c6 4FF48062 		mov	r2, #1024
+ 990 00ca 40F20003 		movw	r3, #:lower16:BytesRead
+ 991 00ce C0F20003 		movt	r3, #:upper16:BytesRead
+ 992 00d2 FFF7FEFF 		bl	f_read
+ 490:../src/waveplayer.c ****       
+ 491:../src/waveplayer.c ****       WaveFileStatus = WavePlayer_WaveParsing(&wavelen);
+ 993              		.loc 1 491 0
+ 994 00d6 40F20000 		movw	r0, #:lower16:wavelen
+ 995 00da C0F20000 		movt	r0, #:upper16:wavelen
+ 996 00de FFF7FEFF 		bl	WavePlayer_WaveParsing
+ 997 00e2 0346     		mov	r3, r0
+ 998 00e4 1A46     		mov	r2, r3
+ 999 00e6 40F20003 		movw	r3, #:lower16:WaveFileStatus
+ 1000 00ea C0F20003 		movt	r3, #:upper16:WaveFileStatus
+ 1001 00ee 1A70     		strb	r2, [r3, #0]
+ 492:../src/waveplayer.c ****       
+ 493:../src/waveplayer.c ****       if (WaveFileStatus == Valid_WAVE_File)  /* the .WAV file is valid */
+ 1002              		.loc 1 493 0
+ 1003 00f0 40F20003 		movw	r3, #:lower16:WaveFileStatus
+ 1004 00f4 C0F20003 		movt	r3, #:upper16:WaveFileStatus
+ 1005 00f8 1B78     		ldrb	r3, [r3, #0]
+ 1006 00fa DBB2     		uxtb	r3, r3
+ 1007 00fc 002B     		cmp	r3, #0
+ 1008 00fe 12D1     		bne	.L37
+ 494:../src/waveplayer.c ****       {
+ 495:../src/waveplayer.c ****         /* Set WaveDataLenght to the Speech wave length */
+ 496:../src/waveplayer.c ****         WaveDataLength = WAVE_Format.DataSize;
+ 1009              		.loc 1 496 0
+ 1010 0100 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1011 0104 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1012 0108 5A69     		ldr	r2, [r3, #20]
+ 1013 010a 40F20003 		movw	r3, #:lower16:WaveDataLength
+ 1014 010e C0F20003 		movt	r3, #:upper16:WaveDataLength
+ 1015 0112 1A60     		str	r2, [r3, #0]
+ 497:../src/waveplayer.c ****       }
+ 498:../src/waveplayer.c ****       else /* Unvalid wave file */
+ 499:../src/waveplayer.c ****       {
+ 500:../src/waveplayer.c ****         /* Led Red Toggles in infinite loop */
+ 501:../src/waveplayer.c ****         while(1)
+ 502:../src/waveplayer.c ****         {
+ 503:../src/waveplayer.c ****           STM_EVAL_LEDToggle(LED5);
+ 504:../src/waveplayer.c ****           Delay(10);
+ 505:../src/waveplayer.c ****         }
+ 506:../src/waveplayer.c ****       }
+ 507:../src/waveplayer.c ****       /* Play the wave */
+ 508:../src/waveplayer.c ****       WavePlayBack(WAVE_Format.SampleRate);
+ 1016              		.loc 1 508 0
+ 1017 0114 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1018 0118 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1019 011c 9B68     		ldr	r3, [r3, #8]
+ 1020 011e 1846     		mov	r0, r3
+ 1021 0120 FFF7FEFF 		bl	WavePlayBack
+ 1022 0124 08E0     		b	.L30
+ 1023              	.L37:
+ 503:../src/waveplayer.c ****           STM_EVAL_LEDToggle(LED5);
+ 1024              		.loc 1 503 0 discriminator 1
+ 1025 0126 4FF00200 		mov	r0, #2
+ 1026 012a FFF7FEFF 		bl	STM_EVAL_LEDToggle
+ 504:../src/waveplayer.c ****           Delay(10);
+ 1027              		.loc 1 504 0 discriminator 1
+ 1028 012e 4FF00A00 		mov	r0, #10
+ 1029 0132 FFF7FEFF 		bl	Delay
+ 505:../src/waveplayer.c ****         }
+ 1030              		.loc 1 505 0 discriminator 1
+ 1031 0136 F6E7     		b	.L37
+ 1032              	.L30:
+ 509:../src/waveplayer.c ****     }    
+ 510:../src/waveplayer.c ****   }
+ 511:../src/waveplayer.c **** }
+ 1033              		.loc 1 511 0
+ 1034 0138 07F10807 		add	r7, r7, #8
+ 1035 013c BD46     		mov	sp, r7
+ 1036 013e 80BD     		pop	{r7, pc}
+ 1037              		.cfi_endproc
+ 1038              	.LFE124:
+ 1040              		.section	.text.WavePlayer_CallBack,"ax",%progbits
+ 1041              		.align	2
+ 1042              		.global	WavePlayer_CallBack
+ 1043              		.thumb
+ 1044              		.thumb_func
+ 1046              	WavePlayer_CallBack:
+ 1047              	.LFB125:
+ 512:../src/waveplayer.c **** 
+ 513:../src/waveplayer.c **** /**
+ 514:../src/waveplayer.c ****   * @brief  Reset the wave player
+ 515:../src/waveplayer.c ****   * @param  None
+ 516:../src/waveplayer.c ****   * @retval None
+ 517:../src/waveplayer.c ****   */
+ 518:../src/waveplayer.c **** void WavePlayer_CallBack(void)
+ 519:../src/waveplayer.c **** {
+ 1048              		.loc 1 519 0
+ 1049              		.cfi_startproc
+ 1050              		@ args = 0, pretend = 0, frame = 0
+ 1051              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1052 0000 80B5     		push	{r7, lr}
+ 1053              	.LCFI40:
+ 1054              		.cfi_def_cfa_offset 8
+ 1055              		.cfi_offset 14, -4
+ 1056              		.cfi_offset 7, -8
+ 1057 0002 00AF     		add	r7, sp, #0
+ 1058              	.LCFI41:
+ 1059              		.cfi_def_cfa_register 7
+ 520:../src/waveplayer.c ****   /* Reset the wave player variables */
+ 521:../src/waveplayer.c ****   RepeatState = 0;
+ 1060              		.loc 1 521 0
+ 1061 0004 40F20003 		movw	r3, #:lower16:RepeatState
+ 1062 0008 C0F20003 		movt	r3, #:upper16:RepeatState
+ 1063 000c 4FF00002 		mov	r2, #0
+ 1064 0010 1A70     		strb	r2, [r3, #0]
+ 522:../src/waveplayer.c ****   AudioPlayStart =0;
+ 1065              		.loc 1 522 0
+ 1066 0012 40F20003 		movw	r3, #:lower16:AudioPlayStart
+ 1067 0016 C0F20003 		movt	r3, #:upper16:AudioPlayStart
+ 1068 001a 4FF00002 		mov	r2, #0
+ 1069 001e 1A70     		strb	r2, [r3, #0]
+ 523:../src/waveplayer.c ****   LED_Toggle = 7;
+ 1070              		.loc 1 523 0
+ 1071 0020 40F20003 		movw	r3, #:lower16:LED_Toggle
+ 1072 0024 C0F20003 		movt	r3, #:upper16:LED_Toggle
+ 1073 0028 4FF00702 		mov	r2, #7
+ 1074 002c 1A70     		strb	r2, [r3, #0]
+ 524:../src/waveplayer.c ****   PauseResumeStatus = 1;
+ 1075              		.loc 1 524 0
+ 1076 002e 40F20003 		movw	r3, #:lower16:PauseResumeStatus
+ 1077 0032 C0F20003 		movt	r3, #:upper16:PauseResumeStatus
+ 1078 0036 4FF00102 		mov	r2, #1
+ 1079 003a 1A70     		strb	r2, [r3, #0]
+ 525:../src/waveplayer.c ****   WaveDataLength =0;
+ 1080              		.loc 1 525 0
+ 1081 003c 40F20003 		movw	r3, #:lower16:WaveDataLength
+ 1082 0040 C0F20003 		movt	r3, #:upper16:WaveDataLength
+ 1083 0044 4FF00002 		mov	r2, #0
+ 1084 0048 1A60     		str	r2, [r3, #0]
+ 526:../src/waveplayer.c ****   Count = 0;
+ 1085              		.loc 1 526 0
+ 1086 004a 40F20003 		movw	r3, #:lower16:Count
+ 1087 004e C0F20003 		movt	r3, #:upper16:Count
+ 1088 0052 4FF00002 		mov	r2, #0
+ 1089 0056 1A70     		strb	r2, [r3, #0]
+ 527:../src/waveplayer.c ****   
+ 528:../src/waveplayer.c ****   /* Stops the codec */
+ 529:../src/waveplayer.c ****   EVAL_AUDIO_Stop(CODEC_PDWN_HW);
+ 1090              		.loc 1 529 0
+ 1091 0058 4FF00100 		mov	r0, #1
+ 1092 005c FFF7FEFF 		bl	EVAL_AUDIO_Stop
+ 530:../src/waveplayer.c ****   /* LED off */
+ 531:../src/waveplayer.c ****   STM_EVAL_LEDOff(LED3);
+ 1093              		.loc 1 531 0
+ 1094 0060 4FF00100 		mov	r0, #1
+ 1095 0064 FFF7FEFF 		bl	STM_EVAL_LEDOff
+ 532:../src/waveplayer.c ****   STM_EVAL_LEDOff(LED4);
+ 1096              		.loc 1 532 0
+ 1097 0068 4FF00000 		mov	r0, #0
+ 1098 006c FFF7FEFF 		bl	STM_EVAL_LEDOff
+ 533:../src/waveplayer.c ****   STM_EVAL_LEDOff(LED6);
+ 1099              		.loc 1 533 0
+ 1100 0070 4FF00300 		mov	r0, #3
+ 1101 0074 FFF7FEFF 		bl	STM_EVAL_LEDOff
+ 534:../src/waveplayer.c ****   
+ 535:../src/waveplayer.c ****   /* TIM Interrupts disable */
+ 536:../src/waveplayer.c ****   TIM_ITConfig(TIM4, TIM_IT_CC1, DISABLE);
+ 1102              		.loc 1 536 0
+ 1103 0078 4FF40060 		mov	r0, #2048
+ 1104 007c C4F20000 		movt	r0, 16384
+ 1105 0080 4FF00201 		mov	r1, #2
+ 1106 0084 4FF00002 		mov	r2, #0
+ 1107 0088 FFF7FEFF 		bl	TIM_ITConfig
+ 537:../src/waveplayer.c ****   f_mount(0, NULL);
+ 1108              		.loc 1 537 0
+ 1109 008c 4FF00000 		mov	r0, #0
+ 1110 0090 4FF00001 		mov	r1, #0
+ 1111 0094 FFF7FEFF 		bl	f_mount
+ 538:../src/waveplayer.c **** } 
+ 1112              		.loc 1 538 0
+ 1113 0098 80BD     		pop	{r7, pc}
+ 1114              		.cfi_endproc
+ 1115              	.LFE125:
+ 1117 009a 00BF     		.section	.text.WavePlayer_WaveParsing,"ax",%progbits
+ 1118              		.align	2
+ 1119              		.thumb
+ 1120              		.thumb_func
+ 1122              	WavePlayer_WaveParsing:
+ 1123              	.LFB126:
+ 539:../src/waveplayer.c **** 
+ 540:../src/waveplayer.c **** /**
+ 541:../src/waveplayer.c ****   * @brief  Checks the format of the .WAV file and gets information about
+ 542:../src/waveplayer.c ****   *   the audio format. This is done by reading the value of a
+ 543:../src/waveplayer.c ****   *   number of parameters stored in the file header and comparing
+ 544:../src/waveplayer.c ****   *   these to the values expected authenticates the format of a
+ 545:../src/waveplayer.c ****   *   standard .WAV  file (44 bytes will be read). If  it is a valid
+ 546:../src/waveplayer.c ****   *   .WAV file format, it continues reading the header to determine
+ 547:../src/waveplayer.c ****   *   the  audio format such as the sample rate and the sampled data
+ 548:../src/waveplayer.c ****   *   size. If the audio format is supported by this application,
+ 549:../src/waveplayer.c ****   *   it retrieves the audio format in WAVE_Format structure and
+ 550:../src/waveplayer.c ****   *   returns a zero value. Otherwise the function fails and the
+ 551:../src/waveplayer.c ****   *   return value is nonzero.In this case, the return value specifies
+ 552:../src/waveplayer.c ****   *   the cause of  the function fails. The error codes that can be
+ 553:../src/waveplayer.c ****   *   returned by this function are declared in the header file.
+ 554:../src/waveplayer.c ****   * @param  None
+ 555:../src/waveplayer.c ****   * @retval Zero value if the function succeed, otherwise it return
+ 556:../src/waveplayer.c ****   *         a nonzero value which specifies the error code.
+ 557:../src/waveplayer.c ****   */
+ 558:../src/waveplayer.c **** static ErrorCode WavePlayer_WaveParsing(uint32_t *FileLen)
+ 559:../src/waveplayer.c **** {
+ 1124              		.loc 1 559 0
+ 1125              		.cfi_startproc
+ 1126              		@ args = 0, pretend = 0, frame = 16
+ 1127              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1128 0000 80B5     		push	{r7, lr}
+ 1129              	.LCFI42:
+ 1130              		.cfi_def_cfa_offset 8
+ 1131              		.cfi_offset 14, -4
+ 1132              		.cfi_offset 7, -8
+ 1133 0002 84B0     		sub	sp, sp, #16
+ 1134              	.LCFI43:
+ 1135              		.cfi_def_cfa_offset 24
+ 1136 0004 00AF     		add	r7, sp, #0
+ 1137              	.LCFI44:
+ 1138              		.cfi_def_cfa_register 7
+ 1139 0006 7860     		str	r0, [r7, #4]
+ 560:../src/waveplayer.c ****   uint32_t temp = 0x00;
+ 1140              		.loc 1 560 0
+ 1141 0008 4FF00003 		mov	r3, #0
+ 1142 000c BB60     		str	r3, [r7, #8]
+ 561:../src/waveplayer.c ****   uint32_t extraformatbytes = 0;
+ 1143              		.loc 1 561 0
+ 1144 000e 4FF00003 		mov	r3, #0
+ 1145 0012 FB60     		str	r3, [r7, #12]
+ 562:../src/waveplayer.c ****   
+ 563:../src/waveplayer.c ****   /* Read chunkID, must be 'RIFF' */
+ 564:../src/waveplayer.c ****   temp = ReadUnit((uint8_t*)buffer1, 0, 4, BigEndian);
+ 1146              		.loc 1 564 0
+ 1147 0014 40F20000 		movw	r0, #:lower16:buffer1
+ 1148 0018 C0F20000 		movt	r0, #:upper16:buffer1
+ 1149 001c 4FF00001 		mov	r1, #0
+ 1150 0020 4FF00402 		mov	r2, #4
+ 1151 0024 4FF00103 		mov	r3, #1
+ 1152 0028 FFF7FEFF 		bl	ReadUnit
+ 1153 002c B860     		str	r0, [r7, #8]
+ 565:../src/waveplayer.c ****   if (temp != CHUNK_ID)
+ 1154              		.loc 1 565 0
+ 1155 002e BA68     		ldr	r2, [r7, #8]
+ 1156 0030 44F24663 		movw	r3, #17990
+ 1157 0034 C5F24923 		movt	r3, 21065
+ 1158 0038 9A42     		cmp	r2, r3
+ 1159 003a 02D0     		beq	.L40
+ 566:../src/waveplayer.c ****   {
+ 567:../src/waveplayer.c ****     return(Unvalid_RIFF_ID);
+ 1160              		.loc 1 567 0
+ 1161 003c 4FF00103 		mov	r3, #1
+ 1162 0040 7CE1     		b	.L41
+ 1163              	.L40:
+ 568:../src/waveplayer.c ****   }
+ 569:../src/waveplayer.c ****   
+ 570:../src/waveplayer.c ****   /* Read the file length */
+ 571:../src/waveplayer.c ****   WAVE_Format.RIFFchunksize = ReadUnit((uint8_t*)buffer1, 4, 4, LittleEndian);
+ 1164              		.loc 1 571 0
+ 1165 0042 40F20000 		movw	r0, #:lower16:buffer1
+ 1166 0046 C0F20000 		movt	r0, #:upper16:buffer1
+ 1167 004a 4FF00401 		mov	r1, #4
+ 1168 004e 4FF00402 		mov	r2, #4
+ 1169 0052 4FF00003 		mov	r3, #0
+ 1170 0056 FFF7FEFF 		bl	ReadUnit
+ 1171 005a 0246     		mov	r2, r0
+ 1172 005c 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1173 0060 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1174 0064 1A60     		str	r2, [r3, #0]
+ 572:../src/waveplayer.c ****   
+ 573:../src/waveplayer.c ****   /* Read the file format, must be 'WAVE' */
+ 574:../src/waveplayer.c ****   temp = ReadUnit((uint8_t*)buffer1, 8, 4, BigEndian);
+ 1175              		.loc 1 574 0
+ 1176 0066 40F20000 		movw	r0, #:lower16:buffer1
+ 1177 006a C0F20000 		movt	r0, #:upper16:buffer1
+ 1178 006e 4FF00801 		mov	r1, #8
+ 1179 0072 4FF00402 		mov	r2, #4
+ 1180 0076 4FF00103 		mov	r3, #1
+ 1181 007a FFF7FEFF 		bl	ReadUnit
+ 1182 007e B860     		str	r0, [r7, #8]
+ 575:../src/waveplayer.c ****   if (temp != FILE_FORMAT)
+ 1183              		.loc 1 575 0
+ 1184 0080 BA68     		ldr	r2, [r7, #8]
+ 1185 0082 45F24563 		movw	r3, #22085
+ 1186 0086 C5F24173 		movt	r3, 22337
+ 1187 008a 9A42     		cmp	r2, r3
+ 1188 008c 02D0     		beq	.L42
+ 576:../src/waveplayer.c ****   {
+ 577:../src/waveplayer.c ****     return(Unvalid_WAVE_Format);
+ 1189              		.loc 1 577 0
+ 1190 008e 4FF00203 		mov	r3, #2
+ 1191 0092 53E1     		b	.L41
+ 1192              	.L42:
+ 578:../src/waveplayer.c ****   }
+ 579:../src/waveplayer.c ****   
+ 580:../src/waveplayer.c ****   /* Read the format chunk, must be'fmt ' */
+ 581:../src/waveplayer.c ****   temp = ReadUnit((uint8_t*)buffer1, 12, 4, BigEndian);
+ 1193              		.loc 1 581 0
+ 1194 0094 40F20000 		movw	r0, #:lower16:buffer1
+ 1195 0098 C0F20000 		movt	r0, #:upper16:buffer1
+ 1196 009c 4FF00C01 		mov	r1, #12
+ 1197 00a0 4FF00402 		mov	r2, #4
+ 1198 00a4 4FF00103 		mov	r3, #1
+ 1199 00a8 FFF7FEFF 		bl	ReadUnit
+ 1200 00ac B860     		str	r0, [r7, #8]
+ 582:../src/waveplayer.c ****   if (temp != FORMAT_ID)
+ 1201              		.loc 1 582 0
+ 1202 00ae BA68     		ldr	r2, [r7, #8]
+ 1203 00b0 47F22043 		movw	r3, #29728
+ 1204 00b4 C6F26D63 		movt	r3, 26221
+ 1205 00b8 9A42     		cmp	r2, r3
+ 1206 00ba 02D0     		beq	.L43
+ 583:../src/waveplayer.c ****   {
+ 584:../src/waveplayer.c ****     return(Unvalid_FormatChunk_ID);
+ 1207              		.loc 1 584 0
+ 1208 00bc 4FF00303 		mov	r3, #3
+ 1209 00c0 3CE1     		b	.L41
+ 1210              	.L43:
+ 585:../src/waveplayer.c ****   }
+ 586:../src/waveplayer.c ****   /* Read the length of the 'fmt' data, must be 0x10 -------------------------*/
+ 587:../src/waveplayer.c ****   temp = ReadUnit((uint8_t*)buffer1, 16, 4, LittleEndian);
+ 1211              		.loc 1 587 0
+ 1212 00c2 40F20000 		movw	r0, #:lower16:buffer1
+ 1213 00c6 C0F20000 		movt	r0, #:upper16:buffer1
+ 1214 00ca 4FF01001 		mov	r1, #16
+ 1215 00ce 4FF00402 		mov	r2, #4
+ 1216 00d2 4FF00003 		mov	r3, #0
+ 1217 00d6 FFF7FEFF 		bl	ReadUnit
+ 1218 00da B860     		str	r0, [r7, #8]
+ 588:../src/waveplayer.c ****   if (temp != 0x10)
+ 1219              		.loc 1 588 0
+ 1220 00dc BB68     		ldr	r3, [r7, #8]
+ 1221 00de 102B     		cmp	r3, #16
+ 1222 00e0 02D0     		beq	.L44
+ 589:../src/waveplayer.c ****   {
+ 590:../src/waveplayer.c ****     extraformatbytes = 1;
+ 1223              		.loc 1 590 0
+ 1224 00e2 4FF00103 		mov	r3, #1
+ 1225 00e6 FB60     		str	r3, [r7, #12]
+ 1226              	.L44:
+ 591:../src/waveplayer.c ****   }
+ 592:../src/waveplayer.c ****   /* Read the audio format, must be 0x01 (PCM) */
+ 593:../src/waveplayer.c ****   WAVE_Format.FormatTag = ReadUnit((uint8_t*)buffer1, 20, 2, LittleEndian);
+ 1227              		.loc 1 593 0
+ 1228 00e8 40F20000 		movw	r0, #:lower16:buffer1
+ 1229 00ec C0F20000 		movt	r0, #:upper16:buffer1
+ 1230 00f0 4FF01401 		mov	r1, #20
+ 1231 00f4 4FF00202 		mov	r2, #2
+ 1232 00f8 4FF00003 		mov	r3, #0
+ 1233 00fc FFF7FEFF 		bl	ReadUnit
+ 1234 0100 0346     		mov	r3, r0
+ 1235 0102 9AB2     		uxth	r2, r3
+ 1236 0104 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1237 0108 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1238 010c 9A80     		strh	r2, [r3, #4]	@ movhi
+ 594:../src/waveplayer.c ****   if (WAVE_Format.FormatTag != WAVE_FORMAT_PCM)
+ 1239              		.loc 1 594 0
+ 1240 010e 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1241 0112 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1242 0116 9B88     		ldrh	r3, [r3, #4]
+ 1243 0118 012B     		cmp	r3, #1
+ 1244 011a 02D0     		beq	.L45
+ 595:../src/waveplayer.c ****   {
+ 596:../src/waveplayer.c ****     return(Unsupporetd_FormatTag);
+ 1245              		.loc 1 596 0
+ 1246 011c 4FF00403 		mov	r3, #4
+ 1247 0120 0CE1     		b	.L41
+ 1248              	.L45:
+ 597:../src/waveplayer.c ****   }
+ 598:../src/waveplayer.c ****   
+ 599:../src/waveplayer.c ****   /* Read the number of channels, must be 0x01 (Mono) or 0x02 (Stereo) */
+ 600:../src/waveplayer.c ****   WAVE_Format.NumChannels = ReadUnit((uint8_t*)buffer1, 22, 2, LittleEndian);
+ 1249              		.loc 1 600 0
+ 1250 0122 40F20000 		movw	r0, #:lower16:buffer1
+ 1251 0126 C0F20000 		movt	r0, #:upper16:buffer1
+ 1252 012a 4FF01601 		mov	r1, #22
+ 1253 012e 4FF00202 		mov	r2, #2
+ 1254 0132 4FF00003 		mov	r3, #0
+ 1255 0136 FFF7FEFF 		bl	ReadUnit
+ 1256 013a 0346     		mov	r3, r0
+ 1257 013c 9AB2     		uxth	r2, r3
+ 1258 013e 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1259 0142 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1260 0146 DA80     		strh	r2, [r3, #6]	@ movhi
+ 601:../src/waveplayer.c ****   
+ 602:../src/waveplayer.c ****   /* Read the Sample Rate */
+ 603:../src/waveplayer.c ****   WAVE_Format.SampleRate = ReadUnit((uint8_t*)buffer1, 24, 4, LittleEndian);
+ 1261              		.loc 1 603 0
+ 1262 0148 40F20000 		movw	r0, #:lower16:buffer1
+ 1263 014c C0F20000 		movt	r0, #:upper16:buffer1
+ 1264 0150 4FF01801 		mov	r1, #24
+ 1265 0154 4FF00402 		mov	r2, #4
+ 1266 0158 4FF00003 		mov	r3, #0
+ 1267 015c FFF7FEFF 		bl	ReadUnit
+ 1268 0160 0246     		mov	r2, r0
+ 1269 0162 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1270 0166 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1271 016a 9A60     		str	r2, [r3, #8]
+ 604:../src/waveplayer.c **** 
+ 605:../src/waveplayer.c ****   /* Read the Byte Rate */
+ 606:../src/waveplayer.c ****   WAVE_Format.ByteRate = ReadUnit((uint8_t*)buffer1, 28, 4, LittleEndian);
+ 1272              		.loc 1 606 0
+ 1273 016c 40F20000 		movw	r0, #:lower16:buffer1
+ 1274 0170 C0F20000 		movt	r0, #:upper16:buffer1
+ 1275 0174 4FF01C01 		mov	r1, #28
+ 1276 0178 4FF00402 		mov	r2, #4
+ 1277 017c 4FF00003 		mov	r3, #0
+ 1278 0180 FFF7FEFF 		bl	ReadUnit
+ 1279 0184 0246     		mov	r2, r0
+ 1280 0186 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1281 018a C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1282 018e DA60     		str	r2, [r3, #12]
+ 607:../src/waveplayer.c ****   
+ 608:../src/waveplayer.c ****   /* Read the block alignment */
+ 609:../src/waveplayer.c ****   WAVE_Format.BlockAlign = ReadUnit((uint8_t*)buffer1, 32, 2, LittleEndian);
+ 1283              		.loc 1 609 0
+ 1284 0190 40F20000 		movw	r0, #:lower16:buffer1
+ 1285 0194 C0F20000 		movt	r0, #:upper16:buffer1
+ 1286 0198 4FF02001 		mov	r1, #32
+ 1287 019c 4FF00202 		mov	r2, #2
+ 1288 01a0 4FF00003 		mov	r3, #0
+ 1289 01a4 FFF7FEFF 		bl	ReadUnit
+ 1290 01a8 0346     		mov	r3, r0
+ 1291 01aa 9AB2     		uxth	r2, r3
+ 1292 01ac 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1293 01b0 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1294 01b4 1A82     		strh	r2, [r3, #16]	@ movhi
+ 610:../src/waveplayer.c ****   
+ 611:../src/waveplayer.c ****   /* Read the number of bits per sample */
+ 612:../src/waveplayer.c ****   WAVE_Format.BitsPerSample = ReadUnit((uint8_t*)buffer1, 34, 2, LittleEndian);
+ 1295              		.loc 1 612 0
+ 1296 01b6 40F20000 		movw	r0, #:lower16:buffer1
+ 1297 01ba C0F20000 		movt	r0, #:upper16:buffer1
+ 1298 01be 4FF02201 		mov	r1, #34
+ 1299 01c2 4FF00202 		mov	r2, #2
+ 1300 01c6 4FF00003 		mov	r3, #0
+ 1301 01ca FFF7FEFF 		bl	ReadUnit
+ 1302 01ce 0346     		mov	r3, r0
+ 1303 01d0 9AB2     		uxth	r2, r3
+ 1304 01d2 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1305 01d6 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1306 01da 5A82     		strh	r2, [r3, #18]	@ movhi
+ 613:../src/waveplayer.c ****   if (WAVE_Format.BitsPerSample != BITS_PER_SAMPLE_16) 
+ 1307              		.loc 1 613 0
+ 1308 01dc 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1309 01e0 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1310 01e4 5B8A     		ldrh	r3, [r3, #18]
+ 1311 01e6 102B     		cmp	r3, #16
+ 1312 01e8 02D0     		beq	.L46
+ 614:../src/waveplayer.c ****   {
+ 615:../src/waveplayer.c ****     return(Unsupporetd_Bits_Per_Sample);
+ 1313              		.loc 1 615 0
+ 1314 01ea 4FF00703 		mov	r3, #7
+ 1315 01ee A5E0     		b	.L41
+ 1316              	.L46:
+ 616:../src/waveplayer.c ****   }
+ 617:../src/waveplayer.c ****   SpeechDataOffset = 36;
+ 1317              		.loc 1 617 0
+ 1318 01f0 40F20003 		movw	r3, #:lower16:SpeechDataOffset
+ 1319 01f4 C0F20003 		movt	r3, #:upper16:SpeechDataOffset
+ 1320 01f8 4FF02402 		mov	r2, #36
+ 1321 01fc 1A60     		str	r2, [r3, #0]
+ 618:../src/waveplayer.c ****   /* If there is Extra format bytes, these bytes will be defined in "Fact Chunk" */
+ 619:../src/waveplayer.c ****   if (extraformatbytes == 1)
+ 1322              		.loc 1 619 0
+ 1323 01fe FB68     		ldr	r3, [r7, #12]
+ 1324 0200 012B     		cmp	r3, #1
+ 1325 0202 44D1     		bne	.L47
+ 620:../src/waveplayer.c ****   {
+ 621:../src/waveplayer.c ****     /* Read th Extra format bytes, must be 0x00 */
+ 622:../src/waveplayer.c ****     temp = ReadUnit((uint8_t*)buffer1, 36, 2, LittleEndian);
+ 1326              		.loc 1 622 0
+ 1327 0204 40F20000 		movw	r0, #:lower16:buffer1
+ 1328 0208 C0F20000 		movt	r0, #:upper16:buffer1
+ 1329 020c 4FF02401 		mov	r1, #36
+ 1330 0210 4FF00202 		mov	r2, #2
+ 1331 0214 4FF00003 		mov	r3, #0
+ 1332 0218 FFF7FEFF 		bl	ReadUnit
+ 1333 021c B860     		str	r0, [r7, #8]
+ 623:../src/waveplayer.c ****     if (temp != 0x00)
+ 1334              		.loc 1 623 0
+ 1335 021e BB68     		ldr	r3, [r7, #8]
+ 1336 0220 002B     		cmp	r3, #0
+ 1337 0222 02D0     		beq	.L48
+ 624:../src/waveplayer.c ****     {
+ 625:../src/waveplayer.c ****       return(Unsupporetd_ExtraFormatBytes);
+ 1338              		.loc 1 625 0
+ 1339 0224 4FF00903 		mov	r3, #9
+ 1340 0228 88E0     		b	.L41
+ 1341              	.L48:
+ 626:../src/waveplayer.c ****     }
+ 627:../src/waveplayer.c ****     /* Read the Fact chunk, must be 'fact' */
+ 628:../src/waveplayer.c ****     temp = ReadUnit((uint8_t*)buffer1, 38, 4, BigEndian);
+ 1342              		.loc 1 628 0
+ 1343 022a 40F20000 		movw	r0, #:lower16:buffer1
+ 1344 022e C0F20000 		movt	r0, #:upper16:buffer1
+ 1345 0232 4FF02601 		mov	r1, #38
+ 1346 0236 4FF00402 		mov	r2, #4
+ 1347 023a 4FF00103 		mov	r3, #1
+ 1348 023e FFF7FEFF 		bl	ReadUnit
+ 1349 0242 B860     		str	r0, [r7, #8]
+ 629:../src/waveplayer.c ****     if (temp != FACT_ID)
+ 1350              		.loc 1 629 0
+ 1351 0244 BA68     		ldr	r2, [r7, #8]
+ 1352 0246 46F27433 		movw	r3, #25460
+ 1353 024a C6F26163 		movt	r3, 26209
+ 1354 024e 9A42     		cmp	r2, r3
+ 1355 0250 02D0     		beq	.L49
+ 630:../src/waveplayer.c ****     {
+ 631:../src/waveplayer.c ****       return(Unvalid_FactChunk_ID);
+ 1356              		.loc 1 631 0
+ 1357 0252 4FF00A03 		mov	r3, #10
+ 1358 0256 71E0     		b	.L41
+ 1359              	.L49:
+ 632:../src/waveplayer.c ****     }
+ 633:../src/waveplayer.c ****     /* Read Fact chunk data Size */
+ 634:../src/waveplayer.c ****     temp = ReadUnit((uint8_t*)buffer1, 42, 4, LittleEndian);
+ 1360              		.loc 1 634 0
+ 1361 0258 40F20000 		movw	r0, #:lower16:buffer1
+ 1362 025c C0F20000 		movt	r0, #:upper16:buffer1
+ 1363 0260 4FF02A01 		mov	r1, #42
+ 1364 0264 4FF00402 		mov	r2, #4
+ 1365 0268 4FF00003 		mov	r3, #0
+ 1366 026c FFF7FEFF 		bl	ReadUnit
+ 1367 0270 B860     		str	r0, [r7, #8]
+ 635:../src/waveplayer.c ****     
+ 636:../src/waveplayer.c ****     SpeechDataOffset += 10 + temp;
+ 1368              		.loc 1 636 0
+ 1369 0272 40F20003 		movw	r3, #:lower16:SpeechDataOffset
+ 1370 0276 C0F20003 		movt	r3, #:upper16:SpeechDataOffset
+ 1371 027a 1A68     		ldr	r2, [r3, #0]
+ 1372 027c BB68     		ldr	r3, [r7, #8]
+ 1373 027e D318     		adds	r3, r2, r3
+ 1374 0280 03F10A02 		add	r2, r3, #10
+ 1375 0284 40F20003 		movw	r3, #:lower16:SpeechDataOffset
+ 1376 0288 C0F20003 		movt	r3, #:upper16:SpeechDataOffset
+ 1377 028c 1A60     		str	r2, [r3, #0]
+ 1378              	.L47:
+ 637:../src/waveplayer.c ****   }
+ 638:../src/waveplayer.c ****   /* Read the Data chunk, must be 'data' */
+ 639:../src/waveplayer.c ****   temp = ReadUnit((uint8_t*)buffer1, SpeechDataOffset, 4, BigEndian);
+ 1379              		.loc 1 639 0
+ 1380 028e 40F20003 		movw	r3, #:lower16:SpeechDataOffset
+ 1381 0292 C0F20003 		movt	r3, #:upper16:SpeechDataOffset
+ 1382 0296 1B68     		ldr	r3, [r3, #0]
+ 1383 0298 DBB2     		uxtb	r3, r3
+ 1384 029a 40F20000 		movw	r0, #:lower16:buffer1
+ 1385 029e C0F20000 		movt	r0, #:upper16:buffer1
+ 1386 02a2 1946     		mov	r1, r3
+ 1387 02a4 4FF00402 		mov	r2, #4
+ 1388 02a8 4FF00103 		mov	r3, #1
+ 1389 02ac FFF7FEFF 		bl	ReadUnit
+ 1390 02b0 B860     		str	r0, [r7, #8]
+ 640:../src/waveplayer.c ****   SpeechDataOffset += 4;
+ 1391              		.loc 1 640 0
+ 1392 02b2 40F20003 		movw	r3, #:lower16:SpeechDataOffset
+ 1393 02b6 C0F20003 		movt	r3, #:upper16:SpeechDataOffset
+ 1394 02ba 1B68     		ldr	r3, [r3, #0]
+ 1395 02bc 03F10402 		add	r2, r3, #4
+ 1396 02c0 40F20003 		movw	r3, #:lower16:SpeechDataOffset
+ 1397 02c4 C0F20003 		movt	r3, #:upper16:SpeechDataOffset
+ 1398 02c8 1A60     		str	r2, [r3, #0]
+ 641:../src/waveplayer.c ****   if (temp != DATA_ID)
+ 1399              		.loc 1 641 0
+ 1400 02ca BA68     		ldr	r2, [r7, #8]
+ 1401 02cc 47F26143 		movw	r3, #29793
+ 1402 02d0 C6F26143 		movt	r3, 25697
+ 1403 02d4 9A42     		cmp	r2, r3
+ 1404 02d6 02D0     		beq	.L50
+ 642:../src/waveplayer.c ****   {
+ 643:../src/waveplayer.c ****     return(Unvalid_DataChunk_ID);
+ 1405              		.loc 1 643 0
+ 1406 02d8 4FF00803 		mov	r3, #8
+ 1407 02dc 2EE0     		b	.L41
+ 1408              	.L50:
+ 644:../src/waveplayer.c ****   }
+ 645:../src/waveplayer.c ****   
+ 646:../src/waveplayer.c ****   /* Read the number of sample data */
+ 647:../src/waveplayer.c ****   WAVE_Format.DataSize = ReadUnit((uint8_t*)buffer1, SpeechDataOffset, 4, LittleEndian);
+ 1409              		.loc 1 647 0
+ 1410 02de 40F20003 		movw	r3, #:lower16:SpeechDataOffset
+ 1411 02e2 C0F20003 		movt	r3, #:upper16:SpeechDataOffset
+ 1412 02e6 1B68     		ldr	r3, [r3, #0]
+ 1413 02e8 DBB2     		uxtb	r3, r3
+ 1414 02ea 40F20000 		movw	r0, #:lower16:buffer1
+ 1415 02ee C0F20000 		movt	r0, #:upper16:buffer1
+ 1416 02f2 1946     		mov	r1, r3
+ 1417 02f4 4FF00402 		mov	r2, #4
+ 1418 02f8 4FF00003 		mov	r3, #0
+ 1419 02fc FFF7FEFF 		bl	ReadUnit
+ 1420 0300 0246     		mov	r2, r0
+ 1421 0302 40F20003 		movw	r3, #:lower16:WAVE_Format
+ 1422 0306 C0F20003 		movt	r3, #:upper16:WAVE_Format
+ 1423 030a 5A61     		str	r2, [r3, #20]
+ 648:../src/waveplayer.c ****   SpeechDataOffset += 4;
+ 1424              		.loc 1 648 0
+ 1425 030c 40F20003 		movw	r3, #:lower16:SpeechDataOffset
+ 1426 0310 C0F20003 		movt	r3, #:upper16:SpeechDataOffset
+ 1427 0314 1B68     		ldr	r3, [r3, #0]
+ 1428 0316 03F10402 		add	r2, r3, #4
+ 1429 031a 40F20003 		movw	r3, #:lower16:SpeechDataOffset
+ 1430 031e C0F20003 		movt	r3, #:upper16:SpeechDataOffset
+ 1431 0322 1A60     		str	r2, [r3, #0]
+ 649:../src/waveplayer.c ****   WaveCounter =  SpeechDataOffset;
+ 1432              		.loc 1 649 0
+ 1433 0324 40F20003 		movw	r3, #:lower16:SpeechDataOffset
+ 1434 0328 C0F20003 		movt	r3, #:upper16:SpeechDataOffset
+ 1435 032c 1A68     		ldr	r2, [r3, #0]
+ 1436 032e 40F20003 		movw	r3, #:lower16:WaveCounter
+ 1437 0332 C0F20003 		movt	r3, #:upper16:WaveCounter
+ 1438 0336 1A60     		str	r2, [r3, #0]
+ 650:../src/waveplayer.c ****   return(Valid_WAVE_File);
+ 1439              		.loc 1 650 0
+ 1440 0338 4FF00003 		mov	r3, #0
+ 1441              	.L41:
+ 651:../src/waveplayer.c **** }
+ 1442              		.loc 1 651 0
+ 1443 033c 1846     		mov	r0, r3
+ 1444 033e 07F11007 		add	r7, r7, #16
+ 1445 0342 BD46     		mov	sp, r7
+ 1446 0344 80BD     		pop	{r7, pc}
+ 1447              		.cfi_endproc
+ 1448              	.LFE126:
+ 1450 0346 00BF     		.section	.text.ReadUnit,"ax",%progbits
+ 1451              		.align	2
+ 1452              		.global	ReadUnit
+ 1453              		.thumb
+ 1454              		.thumb_func
+ 1456              	ReadUnit:
+ 1457              	.LFB127:
+ 652:../src/waveplayer.c **** 
+ 653:../src/waveplayer.c **** /**
+ 654:../src/waveplayer.c **** * @brief  Reads a number of bytes from the SPI Flash and reorder them in Big
+ 655:../src/waveplayer.c **** *         or little endian.
+ 656:../src/waveplayer.c **** * @param  NbrOfBytes: number of bytes to read.
+ 657:../src/waveplayer.c **** *         This parameter must be a number between 1 and 4.
+ 658:../src/waveplayer.c **** * @param  ReadAddr: external memory address to read from.
+ 659:../src/waveplayer.c **** * @param  Endians: specifies the bytes endianness.
+ 660:../src/waveplayer.c **** *         This parameter can be one of the following values:
+ 661:../src/waveplayer.c **** *             - LittleEndian
+ 662:../src/waveplayer.c **** *             - BigEndian
+ 663:../src/waveplayer.c **** * @retval Bytes read from the SPI Flash.
+ 664:../src/waveplayer.c **** */
+ 665:../src/waveplayer.c **** uint32_t ReadUnit(uint8_t *buffer, uint8_t idx, uint8_t NbrOfBytes, Endianness BytesFormat)
+ 666:../src/waveplayer.c **** {
+ 1458              		.loc 1 666 0
+ 1459              		.cfi_startproc
+ 1460              		@ args = 0, pretend = 0, frame = 24
+ 1461              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1462              		@ link register save eliminated.
+ 1463 0000 90B4     		push	{r4, r7}
+ 1464              	.LCFI45:
+ 1465              		.cfi_def_cfa_offset 8
+ 1466              		.cfi_offset 7, -4
+ 1467              		.cfi_offset 4, -8
+ 1468 0002 86B0     		sub	sp, sp, #24
+ 1469              	.LCFI46:
+ 1470              		.cfi_def_cfa_offset 32
+ 1471 0004 00AF     		add	r7, sp, #0
+ 1472              	.LCFI47:
+ 1473              		.cfi_def_cfa_register 7
+ 1474 0006 7860     		str	r0, [r7, #4]
+ 1475 0008 F970     		strb	r1, [r7, #3]
+ 1476 000a BA70     		strb	r2, [r7, #2]
+ 1477 000c 7B70     		strb	r3, [r7, #1]
+ 667:../src/waveplayer.c ****   uint32_t index = 0;
+ 1478              		.loc 1 667 0
+ 1479 000e 4FF00003 		mov	r3, #0
+ 1480 0012 7B61     		str	r3, [r7, #20]
+ 668:../src/waveplayer.c ****   uint32_t temp = 0;
+ 1481              		.loc 1 668 0
+ 1482 0014 4FF00003 		mov	r3, #0
+ 1483 0018 3B61     		str	r3, [r7, #16]
+ 669:../src/waveplayer.c ****   
+ 670:../src/waveplayer.c ****   for (index = 0; index < NbrOfBytes; index++)
+ 1484              		.loc 1 670 0
+ 1485 001a 4FF00003 		mov	r3, #0
+ 1486 001e 7B61     		str	r3, [r7, #20]
+ 1487 0020 12E0     		b	.L52
+ 1488              	.L53:
+ 671:../src/waveplayer.c ****   {
+ 672:../src/waveplayer.c ****     temp |= buffer[idx + index] << (index * 8);
+ 1489              		.loc 1 672 0 discriminator 2
+ 1490 0022 FA78     		ldrb	r2, [r7, #3]	@ zero_extendqisi2
+ 1491 0024 7B69     		ldr	r3, [r7, #20]
+ 1492 0026 D318     		adds	r3, r2, r3
+ 1493 0028 7A68     		ldr	r2, [r7, #4]
+ 1494 002a D318     		adds	r3, r2, r3
+ 1495 002c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 1496 002e 1A46     		mov	r2, r3
+ 1497 0030 7B69     		ldr	r3, [r7, #20]
+ 1498 0032 4FEAC303 		lsl	r3, r3, #3
+ 1499 0036 02FA03F3 		lsl	r3, r2, r3
+ 1500 003a 3A69     		ldr	r2, [r7, #16]
+ 1501 003c 1343     		orrs	r3, r3, r2
+ 1502 003e 3B61     		str	r3, [r7, #16]
+ 670:../src/waveplayer.c ****   for (index = 0; index < NbrOfBytes; index++)
+ 1503              		.loc 1 670 0 discriminator 2
+ 1504 0040 7B69     		ldr	r3, [r7, #20]
+ 1505 0042 03F10103 		add	r3, r3, #1
+ 1506 0046 7B61     		str	r3, [r7, #20]
+ 1507              	.L52:
+ 670:../src/waveplayer.c ****   for (index = 0; index < NbrOfBytes; index++)
+ 1508              		.loc 1 670 0 is_stmt 0 discriminator 1
+ 1509 0048 BA78     		ldrb	r2, [r7, #2]	@ zero_extendqisi2
+ 1510 004a 7B69     		ldr	r3, [r7, #20]
+ 1511 004c 9A42     		cmp	r2, r3
+ 1512 004e E8D8     		bhi	.L53
+ 673:../src/waveplayer.c ****   }
+ 674:../src/waveplayer.c ****   
+ 675:../src/waveplayer.c ****   if (BytesFormat == BigEndian)
+ 1513              		.loc 1 675 0 is_stmt 1
+ 1514 0050 7B78     		ldrb	r3, [r7, #1]	@ zero_extendqisi2
+ 1515 0052 012B     		cmp	r3, #1
+ 1516 0054 06D1     		bne	.L54
+ 1517 0056 3B69     		ldr	r3, [r7, #16]
+ 1518 0058 FB60     		str	r3, [r7, #12]
+ 1519              	.LBB4:
+ 1520              	.LBB5:
+ 1521              		.file 2 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
+   1:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /**************************************************************************//**
+   2:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * @file     core_cmInstr.h
+   3:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * @brief    CMSIS Cortex-M Core Instruction Access Header File
+   4:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * @version  V2.10
+   5:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * @date     19. July 2011
+   6:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  *
+   7:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * @note
+   8:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * Copyright (C) 2009-2011 ARM Limited. All rights reserved.
+   9:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  *
+  10:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * @par
+  11:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * ARM Limited (ARM) is supplying this software for use with Cortex-M 
+  12:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * processor based microcontrollers.  This file can be freely distributed 
+  13:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * within development tools that are supporting such ARM based processors. 
+  14:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  *
+  15:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * @par
+  16:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+  17:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+  18:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+  19:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * ARM SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
+  20:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  * CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+  21:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  *
+  22:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  ******************************************************************************/
+  23:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  24:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #ifndef __CORE_CMINSTR_H
+  25:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __CORE_CMINSTR_H
+  26:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  27:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  28:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /* ##########################  Core Instruction Access  ######################### */
+  29:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
+  30:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   Access to dedicated instructions
+  31:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   @{
+  32:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** */
+  33:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  34:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #if   defined ( __CC_ARM ) /*------------------RealView Compiler -----------------*/
+  35:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /* ARM armcc specific functions */
+  36:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  37:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #if (__ARMCC_VERSION < 400677)
+  38:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
+  39:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #endif
+  40:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  41:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  42:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  No Operation
+  43:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  44:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
+  45:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+  46:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __NOP                             __nop
+  47:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  48:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  49:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Wait For Interrupt
+  50:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  51:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     Wait For Interrupt is a hint instruction that suspends execution
+  52:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     until one of a number of events occurs.
+  53:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+  54:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __WFI                             __wfi
+  55:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  56:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  57:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Wait For Event
+  58:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  59:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
+  60:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     a low-power state until one of a number of events occurs.
+  61:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+  62:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __WFE                             __wfe
+  63:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  64:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  65:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Send Event
+  66:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  67:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     Send Event is a hint instruction. It causes an event to be signaled to the CPU.
+  68:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+  69:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __SEV                             __sev
+  70:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  71:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  72:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Instruction Synchronization Barrier
+  73:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  74:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     Instruction Synchronization Barrier flushes the pipeline in the processor, 
+  75:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     so that all instructions following the ISB are fetched from cache or 
+  76:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     memory, after the instruction has been completed.
+  77:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+  78:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __ISB()                           __isb(0xF)
+  79:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  80:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  81:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Data Synchronization Barrier
+  82:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  83:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function acts as a special kind of Data Memory Barrier. 
+  84:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     It completes when all explicit memory accesses before this instruction complete.
+  85:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+  86:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __DSB()                           __dsb(0xF)
+  87:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  88:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  89:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Data Memory Barrier
+  90:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  91:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function ensures the apparent order of the explicit memory operations before 
+  92:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     and after the instruction, without ensuring their completion.
+  93:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+  94:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __DMB()                           __dmb(0xF)
+  95:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  96:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  97:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Reverse byte order (32 bit)
+  98:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+  99:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function reverses the byte order in integer value.
+ 100:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 101:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 102:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return               Reversed value
+ 103:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 104:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __REV                             __rev
+ 105:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 106:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 107:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Reverse byte order (16 bit)
+ 108:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 109:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function reverses the byte order in two unsigned short values.
+ 110:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 111:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 112:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return               Reversed value
+ 113:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 114:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** static __INLINE __ASM uint32_t __REV16(uint32_t value)
+ 115:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** {
+ 116:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   rev16 r0, r0
+ 117:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   bx lr
+ 118:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** }
+ 119:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 120:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 121:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Reverse byte order in signed short value
+ 122:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 123:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function reverses the byte order in a signed short value with sign extension to integer.
+ 124:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 125:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 126:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return               Reversed value
+ 127:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 128:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** static __INLINE __ASM int32_t __REVSH(int32_t value)
+ 129:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** {
+ 130:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   revsh r0, r0
+ 131:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   bx lr
+ 132:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** }
+ 133:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 134:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 135:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #if       (__CORTEX_M >= 0x03)
+ 136:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 137:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Reverse bit order of value
+ 138:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 139:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function reverses the bit order of the given value.
+ 140:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 141:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 142:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return               Reversed value
+ 143:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 144:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __RBIT                            __rbit
+ 145:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 146:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 147:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  LDR Exclusive (8 bit)
+ 148:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 149:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive LDR command for 8 bit value.
+ 150:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 151:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 152:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return             value of type uint8_t at (*ptr)
+ 153:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 154:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __LDREXB(ptr)                     ((uint8_t ) __ldrex(ptr))
+ 155:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 156:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 157:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  LDR Exclusive (16 bit)
+ 158:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 159:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive LDR command for 16 bit values.
+ 160:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 161:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 162:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return        value of type uint16_t at (*ptr)
+ 163:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 164:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __LDREXH(ptr)                     ((uint16_t) __ldrex(ptr))
+ 165:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 166:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 167:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  LDR Exclusive (32 bit)
+ 168:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 169:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive LDR command for 32 bit values.
+ 170:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 171:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 172:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return        value of type uint32_t at (*ptr)
+ 173:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 174:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __LDREXW(ptr)                     ((uint32_t ) __ldrex(ptr))
+ 175:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 176:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 177:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  STR Exclusive (8 bit)
+ 178:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 179:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive STR command for 8 bit values.
+ 180:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 181:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to store
+ 182:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 183:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return          0  Function succeeded
+ 184:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return          1  Function failed
+ 185:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 186:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __STREXB(value, ptr)              __strex(value, ptr)
+ 187:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 188:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 189:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  STR Exclusive (16 bit)
+ 190:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 191:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive STR command for 16 bit values.
+ 192:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 193:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to store
+ 194:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 195:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return          0  Function succeeded
+ 196:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return          1  Function failed
+ 197:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 198:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __STREXH(value, ptr)              __strex(value, ptr)
+ 199:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 200:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 201:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  STR Exclusive (32 bit)
+ 202:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 203:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive STR command for 32 bit values.
+ 204:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 205:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to store
+ 206:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 207:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return          0  Function succeeded
+ 208:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return          1  Function failed
+ 209:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 210:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __STREXW(value, ptr)              __strex(value, ptr)
+ 211:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 212:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 213:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Remove the exclusive lock
+ 214:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 215:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function removes the exclusive lock which is created by LDREX.
+ 216:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 217:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 218:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __CLREX                           __clrex
+ 219:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 220:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 221:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Signed Saturate
+ 222:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 223:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function saturates a signed value.
+ 224:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 225:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to be saturated
+ 226:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (1..32)
+ 227:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return             Saturated value
+ 228:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 229:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __SSAT                            __ssat
+ 230:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 231:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 232:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Unsigned Saturate
+ 233:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 234:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function saturates an unsigned value.
+ 235:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 236:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to be saturated
+ 237:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (0..31)
+ 238:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return             Saturated value
+ 239:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 240:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __USAT                            __usat
+ 241:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 242:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 243:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Count leading zeros
+ 244:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 245:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function counts the number of leading zeros of a data value.
+ 246:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 247:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to count the leading zeros
+ 248:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return             number of leading zeros in value
+ 249:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 250:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #define __CLZ                             __clz 
+ 251:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 252:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #endif /* (__CORTEX_M >= 0x03) */
+ 253:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 254:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 255:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 256:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #elif defined ( __ICCARM__ ) /*------------------ ICC Compiler -------------------*/
+ 257:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /* IAR iccarm specific functions */
+ 258:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 259:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #include <cmsis_iar.h>
+ 260:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 261:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 262:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** #elif defined ( __GNUC__ ) /*------------------ GNU Compiler ---------------------*/
+ 263:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /* GNU gcc specific functions */
+ 264:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 265:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  No Operation
+ 266:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 267:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
+ 268:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 269:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** __attribute__( ( always_inline ) ) static __INLINE void __NOP(void)
+ 270:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** {
+ 271:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   __ASM volatile ("nop");
+ 272:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** }
+ 273:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 274:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 275:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Wait For Interrupt
+ 276:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 277:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     Wait For Interrupt is a hint instruction that suspends execution
+ 278:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     until one of a number of events occurs.
+ 279:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 280:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** __attribute__( ( always_inline ) ) static __INLINE void __WFI(void)
+ 281:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** {
+ 282:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   __ASM volatile ("wfi");
+ 283:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** }
+ 284:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 285:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 286:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Wait For Event
+ 287:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 288:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
+ 289:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     a low-power state until one of a number of events occurs.
+ 290:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 291:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** __attribute__( ( always_inline ) ) static __INLINE void __WFE(void)
+ 292:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** {
+ 293:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   __ASM volatile ("wfe");
+ 294:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** }
+ 295:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 296:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 297:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Send Event
+ 298:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 299:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     Send Event is a hint instruction. It causes an event to be signaled to the CPU.
+ 300:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 301:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** __attribute__( ( always_inline ) ) static __INLINE void __SEV(void)
+ 302:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** {
+ 303:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   __ASM volatile ("sev");
+ 304:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** }
+ 305:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 306:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 307:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Instruction Synchronization Barrier
+ 308:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 309:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     Instruction Synchronization Barrier flushes the pipeline in the processor, 
+ 310:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     so that all instructions following the ISB are fetched from cache or 
+ 311:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     memory, after the instruction has been completed.
+ 312:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 313:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** __attribute__( ( always_inline ) ) static __INLINE void __ISB(void)
+ 314:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** {
+ 315:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   __ASM volatile ("isb");
+ 316:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** }
+ 317:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 318:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 319:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Data Synchronization Barrier
+ 320:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 321:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function acts as a special kind of Data Memory Barrier. 
+ 322:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     It completes when all explicit memory accesses before this instruction complete.
+ 323:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 324:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** __attribute__( ( always_inline ) ) static __INLINE void __DSB(void)
+ 325:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** {
+ 326:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   __ASM volatile ("dsb");
+ 327:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** }
+ 328:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 329:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 330:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Data Memory Barrier
+ 331:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 332:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function ensures the apparent order of the explicit memory operations before 
+ 333:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     and after the instruction, without ensuring their completion.
+ 334:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 335:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** __attribute__( ( always_inline ) ) static __INLINE void __DMB(void)
+ 336:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** {
+ 337:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   __ASM volatile ("dmb");
+ 338:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** }
+ 339:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 340:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 341:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** /** \brief  Reverse byte order (32 bit)
+ 342:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 343:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     This function reverses the byte order in integer value.
+ 344:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** 
+ 345:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 346:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****     \return               Reversed value
+ 347:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****  */
+ 348:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** __attribute__( ( always_inline ) ) static __INLINE uint32_t __REV(uint32_t value)
+ 349:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h **** {
+ 350:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   uint32_t result;
+ 351:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   
+ 352:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   __ASM volatile ("rev %0, %1" : "=r" (result) : "r" (value) );
+ 1522              		.loc 2 352 0
+ 1523 005a FB68     		ldr	r3, [r7, #12]
+ 1524              	@ 352 "C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include/core_cmI
+ 1525 005c 1CBA     		rev r4, r3
+ 1526              	@ 0 "" 2
+ 1527              		.thumb
+ 1528 005e BC60     		str	r4, [r7, #8]
+ 353:C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\CMSIS\Include\core_cmInstr.h ****   return(result);
+ 1529              		.loc 2 353 0
+ 1530 0060 BB68     		ldr	r3, [r7, #8]
+ 676:../src/waveplayer.c ****   {
+ 677:../src/waveplayer.c ****     temp = __REV(temp);
+ 1531              		.loc 1 677 0
+ 1532 0062 3B61     		str	r3, [r7, #16]
+ 1533              	.L54:
+ 1534              	.LBE5:
+ 1535              	.LBE4:
+ 678:../src/waveplayer.c ****   }
+ 679:../src/waveplayer.c ****   return temp;
+ 1536              		.loc 1 679 0
+ 1537 0064 3B69     		ldr	r3, [r7, #16]
+ 680:../src/waveplayer.c **** }
+ 1538              		.loc 1 680 0
+ 1539 0066 1846     		mov	r0, r3
+ 1540 0068 07F11807 		add	r7, r7, #24
+ 1541 006c BD46     		mov	sp, r7
+ 1542 006e 90BC     		pop	{r4, r7}
+ 1543 0070 7047     		bx	lr
+ 1544              		.cfi_endproc
+ 1545              	.LFE127:
+ 1547 0072 00BF     		.section	.text.Mems_Config,"ax",%progbits
+ 1548              		.align	2
+ 1549              		.thumb
+ 1550              		.thumb_func
+ 1552              	Mems_Config:
+ 1553              	.LFB128:
+ 681:../src/waveplayer.c **** #endif
+ 682:../src/waveplayer.c **** 
+ 683:../src/waveplayer.c **** /**
+ 684:../src/waveplayer.c **** * @brief  configure the mems accelometer
+ 685:../src/waveplayer.c **** * @param  None
+ 686:../src/waveplayer.c **** * @retval None
+ 687:../src/waveplayer.c **** */
+ 688:../src/waveplayer.c **** static void Mems_Config(void)
+ 689:../src/waveplayer.c **** { 
+ 1554              		.loc 1 689 0
+ 1555              		.cfi_startproc
+ 1556              		@ args = 0, pretend = 0, frame = 16
+ 1557              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1558 0000 80B5     		push	{r7, lr}
+ 1559              	.LCFI48:
+ 1560              		.cfi_def_cfa_offset 8
+ 1561              		.cfi_offset 14, -4
+ 1562              		.cfi_offset 7, -8
+ 1563 0002 84B0     		sub	sp, sp, #16
+ 1564              	.LCFI49:
+ 1565              		.cfi_def_cfa_offset 24
+ 1566 0004 00AF     		add	r7, sp, #0
+ 1567              	.LCFI50:
+ 1568              		.cfi_def_cfa_register 7
+ 690:../src/waveplayer.c ****   uint8_t ctrl = 0;
+ 1569              		.loc 1 690 0
+ 1570 0006 4FF00003 		mov	r3, #0
+ 1571 000a FB73     		strb	r3, [r7, #15]
+ 691:../src/waveplayer.c ****   
+ 692:../src/waveplayer.c ****   LIS302DL_InitTypeDef  LIS302DL_InitStruct;
+ 693:../src/waveplayer.c ****   LIS302DL_InterruptConfigTypeDef LIS302DL_InterruptStruct;  
+ 694:../src/waveplayer.c ****   
+ 695:../src/waveplayer.c ****   /* Set configuration of LIS302DL*/
+ 696:../src/waveplayer.c ****   LIS302DL_InitStruct.Power_Mode = LIS302DL_LOWPOWERMODE_ACTIVE;
+ 1572              		.loc 1 696 0
+ 1573 000c 4FF04003 		mov	r3, #64
+ 1574 0010 3B72     		strb	r3, [r7, #8]
+ 697:../src/waveplayer.c ****   LIS302DL_InitStruct.Output_DataRate = LIS302DL_DATARATE_100;
+ 1575              		.loc 1 697 0
+ 1576 0012 4FF00003 		mov	r3, #0
+ 1577 0016 7B72     		strb	r3, [r7, #9]
+ 698:../src/waveplayer.c ****   LIS302DL_InitStruct.Axes_Enable = LIS302DL_X_ENABLE | LIS302DL_Y_ENABLE | LIS302DL_Z_ENABLE;
+ 1578              		.loc 1 698 0
+ 1579 0018 4FF00703 		mov	r3, #7
+ 1580 001c BB72     		strb	r3, [r7, #10]
+ 699:../src/waveplayer.c ****   LIS302DL_InitStruct.Full_Scale = LIS302DL_FULLSCALE_2_3;
+ 1581              		.loc 1 699 0
+ 1582 001e 4FF00003 		mov	r3, #0
+ 1583 0022 FB72     		strb	r3, [r7, #11]
+ 700:../src/waveplayer.c ****   LIS302DL_InitStruct.Self_Test = LIS302DL_SELFTEST_NORMAL;
+ 1584              		.loc 1 700 0
+ 1585 0024 4FF00003 		mov	r3, #0
+ 1586 0028 3B73     		strb	r3, [r7, #12]
+ 701:../src/waveplayer.c ****   LIS302DL_Init(&LIS302DL_InitStruct);
+ 1587              		.loc 1 701 0
+ 1588 002a 07F10803 		add	r3, r7, #8
+ 1589 002e 1846     		mov	r0, r3
+ 1590 0030 FFF7FEFF 		bl	LIS302DL_Init
+ 702:../src/waveplayer.c ****     
+ 703:../src/waveplayer.c ****   /* Set configuration of Internal High Pass Filter of LIS302DL*/
+ 704:../src/waveplayer.c ****   LIS302DL_InterruptStruct.Latch_Request = LIS302DL_INTERRUPTREQUEST_LATCHED;
+ 1591              		.loc 1 704 0
+ 1592 0034 4FF04003 		mov	r3, #64
+ 1593 0038 3B71     		strb	r3, [r7, #4]
+ 705:../src/waveplayer.c ****   LIS302DL_InterruptStruct.SingleClick_Axes = LIS302DL_CLICKINTERRUPT_Z_ENABLE;
+ 1594              		.loc 1 705 0
+ 1595 003a 4FF01003 		mov	r3, #16
+ 1596 003e 7B71     		strb	r3, [r7, #5]
+ 706:../src/waveplayer.c ****   LIS302DL_InterruptStruct.DoubleClick_Axes = LIS302DL_DOUBLECLICKINTERRUPT_Z_ENABLE;
+ 1597              		.loc 1 706 0
+ 1598 0040 4FF02003 		mov	r3, #32
+ 1599 0044 BB71     		strb	r3, [r7, #6]
+ 707:../src/waveplayer.c ****   LIS302DL_InterruptConfig(&LIS302DL_InterruptStruct);
+ 1600              		.loc 1 707 0
+ 1601 0046 07F10403 		add	r3, r7, #4
+ 1602 004a 1846     		mov	r0, r3
+ 1603 004c FFF7FEFF 		bl	LIS302DL_InterruptConfig
+ 708:../src/waveplayer.c ****   
+ 709:../src/waveplayer.c ****   /* Configure Interrupt control register: enable Click interrupt on INT1 and
+ 710:../src/waveplayer.c ****      INT2 on Z axis high event */
+ 711:../src/waveplayer.c ****   ctrl = 0x3F;
+ 1604              		.loc 1 711 0
+ 1605 0050 4FF03F03 		mov	r3, #63
+ 1606 0054 FB73     		strb	r3, [r7, #15]
+ 712:../src/waveplayer.c ****   LIS302DL_Write(&ctrl, LIS302DL_CTRL_REG3_ADDR, 1);
+ 1607              		.loc 1 712 0
+ 1608 0056 07F10F03 		add	r3, r7, #15
+ 1609 005a 1846     		mov	r0, r3
+ 1610 005c 4FF02201 		mov	r1, #34
+ 1611 0060 4FF00102 		mov	r2, #1
+ 1612 0064 FFF7FEFF 		bl	LIS302DL_Write
+ 713:../src/waveplayer.c ****   
+ 714:../src/waveplayer.c ****   /* Enable Interrupt generation on click on Z axis */
+ 715:../src/waveplayer.c ****   ctrl = 0x50;
+ 1613              		.loc 1 715 0
+ 1614 0068 4FF05003 		mov	r3, #80
+ 1615 006c FB73     		strb	r3, [r7, #15]
+ 716:../src/waveplayer.c ****   LIS302DL_Write(&ctrl, LIS302DL_CLICK_CFG_REG_ADDR, 1);
+ 1616              		.loc 1 716 0
+ 1617 006e 07F10F03 		add	r3, r7, #15
+ 1618 0072 1846     		mov	r0, r3
+ 1619 0074 4FF03801 		mov	r1, #56
+ 1620 0078 4FF00102 		mov	r2, #1
+ 1621 007c FFF7FEFF 		bl	LIS302DL_Write
+ 717:../src/waveplayer.c ****   
+ 718:../src/waveplayer.c ****   /* Configure Click Threshold on X/Y axis (10 x 0.5g) */
+ 719:../src/waveplayer.c ****   ctrl = 0xAA;
+ 1622              		.loc 1 719 0
+ 1623 0080 4FF0AA03 		mov	r3, #170
+ 1624 0084 FB73     		strb	r3, [r7, #15]
+ 720:../src/waveplayer.c ****   LIS302DL_Write(&ctrl, LIS302DL_CLICK_THSY_X_REG_ADDR, 1);
+ 1625              		.loc 1 720 0
+ 1626 0086 07F10F03 		add	r3, r7, #15
+ 1627 008a 1846     		mov	r0, r3
+ 1628 008c 4FF03B01 		mov	r1, #59
+ 1629 0090 4FF00102 		mov	r2, #1
+ 1630 0094 FFF7FEFF 		bl	LIS302DL_Write
+ 721:../src/waveplayer.c ****   
+ 722:../src/waveplayer.c ****   /* Configure Click Threshold on Z axis (10 x 0.5g) */
+ 723:../src/waveplayer.c ****   ctrl = 0x0A;
+ 1631              		.loc 1 723 0
+ 1632 0098 4FF00A03 		mov	r3, #10
+ 1633 009c FB73     		strb	r3, [r7, #15]
+ 724:../src/waveplayer.c ****   LIS302DL_Write(&ctrl, LIS302DL_CLICK_THSZ_REG_ADDR, 1);
+ 1634              		.loc 1 724 0
+ 1635 009e 07F10F03 		add	r3, r7, #15
+ 1636 00a2 1846     		mov	r0, r3
+ 1637 00a4 4FF03C01 		mov	r1, #60
+ 1638 00a8 4FF00102 		mov	r2, #1
+ 1639 00ac FFF7FEFF 		bl	LIS302DL_Write
+ 725:../src/waveplayer.c ****   
+ 726:../src/waveplayer.c ****   /* Enable interrupt on Y axis high event */
+ 727:../src/waveplayer.c ****   ctrl = 0x4C;
+ 1640              		.loc 1 727 0
+ 1641 00b0 4FF04C03 		mov	r3, #76
+ 1642 00b4 FB73     		strb	r3, [r7, #15]
+ 728:../src/waveplayer.c ****   LIS302DL_Write(&ctrl, LIS302DL_FF_WU_CFG1_REG_ADDR, 1);
+ 1643              		.loc 1 728 0
+ 1644 00b6 07F10F03 		add	r3, r7, #15
+ 1645 00ba 1846     		mov	r0, r3
+ 1646 00bc 4FF03001 		mov	r1, #48
+ 1647 00c0 4FF00102 		mov	r2, #1
+ 1648 00c4 FFF7FEFF 		bl	LIS302DL_Write
+ 729:../src/waveplayer.c ****   
+ 730:../src/waveplayer.c ****   /* Configure Time Limit */
+ 731:../src/waveplayer.c ****   ctrl = 0x03;
+ 1649              		.loc 1 731 0
+ 1650 00c8 4FF00303 		mov	r3, #3
+ 1651 00cc FB73     		strb	r3, [r7, #15]
+ 732:../src/waveplayer.c ****   LIS302DL_Write(&ctrl, LIS302DL_CLICK_TIMELIMIT_REG_ADDR, 1);
+ 1652              		.loc 1 732 0
+ 1653 00ce 07F10F03 		add	r3, r7, #15
+ 1654 00d2 1846     		mov	r0, r3
+ 1655 00d4 4FF03D01 		mov	r1, #61
+ 1656 00d8 4FF00102 		mov	r2, #1
+ 1657 00dc FFF7FEFF 		bl	LIS302DL_Write
+ 733:../src/waveplayer.c ****     
+ 734:../src/waveplayer.c ****   /* Configure Latency */
+ 735:../src/waveplayer.c ****   ctrl = 0x7F;
+ 1658              		.loc 1 735 0
+ 1659 00e0 4FF07F03 		mov	r3, #127
+ 1660 00e4 FB73     		strb	r3, [r7, #15]
+ 736:../src/waveplayer.c ****   LIS302DL_Write(&ctrl, LIS302DL_CLICK_LATENCY_REG_ADDR, 1);
+ 1661              		.loc 1 736 0
+ 1662 00e6 07F10F03 		add	r3, r7, #15
+ 1663 00ea 1846     		mov	r0, r3
+ 1664 00ec 4FF03E01 		mov	r1, #62
+ 1665 00f0 4FF00102 		mov	r2, #1
+ 1666 00f4 FFF7FEFF 		bl	LIS302DL_Write
+ 737:../src/waveplayer.c ****   
+ 738:../src/waveplayer.c ****   /* Configure Click Window */
+ 739:../src/waveplayer.c ****   ctrl = 0x7F;
+ 1667              		.loc 1 739 0
+ 1668 00f8 4FF07F03 		mov	r3, #127
+ 1669 00fc FB73     		strb	r3, [r7, #15]
+ 740:../src/waveplayer.c ****   LIS302DL_Write(&ctrl, LIS302DL_CLICK_WINDOW_REG_ADDR, 1);
+ 1670              		.loc 1 740 0
+ 1671 00fe 07F10F03 		add	r3, r7, #15
+ 1672 0102 1846     		mov	r0, r3
+ 1673 0104 4FF03F01 		mov	r1, #63
+ 1674 0108 4FF00102 		mov	r2, #1
+ 1675 010c FFF7FEFF 		bl	LIS302DL_Write
+ 741:../src/waveplayer.c ****     
+ 742:../src/waveplayer.c **** }
+ 1676              		.loc 1 742 0
+ 1677 0110 07F11007 		add	r7, r7, #16
+ 1678 0114 BD46     		mov	sp, r7
+ 1679 0116 80BD     		pop	{r7, pc}
+ 1680              		.cfi_endproc
+ 1681              	.LFE128:
+ 1683              		.section	.text.EXTILine_Config,"ax",%progbits
+ 1684              		.align	2
+ 1685              		.thumb
+ 1686              		.thumb_func
+ 1688              	EXTILine_Config:
+ 1689              	.LFB129:
+ 743:../src/waveplayer.c **** 
+ 744:../src/waveplayer.c **** /**
+ 745:../src/waveplayer.c ****   * @brief  Configures EXTI Line0 (connected to PA0 pin) in interrupt mode
+ 746:../src/waveplayer.c ****   * @param  None
+ 747:../src/waveplayer.c ****   * @retval None
+ 748:../src/waveplayer.c ****   */
+ 749:../src/waveplayer.c **** static void EXTILine_Config(void)
+ 750:../src/waveplayer.c **** {
+ 1690              		.loc 1 750 0
+ 1691              		.cfi_startproc
+ 1692              		@ args = 0, pretend = 0, frame = 24
+ 1693              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1694 0000 80B5     		push	{r7, lr}
+ 1695              	.LCFI51:
+ 1696              		.cfi_def_cfa_offset 8
+ 1697              		.cfi_offset 14, -4
+ 1698              		.cfi_offset 7, -8
+ 1699 0002 86B0     		sub	sp, sp, #24
+ 1700              	.LCFI52:
+ 1701              		.cfi_def_cfa_offset 32
+ 1702 0004 00AF     		add	r7, sp, #0
+ 1703              	.LCFI53:
+ 1704              		.cfi_def_cfa_register 7
+ 751:../src/waveplayer.c ****   GPIO_InitTypeDef   GPIO_InitStructure;
+ 752:../src/waveplayer.c ****   NVIC_InitTypeDef   NVIC_InitStructure;
+ 753:../src/waveplayer.c ****   EXTI_InitTypeDef   EXTI_InitStructure;
+ 754:../src/waveplayer.c ****   /* Enable GPIOA clock */
+ 755:../src/waveplayer.c ****   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+ 1705              		.loc 1 755 0
+ 1706 0006 4FF01000 		mov	r0, #16
+ 1707 000a 4FF00101 		mov	r1, #1
+ 1708 000e FFF7FEFF 		bl	RCC_AHB1PeriphClockCmd
+ 756:../src/waveplayer.c ****   /* Enable SYSCFG clock */
+ 757:../src/waveplayer.c ****   RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+ 1709              		.loc 1 757 0
+ 1710 0012 4FF48040 		mov	r0, #16384
+ 1711 0016 4FF00101 		mov	r1, #1
+ 1712 001a FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+ 758:../src/waveplayer.c ****   /* Configure PE0 and PE1 pins as input floating */
+ 759:../src/waveplayer.c ****   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+ 1713              		.loc 1 759 0
+ 1714 001e 4FF00003 		mov	r3, #0
+ 1715 0022 3B75     		strb	r3, [r7, #20]
+ 760:../src/waveplayer.c ****   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+ 1716              		.loc 1 760 0
+ 1717 0024 4FF00003 		mov	r3, #0
+ 1718 0028 FB75     		strb	r3, [r7, #23]
+ 761:../src/waveplayer.c ****   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_1;
+ 1719              		.loc 1 761 0
+ 1720 002a 4FF00303 		mov	r3, #3
+ 1721 002e 3B61     		str	r3, [r7, #16]
+ 762:../src/waveplayer.c ****   GPIO_Init(GPIOE, &GPIO_InitStructure);
+ 1722              		.loc 1 762 0
+ 1723 0030 4FF48050 		mov	r0, #4096
+ 1724 0034 C4F20200 		movt	r0, 16386
+ 1725 0038 07F11003 		add	r3, r7, #16
+ 1726 003c 1946     		mov	r1, r3
+ 1727 003e FFF7FEFF 		bl	GPIO_Init
+ 763:../src/waveplayer.c **** 
+ 764:../src/waveplayer.c ****   /* Connect EXTI Line to PE1 pins */
+ 765:../src/waveplayer.c ****   SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOE, EXTI_PinSource1);
+ 1728              		.loc 1 765 0
+ 1729 0042 4FF00400 		mov	r0, #4
+ 1730 0046 4FF00101 		mov	r1, #1
+ 1731 004a FFF7FEFF 		bl	SYSCFG_EXTILineConfig
+ 766:../src/waveplayer.c **** 
+ 767:../src/waveplayer.c ****   /* Configure EXTI Line1 */
+ 768:../src/waveplayer.c ****   EXTI_InitStructure.EXTI_Line = EXTI_Line1;
+ 1732              		.loc 1 768 0
+ 1733 004e 4FF00203 		mov	r3, #2
+ 1734 0052 7B60     		str	r3, [r7, #4]
+ 769:../src/waveplayer.c ****   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
+ 1735              		.loc 1 769 0
+ 1736 0054 4FF00003 		mov	r3, #0
+ 1737 0058 3B72     		strb	r3, [r7, #8]
+ 770:../src/waveplayer.c ****   EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;  
+ 1738              		.loc 1 770 0
+ 1739 005a 4FF00803 		mov	r3, #8
+ 1740 005e 7B72     		strb	r3, [r7, #9]
+ 771:../src/waveplayer.c ****   EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+ 1741              		.loc 1 771 0
+ 1742 0060 4FF00103 		mov	r3, #1
+ 1743 0064 BB72     		strb	r3, [r7, #10]
+ 772:../src/waveplayer.c ****   EXTI_Init(&EXTI_InitStructure);
+ 1744              		.loc 1 772 0
+ 1745 0066 07F10403 		add	r3, r7, #4
+ 1746 006a 1846     		mov	r0, r3
+ 1747 006c FFF7FEFF 		bl	EXTI_Init
+ 773:../src/waveplayer.c **** 
+ 774:../src/waveplayer.c ****   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_3);
+ 1748              		.loc 1 774 0
+ 1749 0070 4FF48060 		mov	r0, #1024
+ 1750 0074 FFF7FEFF 		bl	NVIC_PriorityGroupConfig
+ 775:../src/waveplayer.c ****   
+ 776:../src/waveplayer.c ****   /* Enable and set EXTI Line0 Interrupt to the lowest priority */
+ 777:../src/waveplayer.c ****   NVIC_InitStructure.NVIC_IRQChannel = EXTI1_IRQn;
+ 1751              		.loc 1 777 0
+ 1752 0078 4FF00703 		mov	r3, #7
+ 1753 007c 3B73     		strb	r3, [r7, #12]
+ 778:../src/waveplayer.c ****   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x00;
+ 1754              		.loc 1 778 0
+ 1755 007e 4FF00003 		mov	r3, #0
+ 1756 0082 7B73     		strb	r3, [r7, #13]
+ 779:../src/waveplayer.c ****   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x00;
+ 1757              		.loc 1 779 0
+ 1758 0084 4FF00003 		mov	r3, #0
+ 1759 0088 BB73     		strb	r3, [r7, #14]
+ 780:../src/waveplayer.c ****   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+ 1760              		.loc 1 780 0
+ 1761 008a 4FF00103 		mov	r3, #1
+ 1762 008e FB73     		strb	r3, [r7, #15]
+ 781:../src/waveplayer.c ****   NVIC_Init(&NVIC_InitStructure);
+ 1763              		.loc 1 781 0
+ 1764 0090 07F10C03 		add	r3, r7, #12
+ 1765 0094 1846     		mov	r0, r3
+ 1766 0096 FFF7FEFF 		bl	NVIC_Init
+ 782:../src/waveplayer.c **** }
+ 1767              		.loc 1 782 0
+ 1768 009a 07F11807 		add	r7, r7, #24
+ 1769 009e BD46     		mov	sp, r7
+ 1770 00a0 80BD     		pop	{r7, pc}
+ 1771              		.cfi_endproc
+ 1772              	.LFE129:
+ 1774 00a2 00BF     		.text
+ 1775              	.Letext0:
+ 1776              		.file 3 "c:\\program files (x86)\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/
+ 1777              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\ST\\
+ 1778              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 1779              		.file 6 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 1780              		.file 7 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32F4xx_S
+ 1781              		.file 8 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Utilities\\STM32F4-Dis
+ 1782              		.file 9 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Utilities\\STM32F4-Dis
+ 1783              		.file 10 "../src/waveplayer.h"
+ 1784              		.file 11 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32_USB_
+ 1785              		.file 12 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\STM32_USB_
+ 1786              		.file 13 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Utilities\\Third_Part
+ 1787              		.file 14 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Utilities\\Third_Part
+ 1788              		.file 15 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Inc
+DEFINED SYMBOLS
+                            *ABS*:00000000 waveplayer.c
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:19     .bss.wavelen:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:22     .bss.wavelen:00000000 wavelen
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:25     .bss.WaveFileName:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:28     .bss.WaveFileName:00000000 WaveFileName
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:31     .bss.SpeechDataOffset:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:34     .bss.SpeechDataOffset:00000000 SpeechDataOffset
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:40     .data.WaveFileStatus:00000000 WaveFileStatus
+                            *COM*:00000004 BytesRead
+                            *COM*:00000018 WAVE_Format
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:49     .bss.buffer1:00000000 buffer1
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:46     .bss.buffer1:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:56     .bss.buffer2:00000000 buffer2
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:53     .bss.buffer2:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:62     .data.buffer_switch:00000000 buffer_switch
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:69     .bss.XferCplt:00000000 XferCplt
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:66     .bss.XferCplt:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:75     .data.volume:00000000 volume
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:81     .bss.AudioPlayStart:00000000 AudioPlayStart
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:82     .bss.AudioPlayStart:00000000 $d
+                            *COM*:00000004 WaveCounter
+                            *COM*:00000006 Buffer
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:90     .bss.WaveDataLength:00000000 WaveDataLength
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:87     .bss.WaveDataLength:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:93     .bss.TimingDelay:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:96     .bss.TimingDelay:00000000 TimingDelay
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:99     .text.WavePlayBack:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:104    .text.WavePlayBack:00000000 WavePlayBack
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:493    .text.WavePlayerInit:00000000 WavePlayerInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:390    .text.WavePlayerPauseResume:00000000 WavePlayerPauseResume
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:465    .text.WavePlayerStop:00000000 WavePlayerStop
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:385    .text.WavePlayerPauseResume:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:421    .text.WaveplayerCtrlVolume:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:426    .text.WaveplayerCtrlVolume:00000000 WaveplayerCtrlVolume
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:460    .text.WavePlayerStop:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:488    .text.WavePlayerInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:1552   .text.Mems_Config:00000000 Mems_Config
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:1688   .text.EXTILine_Config:00000000 EXTILine_Config
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:538    .text.LIS302DL_TIMEOUT_UserCallback:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:543    .text.LIS302DL_TIMEOUT_UserCallback:00000000 LIS302DL_TIMEOUT_UserCallback
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:564    .text.AudioFlashPlay:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:569    .text.AudioFlashPlay:00000000 AudioFlashPlay
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:607    .text.EVAL_AUDIO_TransferComplete_CallBack:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:612    .text.EVAL_AUDIO_TransferComplete_CallBack:00000000 EVAL_AUDIO_TransferComplete_CallBack
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:673    .text.EVAL_AUDIO_HalfTransfer_CallBack:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:678    .text.EVAL_AUDIO_HalfTransfer_CallBack:00000000 EVAL_AUDIO_HalfTransfer_CallBack
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:706    .text.EVAL_AUDIO_Error_CallBack:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:711    .text.EVAL_AUDIO_Error_CallBack:00000000 EVAL_AUDIO_Error_CallBack
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:736    .text.EVAL_AUDIO_GetSampleCallBack:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:741    .text.EVAL_AUDIO_GetSampleCallBack:00000000 EVAL_AUDIO_GetSampleCallBack
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:766    .text.Codec_TIMEOUT_UserCallback:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:771    .text.Codec_TIMEOUT_UserCallback:00000000 Codec_TIMEOUT_UserCallback
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:796    .text.Delay:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:801    .text.Delay:00000000 Delay
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:842    .text.TimingDelay_Decrement:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:847    .text.TimingDelay_Decrement:00000000 TimingDelay_Decrement
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:884    .rodata:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:885    .rodata:00000000 .LC0
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:888    .rodata:0000000c .LC1
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:891    .text.WavePlayerStart:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:896    .text.WavePlayerStart:00000000 WavePlayerStart
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:1122   .text.WavePlayer_WaveParsing:00000000 WavePlayer_WaveParsing
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:1041   .text.WavePlayer_CallBack:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:1046   .text.WavePlayer_CallBack:00000000 WavePlayer_CallBack
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:1118   .text.WavePlayer_WaveParsing:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:1456   .text.ReadUnit:00000000 ReadUnit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:1451   .text.ReadUnit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:1548   .text.Mems_Config:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc8t5QV3.s:1684   .text.EXTILine_Config:00000000 $t
+                     .debug_frame:00000010 $d
+
+UNDEFINED SYMBOLS
+RepeatState
+AudioRemSize
+fileR
+f_lseek
+f_read
+Audio_MAL_Play
+LED_Toggle
+PauseResumeStatus
+Count
+Command_index
+USB_OTG_Core
+HCD_IsDeviceConnected
+EVAL_AUDIO_PauseResume
+EVAL_AUDIO_VolumeCtl
+EVAL_AUDIO_Stop
+EVAL_AUDIO_SetAudioInterface
+EVAL_AUDIO_Init
+EVAL_AUDIO_Play
+dir
+f_opendir
+STM_EVAL_LEDToggle
+WaveRecStatus
+f_open
+STM_EVAL_LEDOn
+STM_EVAL_LEDOff
+TIM_ITConfig
+f_mount
+LIS302DL_Init
+LIS302DL_InterruptConfig
+LIS302DL_Write
+RCC_AHB1PeriphClockCmd
+RCC_APB2PeriphClockCmd
+GPIO_Init
+SYSCFG_EXTILineConfig
+EXTI_Init
+NVIC_PriorityGroupConfig
+NVIC_Init
