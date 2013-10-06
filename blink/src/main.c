@@ -38,8 +38,8 @@
 
 /**
   * @brief  Main program.
-  * @param  None
-  * @retval None
+  * @param
+  * @retval
   */
 int main(void)
 {
