@@ -22,7 +22,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 
-
 /** @addtogroup STM32F4-Discovery_Demo
   * @{
   */
@@ -41,9 +40,13 @@
   * @param
   * @retval
   */
-int main(void)
-{
-	while(1);
+int main(void){
+	STM32f4_Discovery_LCD_Init();
+	LCD_RGB_Test();
+	LCD_DrawCircle(50,50,10);
+	while(1){
+
+	}
 }
 
 

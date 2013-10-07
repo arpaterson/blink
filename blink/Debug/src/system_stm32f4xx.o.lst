@@ -917,16 +917,16 @@
  503              		.file 4 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Device\\STM32F4xx\\Inc
 DEFINED SYMBOLS
                             *ABS*:00000000 system_stm32f4xx.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cclT6oBe.s:23     .data.SystemCoreClock:00000000 SystemCoreClock
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cclT6oBe.s:20     .data.SystemCoreClock:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cclT6oBe.s:30     .data.AHBPrescTable:00000000 AHBPrescTable
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cclT6oBe.s:27     .data.AHBPrescTable:00000000 $d
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cclT6oBe.s:48     .text.SystemInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cclT6oBe.s:53     .text.SystemInit:00000000 SystemInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cclT6oBe.s:295    .text.SetSysClock:00000000 SetSysClock
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cclT6oBe.s:122    .text.SystemCoreClockUpdate:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cclT6oBe.s:127    .text.SystemCoreClockUpdate:00000000 SystemCoreClockUpdate
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\cclT6oBe.s:291    .text.SetSysClock:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc0Py08e.s:23     .data.SystemCoreClock:00000000 SystemCoreClock
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc0Py08e.s:20     .data.SystemCoreClock:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc0Py08e.s:30     .data.AHBPrescTable:00000000 AHBPrescTable
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc0Py08e.s:27     .data.AHBPrescTable:00000000 $d
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc0Py08e.s:48     .text.SystemInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc0Py08e.s:53     .text.SystemInit:00000000 SystemInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc0Py08e.s:295    .text.SetSysClock:00000000 SetSysClock
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc0Py08e.s:122    .text.SystemCoreClockUpdate:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc0Py08e.s:127    .text.SystemCoreClockUpdate:00000000 SystemCoreClockUpdate
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc0Py08e.s:291    .text.SetSysClock:00000000 $t
                      .debug_frame:00000010 $d
 
 NO UNDEFINED SYMBOLS

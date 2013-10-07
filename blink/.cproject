@@ -196,8 +196,8 @@
 				</scannerInfoProvider>
 			</profile>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1335868805;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1335868805.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.c.compiler.release.1042759004;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input.2048199361">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileC"/>
+		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.50169696;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.50169696.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.assembler.release.1891832312;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.assembler.base.input.433913550">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 				<buildOutputProvider>
 					<openAction enabled="true" filePath=""/>
@@ -239,8 +239,8 @@
 				</scannerInfoProvider>
 			</profile>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.50169696;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.50169696.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.assembler.release.1891832312;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.assembler.base.input.433913550">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1335868805;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.release.1335868805.;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.c.compiler.release.1042759004;org.eclipse.cdt.cross.arm.gnu.sourcery.windows.c.compiler.base.input.2048199361">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.cross.arm.gnu.ARM_CS_GCCWinManagedMakePerProjectProfileC"/>
 			<profile id="org.eclipse.cdt.make.core.GCCStandardMakePerProjectProfile">
 				<buildOutputProvider>
 					<openAction enabled="true" filePath=""/>
