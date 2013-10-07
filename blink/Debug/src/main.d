@@ -35,7 +35,9 @@ src/main.d: ../src/main.c \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/stm32f4xx_wwdg.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_StdPeriph_Driver\inc/misc.h \
  C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/stm32f4_discovery_lcd.h \
- C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/fonts.h
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/fonts.h \
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/lcd_log.h \
+ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\inc/lcd_log_conf.h
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\inc/main.h:
 
@@ -110,3 +112,7 @@ C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Libraries\STM32F4xx_
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/stm32f4_discovery_lcd.h:
 
 C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/fonts.h:
+
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\Utilities\STM32F4-Discovery/lcd_log.h:
+
+C:\Users\Anthony.Paterson@opus.co\Documents\git\blink\blink\inc/lcd_log_conf.h:

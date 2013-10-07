@@ -44,6 +44,10 @@ int main(void){
 	STM32f4_Discovery_LCD_Init();
 	LCD_RGB_Test();
 	LCD_DrawCircle(50,50,10);
+	LCD_LOG_Init();
+
+	char Str[10] = "hello";
+	LCD_LOG_SetHeader((uint8_t*)&Str);
 	while(1){
 
 	}
