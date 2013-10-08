@@ -1489,34 +1489,34 @@
  972              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_gpio.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:19     .text.GPIO_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:24     .text.GPIO_DeInit:00000000 GPIO_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:194    .text.GPIO_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:199    .text.GPIO_Init:00000000 GPIO_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:371    .text.GPIO_StructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:376    .text.GPIO_StructInit:00000000 GPIO_StructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:423    .text.GPIO_PinLockConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:428    .text.GPIO_PinLockConfig:00000000 GPIO_PinLockConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:485    .text.GPIO_ReadInputDataBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:490    .text.GPIO_ReadInputDataBit:00000000 GPIO_ReadInputDataBit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:541    .text.GPIO_ReadInputData:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:546    .text.GPIO_ReadInputData:00000000 GPIO_ReadInputData
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:578    .text.GPIO_ReadOutputDataBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:583    .text.GPIO_ReadOutputDataBit:00000000 GPIO_ReadOutputDataBit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:634    .text.GPIO_ReadOutputData:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:639    .text.GPIO_ReadOutputData:00000000 GPIO_ReadOutputData
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:671    .text.GPIO_SetBits:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:676    .text.GPIO_SetBits:00000000 GPIO_SetBits
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:709    .text.GPIO_ResetBits:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:714    .text.GPIO_ResetBits:00000000 GPIO_ResetBits
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:747    .text.GPIO_WriteBit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:752    .text.GPIO_WriteBit:00000000 GPIO_WriteBit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:798    .text.GPIO_Write:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:803    .text.GPIO_Write:00000000 GPIO_Write
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:836    .text.GPIO_ToggleBits:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:841    .text.GPIO_ToggleBits:00000000 GPIO_ToggleBits
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:877    .text.GPIO_PinAFConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccyinlzb.s:882    .text.GPIO_PinAFConfig:00000000 GPIO_PinAFConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:19     .text.GPIO_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:24     .text.GPIO_DeInit:00000000 GPIO_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:194    .text.GPIO_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:199    .text.GPIO_Init:00000000 GPIO_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:371    .text.GPIO_StructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:376    .text.GPIO_StructInit:00000000 GPIO_StructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:423    .text.GPIO_PinLockConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:428    .text.GPIO_PinLockConfig:00000000 GPIO_PinLockConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:485    .text.GPIO_ReadInputDataBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:490    .text.GPIO_ReadInputDataBit:00000000 GPIO_ReadInputDataBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:541    .text.GPIO_ReadInputData:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:546    .text.GPIO_ReadInputData:00000000 GPIO_ReadInputData
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:578    .text.GPIO_ReadOutputDataBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:583    .text.GPIO_ReadOutputDataBit:00000000 GPIO_ReadOutputDataBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:634    .text.GPIO_ReadOutputData:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:639    .text.GPIO_ReadOutputData:00000000 GPIO_ReadOutputData
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:671    .text.GPIO_SetBits:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:676    .text.GPIO_SetBits:00000000 GPIO_SetBits
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:709    .text.GPIO_ResetBits:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:714    .text.GPIO_ResetBits:00000000 GPIO_ResetBits
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:747    .text.GPIO_WriteBit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:752    .text.GPIO_WriteBit:00000000 GPIO_WriteBit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:798    .text.GPIO_Write:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:803    .text.GPIO_Write:00000000 GPIO_Write
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:836    .text.GPIO_ToggleBits:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:841    .text.GPIO_ToggleBits:00000000 GPIO_ToggleBits
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:877    .text.GPIO_PinAFConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\cc1NP4rH.s:882    .text.GPIO_PinAFConfig:00000000 GPIO_PinAFConfig
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS
