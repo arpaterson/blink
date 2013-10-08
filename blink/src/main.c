@@ -30,10 +30,14 @@
 /* Private define ------------------------------------------------------------*/
 
 /* Private macro -------------------------------------------------------------*/
+
 /* Private variables ---------------------------------------------------------*/
+
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
+
+
 
 /**
   * @brief  Main program.
@@ -41,18 +45,29 @@
   * @retval
   */
 int main(void){
+
+  /*!< At this stage the microcontroller clock setting is already configured,
+	   this is done through SystemInit() function which is called from startup
+	   file (startup_stm32f4xx.s) before to branch to application main.
+	   To reconfigure the default setting of SystemInit() function, refer to
+	   system_stm32f4xx.c file
+	 */
+
+
 	STM32f4_Discovery_LCD_Init();
 	LCD_RGB_Test();
-	LCD_DrawCircle(50,50,10);
-	LCD_LOG_Init();
 
-	char Str[10] = "hello";
-	LCD_LOG_SetHeader((uint8_t*)&Str);
-	while(1){
+	STM32f4_Discovery_Debug_Init();
+	/* Output a message on Hyperterminal using printf function */
+	printf("\n\rUSART Printf Example: retarget the C library printf function to the USART\n\r");
 
+
+
+	while (1)
+	{
+	printf("printf");
 	}
 }
-
 
 #ifdef  USE_FULL_ASSERT
 

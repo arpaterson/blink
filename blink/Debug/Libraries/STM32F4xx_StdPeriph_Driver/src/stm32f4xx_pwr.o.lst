@@ -1518,30 +1518,30 @@
  610              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Device\\STM32F4xx\\Inc
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_pwr.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:19     .text.PWR_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:24     .text.PWR_DeInit:00000000 PWR_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:53     .text.PWR_BackupAccessCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:58     .text.PWR_BackupAccessCmd:00000000 PWR_BackupAccessCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:91     .text.PWR_PVDLevelConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:96     .text.PWR_PVDLevelConfig:00000000 PWR_PVDLevelConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:145    .text.PWR_PVDCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:150    .text.PWR_PVDCmd:00000000 PWR_PVDCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:183    .text.PWR_WakeUpPinCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:188    .text.PWR_WakeUpPinCmd:00000000 PWR_WakeUpPinCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:221    .text.PWR_BackupRegulatorCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:226    .text.PWR_BackupRegulatorCmd:00000000 PWR_BackupRegulatorCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:259    .text.PWR_MainRegulatorModeConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:264    .text.PWR_MainRegulatorModeConfig:00000000 PWR_MainRegulatorModeConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:314    .text.PWR_FlashPowerDownCmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:319    .text.PWR_FlashPowerDownCmd:00000000 PWR_FlashPowerDownCmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:352    .text.PWR_EnterSTOPMode:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:357    .text.PWR_EnterSTOPMode:00000000 PWR_EnterSTOPMode
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:450    .text.PWR_EnterSTANDBYMode:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:455    .text.PWR_EnterSTANDBYMode:00000000 PWR_EnterSTANDBYMode
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:510    .text.PWR_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:515    .text.PWR_GetFlagStatus:00000000 PWR_GetFlagStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:565    .text.PWR_ClearFlag:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccQVyWhL.s:570    .text.PWR_ClearFlag:00000000 PWR_ClearFlag
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:19     .text.PWR_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:24     .text.PWR_DeInit:00000000 PWR_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:53     .text.PWR_BackupAccessCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:58     .text.PWR_BackupAccessCmd:00000000 PWR_BackupAccessCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:91     .text.PWR_PVDLevelConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:96     .text.PWR_PVDLevelConfig:00000000 PWR_PVDLevelConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:145    .text.PWR_PVDCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:150    .text.PWR_PVDCmd:00000000 PWR_PVDCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:183    .text.PWR_WakeUpPinCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:188    .text.PWR_WakeUpPinCmd:00000000 PWR_WakeUpPinCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:221    .text.PWR_BackupRegulatorCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:226    .text.PWR_BackupRegulatorCmd:00000000 PWR_BackupRegulatorCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:259    .text.PWR_MainRegulatorModeConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:264    .text.PWR_MainRegulatorModeConfig:00000000 PWR_MainRegulatorModeConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:314    .text.PWR_FlashPowerDownCmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:319    .text.PWR_FlashPowerDownCmd:00000000 PWR_FlashPowerDownCmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:352    .text.PWR_EnterSTOPMode:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:357    .text.PWR_EnterSTOPMode:00000000 PWR_EnterSTOPMode
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:450    .text.PWR_EnterSTANDBYMode:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:455    .text.PWR_EnterSTANDBYMode:00000000 PWR_EnterSTANDBYMode
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:510    .text.PWR_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:515    .text.PWR_GetFlagStatus:00000000 PWR_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:565    .text.PWR_ClearFlag:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZmiaA7.s:570    .text.PWR_ClearFlag:00000000 PWR_ClearFlag
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

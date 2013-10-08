@@ -2009,40 +2009,40 @@
  1208              		.file 5 "C:\\Users\\Anthony.Paterson@opus.co\\Documents\\git\\blink\\blink\\Libraries\\CMSIS\\Incl
 DEFINED SYMBOLS
                             *ABS*:00000000 stm32f4xx_cryp.c
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:19     .text.CRYP_DeInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:24     .text.CRYP_DeInit:00000000 CRYP_DeInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:53     .text.CRYP_Init:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:58     .text.CRYP_Init:00000000 CRYP_Init
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:182    .text.CRYP_StructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:187    .text.CRYP_StructInit:00000000 CRYP_StructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:230    .text.CRYP_KeyInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:235    .text.CRYP_KeyInit:00000000 CRYP_KeyInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:310    .text.CRYP_KeyStructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:315    .text.CRYP_KeyStructInit:00000000 CRYP_KeyStructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:374    .text.CRYP_IVInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:379    .text.CRYP_IVInit:00000000 CRYP_IVInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:430    .text.CRYP_IVStructInit:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:435    .text.CRYP_IVStructInit:00000000 CRYP_IVStructInit
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:478    .text.CRYP_FIFOFlush:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:483    .text.CRYP_FIFOFlush:00000000 CRYP_FIFOFlush
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:513    .text.CRYP_Cmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:518    .text.CRYP_Cmd:00000000 CRYP_Cmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:569    .text.CRYP_DataIn:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:574    .text.CRYP_DataIn:00000000 CRYP_DataIn
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:606    .text.CRYP_DataOut:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:611    .text.CRYP_DataOut:00000000 CRYP_DataOut
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:638    .text.CRYP_SaveContext:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:643    .text.CRYP_SaveContext:00000000 CRYP_SaveContext
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:831    .text.CRYP_RestoreContext:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:836    .text.CRYP_RestoreContext:00000000 CRYP_RestoreContext
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:949    .text.CRYP_DMACmd:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:954    .text.CRYP_DMACmd:00000000 CRYP_DMACmd
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:1011   .text.CRYP_ITConfig:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:1016   .text.CRYP_ITConfig:00000000 CRYP_ITConfig
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:1073   .text.CRYP_GetITStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:1078   .text.CRYP_GetITStatus:00000000 CRYP_GetITStatus
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:1129   .text.CRYP_GetFlagStatus:00000000 $t
-C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccCIpOj7.s:1134   .text.CRYP_GetFlagStatus:00000000 CRYP_GetFlagStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:19     .text.CRYP_DeInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:24     .text.CRYP_DeInit:00000000 CRYP_DeInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:53     .text.CRYP_Init:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:58     .text.CRYP_Init:00000000 CRYP_Init
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:182    .text.CRYP_StructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:187    .text.CRYP_StructInit:00000000 CRYP_StructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:230    .text.CRYP_KeyInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:235    .text.CRYP_KeyInit:00000000 CRYP_KeyInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:310    .text.CRYP_KeyStructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:315    .text.CRYP_KeyStructInit:00000000 CRYP_KeyStructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:374    .text.CRYP_IVInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:379    .text.CRYP_IVInit:00000000 CRYP_IVInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:430    .text.CRYP_IVStructInit:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:435    .text.CRYP_IVStructInit:00000000 CRYP_IVStructInit
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:478    .text.CRYP_FIFOFlush:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:483    .text.CRYP_FIFOFlush:00000000 CRYP_FIFOFlush
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:513    .text.CRYP_Cmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:518    .text.CRYP_Cmd:00000000 CRYP_Cmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:569    .text.CRYP_DataIn:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:574    .text.CRYP_DataIn:00000000 CRYP_DataIn
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:606    .text.CRYP_DataOut:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:611    .text.CRYP_DataOut:00000000 CRYP_DataOut
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:638    .text.CRYP_SaveContext:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:643    .text.CRYP_SaveContext:00000000 CRYP_SaveContext
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:831    .text.CRYP_RestoreContext:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:836    .text.CRYP_RestoreContext:00000000 CRYP_RestoreContext
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:949    .text.CRYP_DMACmd:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:954    .text.CRYP_DMACmd:00000000 CRYP_DMACmd
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:1011   .text.CRYP_ITConfig:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:1016   .text.CRYP_ITConfig:00000000 CRYP_ITConfig
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:1073   .text.CRYP_GetITStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:1078   .text.CRYP_GetITStatus:00000000 CRYP_GetITStatus
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:1129   .text.CRYP_GetFlagStatus:00000000 $t
+C:\Users\ANTHON~1.CO\AppData\Local\Temp\ccZseh5a.s:1134   .text.CRYP_GetFlagStatus:00000000 CRYP_GetFlagStatus
                      .debug_frame:00000010 $d
 
 UNDEFINED SYMBOLS

@@ -1,277 +1,610 @@
-
 /*
  * newlib_stubs.c
  *
- *  Created on: 2 Nov 2010
- *      Author: nanoage.co.uk
+ *  Created on: 8/10/2013
+ *      Author:
  */
-#include <errno.h>
+
+
+/**************************************************************************//*****
+ * @file     stdio.c
+ * @brief    Implementation of several stdio.h methods, such as printf(),
+ *       sprintf() and so on. This reduces the memory footprint of the
+ *       binary when using those methods, compared to the libc implementation.
+ ********************************************************************************/
+
+#include <stdio.h>
+#include <stdarg.h>
 #include <sys/stat.h>
-#include <sys/times.h>
-#include <sys/unistd.h>
-#include "stm32f4xx_usart.h"
 
 
-#ifndef STDOUT_USART
-#define STDOUT_USART 2
-#endif
+/** Function for malloc, realloc, free */
+extern int  _end;
 
-#ifndef STDERR_USART
-#define STDERR_USART 2
-#endif
+caddr_t _sbrk ( int incr )
+{
+  static unsigned char *heap = NULL;
+  unsigned char *prev_heap;
 
-#ifndef STDIN_USART
-#define STDIN_USART 2
-#endif
+  if (heap == NULL) {
+    heap = (unsigned char *)&_end;
+  }
+  prev_heap = heap;
+  /* check removed to show basic approach */
 
-#undef errno
-extern int errno;
+  heap += incr;
 
-/*
- environ
- A pointer to a list of environment variables and their values.
- For a minimal environment, this empty list is adequate:
- */
-char *__env[1] = { 0 };
-char **environ = __env;
-
-int _write(int file, char *ptr, int len);
-
-void _exit(int status) {
-    _write(1, "exit", 4);
-    while (1) {
-        ;
-    }
+  return (caddr_t) prev_heap;
 }
+
+
 
 int _close(int file) {
-    return -1;
-}
-/*
- execve
- Transfer control to a new process. Minimal implementation (for a system without processes):
- */
-int _execve(char *name, char **argv, char **env) {
-    errno = ENOMEM;
-    return -1;
-}
-/*
- fork
- Create a new process. Minimal implementation (for a system without processes):
- */
+           return -1;
+        }
 
-int _fork() {
-    errno = EAGAIN;
-    return -1;
-}
-/*
- fstat
- Status of an open file. For consistency with other minimal implementations in these examples,
- all files are regarded as character special devices.
- The `sys/stat.h' header file required is distributed in the `include' subdirectory for this C library.
- */
+
 int _fstat(int file, struct stat *st) {
     st->st_mode = S_IFCHR;
     return 0;
 }
 
-/*
- getpid
- Process-ID; this is sometimes used to generate strings unlikely to conflict with other processes. Minimal implementation, for a system without processes:
- */
+int _isatty(int file) {
+            return 1;
+          }
 
-int _getpid() {
+int _lseek(int file, int ptr, int dir) {
+            return 0;
+          }
+
+int _read(int file, char *ptr, int len) {
+            return 0;
+          }
+
+int _write(int file, char *ptr, int len) {
+            return len;
+          }
+
+/* Local Definitions ---------------------------------------------------------- */
+
+/** Maximum string size allowed (in bytes). */
+#define MAX_STRING_SIZE         100
+
+
+/* Global Variables ----------------------------------------------------------- */
+
+/** Required for proper compilation. */
+struct _reent r = {0, (FILE *) 0, (FILE *) 1, (FILE *) 0};
+//struct _reent *_impure_ptr = &r;
+
+
+
+/* Local Functions ------------------------------------------------------------ */
+
+
+/**
+ * @brief  Writes a character inside the given string. Returns 1.
+ *
+ * @param  pStr    Storage string.
+ * @param  c    Character to write.
+ */
+signed int PutChar(char *pStr, char c)
+{
+    *pStr = c;
     return 1;
 }
 
-/*
- isatty
- Query whether output stream is a terminal. For consistency with the other minimal implementations,
+
+/**
+ * @brief  Writes a string inside the given string.
+ *
+ * @param  pStr     Storage string.
+ * @param  pSource  Source string.
+ * @return  The size of the written
  */
-int _isatty(int file) {
-    switch (file){
-    case STDOUT_FILENO:
-    case STDERR_FILENO:
-    case STDIN_FILENO:
-        return 1;
-    default:
-        //errno = ENOTTY;
-        errno = EBADF;
-        return 0;
+signed int PutString(char *pStr, const char *pSource)
+{
+    signed int num = 0;
+
+    while (*pSource != 0) {
+
+        *pStr++ = *pSource++;
+        num++;
     }
-}
 
-
-/*
- kill
- Send a signal. Minimal implementation:
- */
-int _kill(int pid, int sig) {
-    errno = EINVAL;
-    return (-1);
-}
-
-/*
- link
- Establish a new name for an existing file. Minimal implementation:
- */
-
-int _link(char *old, char *new) {
-    errno = EMLINK;
-    return -1;
-}
-
-/*
- lseek
- Set position in a file. Minimal implementation:
- */
-int _lseek(int file, int ptr, int dir) {
-    return 0;
-}
-
-/*
- sbrk
- Increase program data space.
- Malloc and related functions depend on this
- */
-caddr_t _sbrk(int incr) {
-
-    extern char _ebss; // Defined by the linker
-    static char *heap_end;
-    char *prev_heap_end;
-
-    if (heap_end == 0) {
-        heap_end = &_ebss;
-    }
-    prev_heap_end = heap_end;
-
-char * stack = (char*) __get_MSP();
-     if (heap_end + incr >  stack)
-     {
-         _write (STDERR_FILENO, "Heap and stack collision\n", 25);
-         errno = ENOMEM;
-         return  (caddr_t) -1;
-         //abort ();
-     }
-
-    heap_end += incr;
-    return (caddr_t) prev_heap_end;
-
-}
-
-/*
- read
- Read a character to a file. `libc' subroutines will use this system routine for input from all files, including stdin
- Returns -1 on error or blocks until the number of characters have been read.
- */
-
-
-int _read(int file, char *ptr, int len) {
-    int n;
-    int num = 0;
-    switch (file) {
-    case STDIN_FILENO:
-        for (n = 0; n < len; n++) {
-#if   STDIN_USART == 1
-            while ((USART1->SR & USART_FLAG_RXNE) == (uint16_t)RESET) {}
-            char c = (char)(USART1->DR & (uint16_t)0x01FF);
-#elif STDIN_USART == 2
-            while ((USART2->SR & USART_FLAG_RXNE) == (uint16_t) RESET) {}
-            char c = (char) (USART2->DR & (uint16_t) 0x01FF);
-#elif STDIN_USART == 3
-            while ((USART3->SR & USART_FLAG_RXNE) == (uint16_t)RESET) {}
-            char c = (char)(USART3->DR & (uint16_t)0x01FF);
-#endif
-            *ptr++ = c;
-            num++;
-        }
-        break;
-    default:
-        errno = EBADF;
-        return -1;
-    }
     return num;
 }
 
-/*
- stat
- Status of a file (by name). Minimal implementation:
- int    _EXFUN(stat,( const char *__path, struct stat *__sbuf ));
+
+/**
+ * @brief  Writes an unsigned int inside the given string, using the provided fill &
+ *         width parameters.
+ *
+ * @param  pStr  Storage string.
+ * @param  fill  Fill character.
+ * @param  width  Minimum integer width.
+ * @param  value  Integer value.
  */
+signed int PutUnsignedInt(
+    char *pStr,
+    char fill,
+    signed int width,
+    unsigned int value)
+{
+    signed int num = 0;
 
-int _stat(const char *filepath, struct stat *st) {
-    st->st_mode = S_IFCHR;
-    return 0;
-}
+    /* Take current digit into account when calculating width */
+    width--;
 
-/*
- times
- Timing information for current process. Minimal implementation:
- */
+    /* Recursively write upper digits */
+    if ((value / 10) > 0) {
 
-clock_t _times(struct tms *buf) {
-    return -1;
-}
-
-/*
- unlink
- Remove a file's directory entry. Minimal implementation:
- */
-int _unlink(char *name) {
-    errno = ENOENT;
-    return -1;
-}
-
-/*
- wait
- Wait for a child process. Minimal implementation:
- */
-int _wait(int *status) {
-    errno = ECHILD;
-    return -1;
-}
-
-/*
- write
- Write a character to a file. `libc' subroutines will use this system routine for output to all files, including stdout
- Returns -1 on error or number of bytes sent
- */
-int _write(int file, char *ptr, int len) {
-    int n;
-    switch (file) {
-    case STDOUT_FILENO: /*stdout*/
-        for (n = 0; n < len; n++) {
-#if STDOUT_USART == 1
-            while ((USART1->SR & USART_FLAG_TC) == (uint16_t)RESET) {}
-            USART1->DR = (*ptr++ & (uint16_t)0x01FF);
-#elif  STDOUT_USART == 2
-            while ((USART2->SR & USART_FLAG_TC) == (uint16_t) RESET) {
-            }
-            USART2->DR = (*ptr++ & (uint16_t) 0x01FF);
-#elif  STDOUT_USART == 3
-            while ((USART3->SR & USART_FLAG_TC) == (uint16_t)RESET) {}
-            USART3->DR = (*ptr++ & (uint16_t)0x01FF);
-#endif
-        }
-        break;
-    case STDERR_FILENO: /* stderr */
-        for (n = 0; n < len; n++) {
-#if STDERR_USART == 1
-            while ((USART1->SR & USART_FLAG_TC) == (uint16_t)RESET) {}
-            USART1->DR = (*ptr++ & (uint16_t)0x01FF);
-#elif  STDERR_USART == 2
-            while ((USART2->SR & USART_FLAG_TC) == (uint16_t) RESET) {
-            }
-            USART2->DR = (*ptr++ & (uint16_t) 0x01FF);
-#elif  STDERR_USART == 3
-            while ((USART3->SR & USART_FLAG_TC) == (uint16_t)RESET) {}
-            USART3->DR = (*ptr++ & (uint16_t)0x01FF);
-#endif
-        }
-        break;
-    default:
-        errno = EBADF;
-        return -1;
+        num = PutUnsignedInt(pStr, fill, width, value / 10);
+        pStr += num;
     }
-    return len;
+
+    /* Write filler characters */
+    else {
+
+        while (width > 0) {
+
+            PutChar(pStr, fill);
+            pStr++;
+            num++;
+            width--;
+        }
+    }
+
+    /* Write lower digit */
+    num += PutChar(pStr, (value % 10) + '0');
+
+    return num;
 }
+
+
+/**
+ * @brief  Writes a signed int inside the given string, using the provided fill & width
+ *         parameters.
+ *
+ * @param pStr   Storage string.
+ * @param fill   Fill character.
+ * @param width  Minimum integer width.
+ * @param value  Signed integer value.
+ */
+signed int PutSignedInt(
+    char *pStr,
+    char fill,
+    signed int width,
+    signed int value)
+{
+    signed int num = 0;
+    unsigned int absolute;
+
+    /* Compute absolute value */
+    if (value < 0) {
+
+        absolute = -value;
+    }
+    else {
+
+        absolute = value;
+    }
+
+    /* Take current digit into account when calculating width */
+    width--;
+
+    /* Recursively write upper digits */
+    if ((absolute / 10) > 0) {
+
+        if (value < 0) {
+
+            num = PutSignedInt(pStr, fill, width, -(absolute / 10));
+        }
+        else {
+
+            num = PutSignedInt(pStr, fill, width, absolute / 10);
+        }
+        pStr += num;
+    }
+    else {
+
+        /* Reserve space for sign */
+        if (value < 0) {
+
+            width--;
+        }
+
+        /* Write filler characters */
+        while (width > 0) {
+
+            PutChar(pStr, fill);
+            pStr++;
+            num++;
+            width--;
+        }
+
+        /* Write sign */
+        if (value < 0) {
+
+            num += PutChar(pStr, '-');
+            pStr++;
+        }
+    }
+
+    /* Write lower digit */
+    num += PutChar(pStr, (absolute % 10) + '0');
+
+    return num;
+}
+
+
+/**
+ * @brief  Writes an hexadecimal value into a string, using the given fill, width &
+ *         capital parameters.
+ *
+ * @param pStr   Storage string.
+ * @param fill   Fill character.
+ * @param width  Minimum integer width.
+ * @param maj    Indicates if the letters must be printed in lower- or upper-case.
+ * @param value  Hexadecimal value.
+ *
+ * @return  The number of char written
+ */
+signed int PutHexa(
+    char *pStr,
+    char fill,
+    signed int width,
+    unsigned char maj,
+    unsigned int value)
+{
+    signed int num = 0;
+
+    /* Decrement width */
+    width--;
+
+    /* Recursively output upper digits */
+    if ((value >> 4) > 0) {
+
+        num += PutHexa(pStr, fill, width, maj, value >> 4);
+        pStr += num;
+    }
+    /* Write filler chars */
+    else {
+
+        while (width > 0) {
+
+            PutChar(pStr, fill);
+            pStr++;
+            num++;
+            width--;
+        }
+    }
+
+    /* Write current digit */
+    if ((value & 0xF) < 10) {
+
+        PutChar(pStr, (value & 0xF) + '0');
+    }
+    else if (maj) {
+
+        PutChar(pStr, (value & 0xF) - 10 + 'A');
+    }
+    else {
+
+        PutChar(pStr, (value & 0xF) - 10 + 'a');
+    }
+    num++;
+
+    return num;
+}
+
+
+
+/* Global Functions ----------------------------------------------------------- */
+
+
+/**
+ * @brief  Stores the result of a formatted string into another string. Format
+ *         arguments are given in a va_list instance.
+ *
+ * @param pStr    Destination string.
+ * @param length  Length of Destination string.
+ * @param pFormat Format string.
+ * @param ap      Argument list.
+ *
+ * @return  The number of characters written.
+ */
+signed int vsnprintf(char *pStr, size_t length, const char *pFormat, va_list ap)
+{
+    char          fill;
+    unsigned char width;
+    signed int    num = 0;
+    signed int    size = 0;
+
+    /* Clear the string */
+    if (pStr) {
+
+        *pStr = 0;
+    }
+
+    /* Phase string */
+    while (*pFormat != 0 && size < length) {
+
+        /* Normal character */
+        if (*pFormat != '%') {
+
+            *pStr++ = *pFormat++;
+            size++;
+        }
+        /* Escaped '%' */
+        else if (*(pFormat+1) == '%') {
+
+            *pStr++ = '%';
+            pFormat += 2;
+            size++;
+        }
+        /* Token delimiter */
+        else {
+
+            fill = ' ';
+            width = 0;
+            pFormat++;
+
+            /* Parse filler */
+            if (*pFormat == '0') {
+
+                fill = '0';
+                pFormat++;
+            }
+
+            /* Parse width */
+            while ((*pFormat >= '0') && (*pFormat <= '9')) {
+
+                width = (width*10) + *pFormat-'0';
+                pFormat++;
+            }
+
+            /* Check if there is enough space */
+            if (size + width > length) {
+
+                width = length - size;
+            }
+
+            /* Parse type */
+            switch (*pFormat) {
+            case 'd':
+            case 'i': num = PutSignedInt(pStr, fill, width, va_arg(ap, signed int)); break;
+            case 'u': num = PutUnsignedInt(pStr, fill, width, va_arg(ap, unsigned int)); break;
+            case 'x': num = PutHexa(pStr, fill, width, 0, va_arg(ap, unsigned int)); break;
+            case 'X': num = PutHexa(pStr, fill, width, 1, va_arg(ap, unsigned int)); break;
+            case 's': num = PutString(pStr, va_arg(ap, char *)); break;
+            case 'c': num = PutChar(pStr, va_arg(ap, unsigned int)); break;
+            default:
+                return EOF;
+            }
+
+            pFormat++;
+            pStr += num;
+            size += num;
+        }
+    }
+
+    /* NULL-terminated (final \0 is not counted) */
+    if (size < length) {
+
+        *pStr = 0;
+    }
+    else {
+
+        *(--pStr) = 0;
+        size--;
+    }
+
+    return size;
+}
+
+
+/**
+ * @brief  Stores the result of a formatted string into another string. Format
+ *         arguments are given in a va_list instance.
+ *
+ * @param pStr    Destination string.
+ * @param length  Length of Destination string.
+ * @param pFormat Format string.
+ * @param ...     Other arguments
+ *
+ * @return  The number of characters written.
+ */
+signed int snprintf(char *pString, size_t length, const char *pFormat, ...)
+{
+    va_list    ap;
+    signed int rc;
+
+    va_start(ap, pFormat);
+    rc = vsnprintf(pString, length, pFormat, ap);
+    va_end(ap);
+
+    return rc;
+}
+
+
+/**
+ * @brief  Stores the result of a formatted string into another string. Format
+ *         arguments are given in a va_list instance.
+ *
+ * @param pString  Destination string.
+ * @param length   Length of Destination string.
+ * @param pFormat  Format string.
+ * @param ap       Argument list.
+ *
+ * @return  The number of characters written.
+ */
+signed int vsprintf(char *pString, const char *pFormat, va_list ap)
+{
+    return vsnprintf(pString, MAX_STRING_SIZE, pFormat, ap);
+}
+
+
+/**
+ * @brief  Outputs a formatted string on the given stream. Format arguments are given
+ *         in a va_list instance.
+ *
+ * @param pStream  Output stream.
+ * @param pFormat  Format string
+ * @param ap       Argument list.
+ */
+signed int vfprintf(FILE *pStream, const char *pFormat, va_list ap)
+{
+    char pStr[MAX_STRING_SIZE];
+    char pError[] = "stdio.c: increase MAX_STRING_SIZE\n\r";
+
+    /* Write formatted string in buffer */
+    if (vsprintf(pStr, pFormat, ap) >= MAX_STRING_SIZE) {
+
+        fputs(pError, stderr);
+        while (1); /* Increase MAX_STRING_SIZE */
+    }
+
+    /* Display string */
+    return fputs(pStr, pStream);
+}
+
+
+/**
+ * @brief  Outputs a formatted string on the DBGU stream. Format arguments are given
+ *         in a va_list instance.
+ *
+ * @param pFormat  Format string.
+ * @param ap  Argument list.
+ */
+signed int vprintf(const char *pFormat, va_list ap)
+{
+    return vfprintf(stdout, pFormat, ap);
+}
+
+
+/**
+ * @brief  Outputs a formatted string on the given stream, using a variable
+ *         number of arguments.
+ *
+ * @param pStream  Output stream.
+ * @param pFormat  Format string.
+ */
+signed int fprintf(FILE *pStream, const char *pFormat, ...)
+{
+    va_list ap;
+    signed int result;
+
+    /* Forward call to vfprintf */
+    va_start(ap, pFormat);
+    result = vfprintf(pStream, pFormat, ap);
+    va_end(ap);
+
+    return result;
+}
+
+
+/**
+ * @brief  Outputs a formatted string on the DBGU stream, using a variable number of
+ *         arguments.
+ *
+ * @param  pFormat  Format string.
+ */
+signed int printf(const char *pFormat, ...)
+{
+    va_list ap;
+    signed int result;
+
+    /* Forward call to vprintf */
+    va_start(ap, pFormat);
+    result = vprintf(pFormat, ap);
+    va_end(ap);
+
+    return result;
+}
+
+
+/**
+ * @brief  Writes a formatted string inside another string.
+ *
+ * @param pStr     torage string.
+ * @param pFormat  Format string.
+ */
+signed int sprintf(char *pStr, const char *pFormat, ...)
+{
+    va_list ap;
+    signed int result;
+
+    // Forward call to vsprintf
+    va_start(ap, pFormat);
+    result = vsprintf(pStr, pFormat, ap);
+    va_end(ap);
+
+    return result;
+}
+
+
+/**
+ * @brief  Outputs a string on stdout.
+ *
+ * @param pStr  String to output.
+ */
+signed int puts(const char *pStr)
+{
+    return fputs(pStr, stdout);
+}
+
+
+/**
+ * @brief  Implementation of fputc using the DBGU as the standard output. Required
+ *         for printf().
+ *
+ * @param c        Character to write.
+ * @param pStream  Output stream.
+ * @param The character written if successful, or -1 if the output stream is
+ *        not stdout or stderr.
+ */
+//signed int fputc(signed int c, FILE *pStream)
+//{
+//    if ((pStream == stdout) || (pStream == stderr)) {
+//
+//        /* Send a char here (Polling mode) */
+//        // UART_Send(c);
+//        return c;
+//    }
+//    else {
+//
+//        return EOF;
+//    }
+//}
+
+
+/**
+ * @brief  Implementation of fputs using the DBGU as the standard output. Required
+ *         for printf().
+ *
+ * @param pStr     String to write.
+ * @param pStream  Output stream.
+ *
+ * @return  Number of characters written if successful, or -1 if the output
+ *          stream is not stdout or stderr.
+ */
+signed int fputs(const char *pStr, FILE *pStream)
+{
+    signed int num = 0;
+
+    while (*pStr != 0) {
+
+        if (fputc(*pStr, pStream) == -1) {
+
+            return -1;
+        }
+        num++;
+        pStr++;
+    }
+
+    return num;
+}
+
+/* --------------------------------- End Of File ------------------------------ */
+
