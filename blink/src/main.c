@@ -62,10 +62,9 @@ int main(void){
 	printf("\n\rUSART Printf Example: retarget the C library printf function to the USART\n\r");
 
 
-
 	while (1)
 	{
-	printf("printf");
+		printf("printf");
 	}
 }
 
