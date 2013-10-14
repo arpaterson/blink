@@ -44,12 +44,9 @@
  /* ADXL345 struct */
  typedef struct
  {
-   uint8_t Power_Mode;                         /* Power-down/Active Mode */
-   uint8_t Output_Data_Rate;
-   uint8_t Full_Scale;
-   uint8_t Axes_Enable;
-   uint8_t Self_Test;
-
+	 uint8_t Data_Format;
+	 uint8_t Power_Mode;
+	 uint8_t Interrupt_Enable;
  }ADXL345_InitTypeDef;
 
  /**
@@ -73,13 +70,10 @@
    */
 #define	ADXL345_I2C_7BIT_ADDRESS_DEFAULT	(uint8_t)0x1D //Tie SDO / alt address pin high
 #define ADXL345_I2C_7BIT_ADDRESS_ALT		(uint8_t)0x53 //Ground SDO / pin
-#define ADXL345_I2C_7BIT_ADDRESS			ADXL345_7BIT_ADDRESS_DEFAULT
+#define ADXL345_I2C_7BIT_ADDRESS			ADXL345_I2C_7BIT_ADDRESS_DEFAULT
 #ifdef ADXL345_USE_ALT_ADDRESS
  #define ADXL345_I2C_7BIT_ADDRESS			ADXL345_7BIT_ADDRESS_ALT
 #endif
-
-#define ADXL345_I2C_READ_CMD				(ADXL345_7BITADDRESS << 1)|(uint8_t)(0x01)
-#define ADXL345_I2C_WRITE_CMD				(ADXL345_7BITADDRESS << 1)
 
 #define ADXL345_I2C_DATA_TRANSFER_MODE		100000
 #ifdef ADXL345_USE_I2C_FASTMODE
@@ -92,16 +86,16 @@
 #define ADXL345_I2C							I2C1
 #define ADXL345_I2C_CLK						RCC_APB1Periph_I2C1
 
-#define ADXL345_I2C_SCL_PIN					GPIO_Pin_8                  /* PB.8 */
-#define ADXL345_I2C_SCL_GPIO_PORT     	  	GPIOB                       /* GPIOB */
+#define ADXL345_I2C_SCL_PIN					GPIO_Pin_6
+#define ADXL345_I2C_SCL_GPIO_PORT     	  	GPIOB
 #define ADXL345_I2C_SCL_GPIO_CLK      	  	RCC_AHB1Periph_GPIOB
-#define ADXL345_I2C_SCL_SOURCE          	GPIO_PinSource8
+#define ADXL345_I2C_SCL_SOURCE          	GPIO_PinSource6
 #define ADXL345_I2C_SCL_AF            		GPIO_AF_I2C1
 
-#define ADXL345_I2C_SDA_PIN					GPIO_Pin_9                  /* PA.9 */
-#define ADXL345_I2C_SDA_GPIO_PORT      		GPIOB                       /* GPIOB */
+#define ADXL345_I2C_SDA_PIN					GPIO_Pin_7
+#define ADXL345_I2C_SDA_GPIO_PORT      		GPIOB
 #define ADXL345_I2C_SDA_GPIO_CLK        	RCC_AHB1Periph_GPIOB
-#define ADXL345_I2C_SDA_SOURCE          	GPIO_PinSource9
+#define ADXL345_I2C_SDA_SOURCE          	GPIO_PinSource7
 #define ADXL345_I2C_SDA_AF              	GPIO_AF_I2C1
 
 #define ADXL345_I2C_INT1_PIN            	GPIO_Pin_9				/*PB.9*/ 	//can this pin be used to drive an external interrupt EXTI?
@@ -349,102 +343,115 @@
    *
    */
 
-#define ADXL345_ACT_ENABLE_BIT_MASK		0x01
-#define ADXL345_ACTX_ENABLE_BIT_MASK	0x02
-#define ADXL345_ACTY_ENABLE_BIT_MASK	0x04
-#define ADXL345_ACTZ_ENABLE_BIT_MASK	0x08
-#define ADXL345_INACT_ENABLE_BIT_MASK	0x10
-#define ADXL345_INACTX_ENABLE_BIT_MASK	0x20
-#define ADXL345_INACTY_ENABLE_BIT_MASK	0x40
-#define ADXL345_INACTZ_ENABLE_BIT_MASK	0x80
+#define ADXL345_ACT_AC_COUPLED				((uint8_t)	0x80) // disable: activity detection by comparing to THRESH_ACT
+ 	 	 	 	 	 	 	 	 	 	 	 	 	 	 	  // enable: activity detection by comparing measurements to measurement at start of activity detection
+#define ADXL345_ACTX_ENABLE					((uint8_t)	0x40) // enable interrupt generation by activity detected
+#define ADXL345_ACTY_ENABLE					((uint8_t)	0x20)
+#define ADXL345_ACTZ_ENABLE					((uint8_t)	0x10)
+#define ADXL345_INACT_AC_COUPLED			((uint8_t)	0x08)
+#define ADXL345_INACTX_ENABLE				((uint8_t)	0x04) // enable interrupt generation by inactivity detected
+#define ADXL345_INACTY_ENABLE				((uint8_t)	0x02)
+#define ADXL345_INACTZ_ENABLE				((uint8_t)	0x01)
 
-#define ADXL345_TAP_X_ENABLE_BIT_MASK
-#define ADXL345_TAP_Y_ENABLE_BIT_MASK
-#define ADXL345_TAP_Z_ENABLE_BIT_MASK
-#define ADXL345_TAP_SUPPRESS_BIT_MASK
+#define ADXL345_TAP_X_ENABLE				((uint8_t)	0x08)
+#define ADXL345_TAP_Y_ENABLE				((uint8_t)	0x04)
+#define ADXL345_TAP_Z_ENABLE				((uint8_t)	0x02)
+#define ADXL345_TAP_SUPPRESS				((uint8_t)	0x01)
 
-#define ADXL345_ACT_X_Source_BIT_MASK
-#define ADXL345_ACT_Y_Source_BIT_MASK
-#define ADXL345_ACT_Z_Source_BIT_MASK
-#define ADXL345_Asleep_BIT_MASK
-#define ADXL345_TAP_X_Source_BIT_MASK
-#define ADXL345_TAP_Y_Source_BIT_MASK
-#define ADXL345_TAP_Z_Source_BIT_MASK
+// read only register
+// bit D8 unused
+#define ADXL345_ACT_X_Source				((uint8_t)	0x04)
+#define ADXL345_ACT_Y_Source				((uint8_t)	0x02)
+#define ADXL345_ACT_Z_Source				((uint8_t)	0x01)
+#define ADXL345_Asleep						((uint8_t)	0x08)
+#define ADXL345_TAP_X_Source				((uint8_t)	0x04)
+#define ADXL345_TAP_Y_Source				((uint8_t)	0x02)
+#define ADXL345_TAP_Z_Source				((uint8_t)	0x01)
 
-#define ADXL345_BW_RATE_LOW_POWER_BIT_ENABLE_MASK
+#define ADXL345_BW_RATE_POWER_MODE_LOW		((uint8_t)	0x10)
+#define ADXL345_BW_RATE_POWER_MODE_NORMAL	((uint8_t)	0x00)
+#define ADXL345_BW_RATE_3200Hz				((uint8_t)	0x15)
+#define ADXL345_BW_RATE_160Hz				((uint8_t)	0x14)
+#define ADXL345_BW_RATE_800					((uint8_t)	0x13)
+#define ADXL345_BW_RATE_400Hz				((uint8_t)	0x12)
+#define ADXL345_BW_RATE_200Hz				((uint8_t)	0x11)
+#define ADXL345_BW_RATE_100Hz				((uint8_t)	0x10)
+#define ADXL345_BW_RATE_50Hz				((uint8_t)	0x09)
+#define ADXL345_BW_RATE_25Hz				((uint8_t)	0x08)
+#define ADXL345_BW_RATE_12_5Hz				((uint8_t)	0x07)
+#define ADXL345_BW_RATE_6_25Hz				((uint8_t)	0x06)
+#define ADXL345_BW_RATE_3_13Hz				((uint8_t)	0x05)
+#define ADXL345_BW_RATE_1_56Hz				((uint8_t)	0x04)
+#define ADXL345_BW_RATE_0_78Hz				((uint8_t)	0x03)
+#define ADXL345_BW_RATE_0_39Hz				((uint8_t)	0x02)
+#define ADXL345_BW_RATE_0_20Hz				((uint8_t)	0x01)
+#define ADXL345_BW_RATE_0_10Hz				((uint8_t)	0x00)
 
-#define ADXL345_BW_RATE_BIT0
-#define ADXL345_BW_RATE_BIT1
-#define ADXL345_BW_RATE_BIT2
-#define ADXL345_BW_RATE_BIT3
+#define ADXL345_POWER_CTL_Link_ENABLE		((uint8_t)	0x20)
+#define ADXL345_POWER_CTL_AUTO_SLEEP_ENABLE	((uint8_t)	0x10)
+#define ADXL345_POWER_CTL_Measure_ENABLE	((uint8_t)	0x08)
+#define ADXL345_POWER_CTL_Sleep_ENABLE		((uint8_t)	0x04)
 
-#define ADXL345_BW_RATE_12_5Hz
-#define ADXL345_BW_RATE_25Hz
-#define ADXL345_BW_RATE_50Hz
-#define ADXL345_BW_RATE_100Hz			0x0A
-#define ADXL345_BW_RATE_200Hz
-#define ADXL345_BW_RATE_400Hz
-#define ADXL345_BW_RATE_Default			ADXL345_BW_RATE_100Hz
+#define ADXL345_POWER_CTL_Wakeup_1Hz		((uint8_t)	0x03)
+#define ADXL345_POWER_CTL_Wakeup_2Hz		((uint8_t)	0x02)
+#define ADXL345_POWER_CTL_Wakeup_4Hz		((uint8_t)	0x01)
+#define ADXL345_POWER_CTL_Wakeup_8Hz		((uint8_t)	0x00)
 
-#define ADLX345_POWER_CTL_Link_BIT
-#define ADLX345_POWER_CTL_AUTO_SLEEP_BIT
-#define ADLX345_POWER_CTL_Measure_BIT
-#define ADLX345_POWER_CTL_Sleep_BIT
-#define ADLX345_POWER_CTL_Wakeup_BIT0
-#define ADLX345_POWER_CTL_Wakeup_BIT1
 
-#define ADXL345_INT_ENABLE_DATA_READY_BIT
-#define ADXL345_INT_ENABLE_SINGLE_TAP_BIT
-#define ADXL345_INT_ENABLE_DOUBLE_TAP_BIT
-#define ADXL345_INT_ENABLE_Activity_BIT
-#define ADXL345_INT_ENABLE_Inactivity_BIT
-#define ADXL345_INT_ENABLE_FREE_FALL_BIT
-#define ADXL345_INT_ENABLE_Watermark_BIT
-#define ADXL345_INT_ENABLE_Overrun_BIT
+#define ADXL345_INT_ENABLE_DATA_READY_ENABLE	((uint8_t)	0x80) //enable interrupt outputs, and allow from each function
+#define ADXL345_INT_ENABLE_SINGLE_TAP_ENABLE	((uint8_t)	0x40)
+#define ADXL345_INT_ENABLE_DOUBLE_TAP_ENABLE	((uint8_t)	0x20)
+#define ADXL345_INT_ENABLE_Activity_ENABLE		((uint8_t)	0x10)
+#define ADXL345_INT_ENABLE_Inactivity_ENABLE	((uint8_t)	0x08)
+#define ADXL345_INT_ENABLE_FREE_FALL_ENABLE		((uint8_t)	0x04)
+#define ADXL345_INT_ENABLE_Watermark_ENABLE		((uint8_t)	0x02)
+#define ADXL345_INT_ENABLE_Overrun_ENABLE		((uint8_t)	0x01)
 
-#define ADXL345_INT_MAP_DATA_READY_BIT
-#define ADXL345_INT_MAP_SINGLE_TAP_BIT
-#define ADXL345_INT_MAP_DOUBLE_TAP_BIT
-#define ADXL345_INT_MAP_Activity_BIT
-#define ADXL345_INT_MAP_Inactivity_BIT
-#define ADXL345_INT_MAP_FREE_FALL_BIT
-#define ADXL345_INT_MAP_Watermark_BIT
-#define ADXL345_INT_MAP_Overrun_BIT
+#define ADXL345_INT_MAP_DATA_READY_ENABLE		((uint8_t)	0x80) //disable to send interupt to int1 pin. enable to send interrupt to int2 pin.
+#define ADXL345_INT_MAP_SINGLE_TAP_ENABLE		((uint8_t)	0x40)
+#define ADXL345_INT_MAP_DOUBLE_TAP_ENABLE		((uint8_t)	0x20)
+#define ADXL345_INT_MAP_Activity_ENABLE			((uint8_t)	0x10)
+#define ADXL345_INT_MAP_Inactivity_ENABLE		((uint8_t)	0x08)
+#define ADXL345_INT_MAP_FREE_FALL_ENABLE		((uint8_t)	0x04)
+#define ADXL345_INT_MAP_Watermark_ENABLE		((uint8_t)	0x02)
+#define ADXL345_INT_MAP_Overrun_ENABLE			((uint8_t)	0x01)
 
-#define ADXL345_INT_SOURCE_DATA_READY_BIT
-#define ADXL345_INT_SOURCE_SINGLE_TAP_BIT
-#define ADXL345_INT_SOURCE_DOUBLE_TAP_BIT
-#define ADXL345_INT_SOURCE_Activity_BIT
-#define ADXL345_INT_SOURCE_Inactivity_BIT
-#define ADXL345_INT_SOURCE_FREE_FALL_BIT
-#define ADXL345_INT_SOURCE_Watermark_BIT
-#define ADXL345_INT_SOURCE_Overrun_BIT
+#define ADXL345_INT_SOURCE_DATA_READY_ENABLE	((uint8_t)	0x80)
+#define ADXL345_INT_SOURCE_SINGLE_TAP_ENABLE	((uint8_t)	0x40)
+#define ADXL345_INT_SOURCE_DOUBLE_TAP_ENABLE	((uint8_t)	0x20)
+#define ADXL345_INT_SOURCE_Activity_ENABLE		((uint8_t)	0x10)
+#define ADXL345_INT_SOURCE_Inactivity_ENABLE	((uint8_t)	0x08)
+#define ADXL345_INT_SOURCE_FREE_FALL_ENABLE		((uint8_t)	0x04)
+#define ADXL345_INT_SOURCE_Watermark_ENABLE		((uint8_t)	0x02)
+#define ADXL345_INT_SOURCE_Overrun_ENABLE		((uint8_t)	0x01)
 
-#define ADXL345_DATAFORMAT_SELF_TEST_BIT
-#define ADXL345_DATAFORMAT_SPI_BIT
-#define ADXL345_DATAFORMAT_INT_INVERT
-#define ADXL345_DATAFORMAT_FULL_RES_BIT
-#define ADXL345_DATAFORMAT_Justify_BIT
-#define ADXL345_DATAFORMAT_Range_BIT0
-#define ADXL345_DATAFORMAT_Range_BIT1
-
-#define ADXL345_FIFO_CTL_MODE_BIT0
-#define ADXL345_FIFO_CTL_MODE_BIT1
-#define ADXL345_FIFO_CTL_TRIGGER_BIT
-#define ADXL345_FIFO_CTL_Samples_BIT0
-#define ADXL345_FIFO_CTL_Samples_BIT1
-#define ADXL345_FIFO_CTL_Samples_BIT2
-#define ADXL345_FIFO_CTL_Samples_BIT3
-#define ADXL345_FIFO_CTL_Samples_BIT4
-
-#define ADXL345_FIFO_STATUS_TRIG_BIT
+#define ADXL345_DATAFORMAT_SELF_TEST_ENABLE		((uint8_t)	0x80)
+#define ADXL345_DATAFORMAT_SPI_ENABLE			((uint8_t)	0x40) //enable for 3-wire SPI mode, disable for 4-wire SPI mode.
+#define ADXL345_DATAFORMAT_INT_INVERT			((uint8_t)	0x20)
  //
-#define ADXL345_FIFO_STATUS_Entries_BIT0
-#define ADXL345_FIFO_STATUS_Entries_BIT1
-#define ADXL345_FIFO_STATUS_Entries_BIT2
-#define ADXL345_FIFO_STATUS_Entries_BIT3
-#define ADXL345_FIFO_STATUS_Entries_BIT4
-#define ADXL345_FIFO_STATUS_Entries_BIT5
+#define ADXL345_DATAFORMAT_FULL_RES_ENABLE		((uint8_t)	0x08) // enable to use full resolution mode, maintaining 4mg/LSB scale factor, disable to use scale factor set by range bits.
+#define ADXL345_DATAFORMAT_Justify_ENABLE		((uint8_t)	0x04)
+#define ADXL345_DATAFORMAT_Range_PLUS_MINUS_16g	((uint8_t)	0x03)
+#define ADXL345_DATAFORMAT_Range_PLUS_MINUS_8g	((uint8_t)	0x02)
+#define ADXL345_DATAFORMAT_Range_PLUS_MINUS_4g	((uint8_t)	0x01)
+#define ADXL345_DATAFORMAT_Range_PLUS_MINUS_2g	((uint8_t)	0x00)
+
+#define ADXL345_FIFO_CTL_MODE_Trigger			((uint8_t)	0xC0)
+#define ADXL345_FIFO_CTL_MODE_Stream			((uint8_t)	0x80)
+#define ADXL345_FIFO_CTL_MODE_FIFO				((uint8_t)	0x40)
+#define ADXL345_FIFO_CTL_MODE_Bypass			((uint8_t)	0x00)
+#define ADXL345_FIFO_CTL_TRIGGER_				((uint8_t)	0x20)
+#define ADXL345_FIFO_CTL_Samples_MASK			((uint8_t)	0x1F)
+ // bypass mode: 	none
+ //	FIFO mode: 		sets number of FIFO entries needed to trigger water mark threshold
+ // Stream mode: 	sets number of FIFO entries needed to trigger water mark threshold
+ //	Trigger mode:	Specifies how many FIFO samples are retained in the FIFO buffer before a trigger event.
+
+//read only register
+#define ADXL345_FIFO_STATUS_TRIG_EVENT_FLAG		((uint8_t)	0x80)
+ // bit D6 not used
+#define ADXL345_FIFO_STATUS_Entries_MASK		((uint8_t)	0x3F)
+
 
  /**
   * @}
@@ -465,8 +472,15 @@
  void ADXL345_Calibrate();
  void ADXL345_Self_Test();
  void ADXL345_Init(ADXL345_InitTypeDef *ADXL345_InitStruct);
- void ADXL345_Write(uint8_t ADXL345_Reg, uint16_t ADXL345_RegValue);
- uint16_t ADXL345_Read(uint8_t ADXL345_Reg);
+ uint8_t ADXL345_ReadReg(uint8_t ADXL345_Reg);
+ void ADXL345_WriteReg(uint8_t ADXL345_Reg, uint16_t ADXL345_RegValue);
+
+
+ void I2C_Start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
+ void I2C_Write(I2C_TypeDef* I2Cx, uint8_t data);
+ void I2C_Stop(I2C_TypeDef* I2Cx);
+ uint8_t I2C_Read_Ack(I2C_TypeDef* I2Cx);
+ uint8_t I2C_Read_NAck(I2C_TypeDef* I2Cx);
 
  /**
  * @brief Uncomment the line below if you want to use user defined Delay function

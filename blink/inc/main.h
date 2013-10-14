@@ -27,6 +27,7 @@
 #include "stm32f4_discovery.h"
 #include "stm32f4_discovery_lcd.h"
 #include "stm32f4_discovery_debug.h"
+#include "stm32f4_discovery_ADXL345.h"
 #include <stdio.h>
 
 /* Exported types ------------------------------------------------------------*/

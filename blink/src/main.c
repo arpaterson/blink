@@ -61,10 +61,52 @@ int main(void){
 	/* Output a message on Hyperterminal using printf function */
 	printf("\n\rUSART Printf Example: retarget the C library printf function to the USART\n\r");
 
+	ADXL345_InitTypeDef ADXL345_InitStruct;
+	//ADXL345_InitStruct.Output_Data_Rate = 	ADXL345_BW_RATE_400;
+	ADXL345_InitStruct.Data_Format =		(	ADXL345_DATAFORMAT_Range_PLUS_MINUS_16g | \
+												ADXL345_DATAFORMAT_FULL_RES_ENABLE
+												);
+	ADXL345_InitStruct.Power_Mode = 		(ADXL345_POWER_CTL_Measure_ENABLE | ADXL345_POWER_CTL_Wakeup_1Hz);
+	ADXL345_InitStruct.Interrupt_Enable = 	(ADXL345_INT_ENABLE_DATA_READY_ENABLE);
+	ADXL345_Init(&ADXL345_InitStruct);
+
+	uint8_t devid;
+	uint16_t datax;
+	uint8_t datax1; //high byte
+	uint8_t datax0; //low byte
+
+	uint8_t datay1; //high byte
+	uint8_t datay0; //low byte
+
+	uint8_t dataz1; //high byte
+	uint8_t dataz0; //low byte
 
 	while (1)
 	{
-		printf("printf");
+		devid = ADXL345_ReadReg(ADXL345_DEVID_REG_ADDR);
+		//printf("DEVID : %s ", devid);
+
+		// these must be a multi byte read for coherency. todo: implement
+		//	and in an ISR triggered by a pin interupt connected to INT1 or INT2 pins of ADXL345.
+		datax0 = ADXL345_ReadReg(ADXL345_DATAX0_REG_ADDR);
+		datax1 = ADXL345_ReadReg(ADXL345_DATAX1_REG_ADDR);
+		printf("%i	", datax1*4); //full res mode maintains 4mg/LSB. range bits set range.
+		printf("%i	", datax0*4); //full res mode maintains 4mg/LSB. range bits set range.
+
+		// these must be a multi byte read for coherency. todo: implement
+		//	and in an ISR triggered by a pin interupt connected to INT1 or INT2 pins of ADXL345.
+		datay0 = ADXL345_ReadReg(ADXL345_DATAY0_REG_ADDR);
+		datay1 = ADXL345_ReadReg(ADXL345_DATAY1_REG_ADDR);
+		printf("%i	", datay1*4); //full res mode maintains 4mg/LSB. range bits set range.
+		printf("%i	", datay0*4); //full res mode maintains 4mg/LSB. range bits set range.
+
+		// these must be a multi byte read for coherency. todo: implement
+		//	and in an ISR triggered by a pin interupt connected to INT1 or INT2 pins of ADXL345.
+		dataz0 = ADXL345_ReadReg(ADXL345_DATAZ0_REG_ADDR);
+		dataz1 = ADXL345_ReadReg(ADXL345_DATAZ1_REG_ADDR);
+		printf("%i	", dataz1*4); //full res mode maintains 4mg/LSB. range bits set range.
+		printf("%i\n\r", dataz0*4); //full res mode maintains 4mg/LSB. range bits set range.
+
 	}
 }
 

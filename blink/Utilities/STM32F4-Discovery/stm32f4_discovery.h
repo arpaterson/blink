@@ -301,6 +301,14 @@ void SD_LowLevel_DMA_RxConfig(uint32_t *BufferDST, uint32_t BufferSize);
   * @}
   */
 
+ /**
+   * @}
+   */
+
+ /**
+   * @}
+   */
+
  
 
 /*********** Portions COPYRIGHT 2012 Embest Tech. Co., Ltd.*****END OF FILE****/
