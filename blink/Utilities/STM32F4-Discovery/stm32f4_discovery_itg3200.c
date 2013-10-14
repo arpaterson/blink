@@ -59,6 +59,10 @@
    * @{
    */
 
+ /**
+   * @}
+   */
+
  /** @defgroup STM32F4_DISCOVERY_ITG3200_Private_FunctionPrototypes
    * @{
    */
