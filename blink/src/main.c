@@ -83,13 +83,16 @@ int main(void){
 
 	//read data (multibyte read)
 	uint32_t offsets;
+	uint8_t nofsx = 0x03;
+	uint8_t nofsy = 0x03;
+	uint8_t nofsz = 0x03;
 	while (1)
 	{
 		offsets = ADXL345_ReadOffsets();
-		ofsx = ((offsets & 0x000000FF) );
-		ofsy = ((offsets & 0x0000FF00) >> 8 );
-		ofsz = ((offsets & 0x00FF0000) >> 16	);
-		printf("%i	%i	%i	\n\r", ofsx,ofsy,ofsz); //full res mode maintains 4mg/LSB. range bits set range.
+		nofsx = ((offsets & 0x000000FF) );
+		nofsy = ((offsets & 0x0000FF00) >> 8 );
+		nofsz = ((offsets & 0x00FF0000) >> 16	);
+		printf("%i	%i	%i	\n\r", nofsx,nofsy,nofsz); //full res mode maintains 4mg/LSB. range bits set range.
 	}
 }
 
