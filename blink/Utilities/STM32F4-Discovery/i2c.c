@@ -19,62 +19,6 @@
   * @{
   */
 
- void I2C_Start(uint8_t address, uint8_t direction){
-	 //wait for i2c bus to be free
-	 while(I2C_GetFlagStatus(I2Cx,I2C_FLAG_BUSY)){}
-	 //send start
-	 I2C_GenerateSTART(I2Cx, ENABLE);
-	 //wait for slave to acknowledge (I2C EV5)
-	 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)){}
-	 // send slave address
-	 I2C_Send7bitAddress(I2Cx, address, direction);
-	 /* wait for I2C1 EV6, check if
-	  * either Slave has acknowledged Master transmitter or
-	  * Master receiver mode, depending on the transmission
-	  * direction
-	  */
-	 if(direction == I2C_Direction_Transmitter){
-		 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
-	 }
-	 else if(direction == I2C_Direction_Receiver){
-		 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));
-	 }
- }
-
- void I2C_Write(uint8_t data){
-	 //send byte
-	 I2C_SendData(I2Cx, data);
-	 //wait for byte received acknowledgement (I2C EV8_2)
-	 while(!I2C_CheckEvent(I2Cx,I2C_EVENT_MASTER_BYTE_TRANSMITTED)){}
- }
-
- void I2C_Stop(){
-	 // Send I2C1 STOP Condition
-	 	I2C_GenerateSTOP(I2Cx, ENABLE);
- }
-
- uint8_t I2C_Read_Ack(){
-	 //enable acknowledge of received data
-	 I2C_AcknowledgeConfig(I2Cx, ENABLE);
-	 //wait for received byte ready
-	 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)){}
-	 //read and return
-	 uint8_t readbyte = I2C_ReceiveData(I2Cx);
-	 return readbyte;
- }
-
- uint8_t I2C_Read_NAck(){
-	 // disable acknowledge of received data
-	 // also generates stop condition after last byte received
-	 I2C_AcknowledgeConfig(I2Cx, DISABLE);
-	 I2C_GenerateSTOP(I2Cx, ENABLE);
-	 //wait for received byte ready
-	 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)){}
-	 //read from I2C peripheral and return
-	 uint8_t readbyte = I2C_ReceiveData(I2Cx);
-	 return readbyte;
- }
-
  void I2C_LowLevel_Init(){
 	 GPIO_InitTypeDef	GPIO_InitStructure;
 	 I2C_InitTypeDef	I2C_InitStructure;
@@ -117,6 +61,140 @@
 	  //Enable I2C port
 	  I2C_Cmd(I2Cx, ENABLE);
  }
+
+ void I2C_Start(uint8_t address, uint8_t direction){
+	 //wait for i2c bus to be free
+	 while(I2C_GetFlagStatus(I2Cx,I2C_FLAG_BUSY)){}
+	 //send start
+	 I2C_GenerateSTART(I2Cx, ENABLE);
+	 //wait for slave to acknowledge (I2C EV5)
+	 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)){}
+	 // send slave address
+	 I2C_Send7bitAddress(I2Cx, address, direction);
+	 /* wait for I2C1 EV6, check if
+	  * either Slave has acknowledged Master transmitter or
+	  * Master receiver mode, depending on the transmission
+	  * direction
+	  */
+	 if(direction == I2C_Direction_Transmitter){
+		 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
+	 }
+	 else if(direction == I2C_Direction_Receiver){
+		 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));
+	 }
+ }
+
+ void I2C_RepeatedStart(uint8_t address, uint8_t direction){
+	 I2C_AcknowledgeConfig(I2Cx,ENABLE);
+	 //wait for i2c bus to be free
+	 //while(I2C_GetFlagStatus(I2Cx,I2C_FLAG_BUSY)){}
+	 //send start
+	 I2C_GenerateSTART(I2Cx, ENABLE);
+	 //wait for slave to acknowledge (I2C EV5)
+	 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)){}
+	 // send slave address
+	 I2C_Send7bitAddress(I2Cx, address, direction);
+	 /* wait for I2C1 EV6, check if
+	  * either Slave has acknowledged Master transmitter or
+	  * Master receiver mode, depending on the transmission
+	  * direction
+	  */
+	 if(direction == I2C_Direction_Transmitter){
+		 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_TRANSMITTER_MODE_SELECTED));
+	 }
+	 else if(direction == I2C_Direction_Receiver){
+	 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_RECEIVER_MODE_SELECTED));
+	}
+ }
+
+ void I2C_Stop(){
+	 // Send I2C1 STOP Condition
+	 	I2C_GenerateSTOP(I2Cx, ENABLE);
+ }
+
+ void I2C_Write(uint8_t data){
+	 //send byte
+	 I2C_SendData(I2Cx, data);
+	 //wait for byte received acknowledgement (I2C EV8_2)
+	 while(!I2C_CheckEvent(I2Cx,I2C_EVENT_MASTER_BYTE_TRANSMITTED)){}
+ }
+
+ uint32_t I2C_Write_Buf(uint8_t* buffer, uint32_t count){
+	 uint32_t bytes_written = 0;
+
+	 while ((count--)>0) {
+		 I2C_Write( *buffer++ ); //dereference the buffer pointer, write the value to i2c bus, and post increment pointer.
+		 bytes_written++;
+	 }
+
+	 return bytes_written;
+ }
+
+ uint8_t I2C_Read_Ack(){
+	 //enable acknowledge of received data
+	 I2C_AcknowledgeConfig(I2Cx, ENABLE);
+	 //wait for received byte ready
+	 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)){}
+	 //read and return
+	 uint8_t readbyte = I2C_ReceiveData(I2Cx);
+	 return readbyte;
+ }
+
+ uint8_t I2C_Read_NAck(){
+	 // disable acknowledge of received data
+	 // also generates stop condition after last byte received
+	 I2C_AcknowledgeConfig(I2Cx, DISABLE);
+	 I2C_GenerateSTOP(I2Cx, ENABLE);
+	 //wait for received byte ready
+	 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)){}
+	 //read from I2C peripheral and return
+	 uint8_t readbyte = I2C_ReceiveData(I2Cx);
+	 return readbyte;
+ }
+
+ uint32_t I2C_Read_Buf(uint8_t* buf_ptr, uint32_t len){
+	 uint32_t nbytes = 0;
+
+	     for (nbytes = 0; nbytes < (int) len; nbytes++) {
+	         /* Send NACK on the last byte */
+	         if (nbytes == ((int) len - 1)) {
+	             I2C_AcknowledgeConfig(I2Cx, DISABLE);
+
+	             /* Send STOP Condition */
+	             I2C_GenerateSTOP(I2Cx, ENABLE);
+	         }
+
+	         while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_BYTE_RECEIVED)){}
+
+	         /* Read a byte from the slave */
+	         buf_ptr[nbytes] = I2C_ReceiveData(I2Cx);
+	     }
+
+	 return nbytes;
+ }
+
+ void I2C_LowLevel_DeInit(void) {
+   GPIO_InitTypeDef  GPIO_InitStructure;
+   //I2C Peripheral Disable
+   I2C_Cmd(I2Cx, DISABLE);
+
+   //I2C DeInit (Disables clock)
+   I2C_DeInit(I2Cx);
+   //RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2Cx, DISABLE);
+
+   //GPIO configuration
+   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_SCL;
+   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+   GPIO_Init(GPIO_SCL, &GPIO_InitStructure);
+
+   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_SDA;
+   GPIO_Init(GPIO_SDA, &GPIO_InitStructure);
+
+   return;
+ }
+
+
 
 
 

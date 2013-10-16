@@ -257,6 +257,38 @@ void ADXL345_LowLevel_Init();
 	 I2C_Stop();
  }
 
+ uint32_t ADXL345_ReadOffsets(){
+
+	 /** Do a multi byte read. */
+	 uint8_t buffer[3];
+	 uint16_t bytes_read;
+
+	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
+	 I2C_Write(ADXL345_OFSX_REG_ADDR);
+	 I2C_RepeatedStart(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Receiver);
+	 bytes_read = I2C_Read_Buf(buffer,3);
+	 I2C_Stop();
+
+	 while(bytes_read != 3){}
+
+	 /** assemble data */
+	 uint32_t data = ( buffer[2] <<16 | buffer[1] <<8 | buffer[0] );
+
+	 return data;
+ }
+
+ void ADXL345_WriteOffsets(uint8_t ofsx, uint8_t ofsy, uint8_t ofsz){
+	 uint8_t buffer[3];
+	 buffer[0] = ofsx;
+	 buffer[1] = ofsy;
+	 buffer[2] = ofsz;
+
+	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
+	 I2C_Write(ADXL345_OFSX_REG_ADDR);
+	 I2C_Write_Buf(buffer,3);
+	 I2C_Stop();
+ }
+
  /**
    * @}
    */
