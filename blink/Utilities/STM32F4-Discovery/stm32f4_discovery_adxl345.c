@@ -232,13 +232,114 @@ void ADXL345_LowLevel_Init();
     * @param
     * @retval
     */
+  int16_t ADXL345_ReadX(){
+	  /** Do a multi byte read. */
+	  	 uint8_t buffer[2];
+	  	 uint16_t bytes_read;
+
+	  	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
+	  	 I2C_Write(ADXL345_DATAX0_REG_ADDR);
+	  	 I2C_RepeatedStart(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Receiver);
+	  	 bytes_read = I2C_Read_Buf(buffer,2);
+	  	 I2C_Stop();
+
+	  	 while(bytes_read != 2){}
+
+	  	 /** assemble data */
+	  	 int16_t data = ( buffer[1] <<8 | buffer[0] );
+
+	  	 return data;
+  }
+
+  /**
+    * @brief
+    * @param
+    * @param
+    * @param
+    * @retval
+    */
+  int16_t ADXL345_ReadY(){
+	  /** Do a multi byte read. */
+	  	 uint8_t buffer[2];
+	  	 uint16_t bytes_read;
+
+	  	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
+	  	 I2C_Write(ADXL345_DATAY0_REG_ADDR);
+	  	 I2C_RepeatedStart(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Receiver);
+	  	 bytes_read = I2C_Read_Buf(buffer,2);
+	  	 I2C_Stop();
+
+	  	 while(bytes_read != 2){}
+
+	  	 /** assemble data */
+	  	 int16_t data = ( buffer[1] <<8 | buffer[0] );
+
+	  	 return data;
+  }
+
+  /**
+    * @brief
+    * @param
+    * @param
+    * @param
+    * @retval
+    */
+  int16_t ADXL345_ReadZ(){
+	  /** Do a multi byte read. */
+	  	 uint8_t buffer[2];
+	  	 uint16_t bytes_read;
+
+	  	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
+	  	 I2C_Write(ADXL345_DATAZ0_REG_ADDR);
+	  	 I2C_RepeatedStart(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Receiver);
+	  	 bytes_read = I2C_Read_Buf(buffer,2);
+	  	 I2C_Stop();
+
+	  	 while(bytes_read != 2){}
+
+	  	 /** assemble data */
+	  	 int16_t data = ( buffer[1] <<8 | buffer[0] );
+
+	  	 return data;
+  }
+
+  void ADXL345_ReadXYZ(int16_t data[]){
+  	  /** Do a multi byte read. */
+  	  	 uint8_t buffer[6];
+  	  	 uint16_t bytes_read;
+
+  	  	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
+  	  	 I2C_Write(ADXL345_DATAX0_REG_ADDR); //X0 thru to Z1 are sequential.
+  	  	 I2C_RepeatedStart(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Receiver);
+  	  	 bytes_read = I2C_Read_Buf(buffer,6);
+  	  	 I2C_Stop();
+
+  	  	 while(bytes_read != 6){}
+
+  	  	 /** assemble data */
+	  	 int16_t xdata = ( buffer[1] <<8 | buffer[0] );
+	  	 int16_t ydata = ( buffer[3] <<8 | buffer[2] );
+	  	 int16_t zdata = ( buffer[5] <<8 | buffer[4] );
+
+	  	 data[0] = xdata;
+	  	 data[1] = ydata;
+	  	 data[2] = zdata;
+
+    }
+
+
+  /**
+    * @brief
+    * @param
+    * @param
+    * @param
+    * @retval
+    */
   uint8_t ADXL345_ReadReg(uint8_t ADXL345_Reg){
 	 //Send request for register contents.
  	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
  	 I2C_Write(ADXL345_Reg);
- 	 I2C_Stop();
- 	 //retrieve data.
- 	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Receiver);
+ 	 I2C_RepeatedStart(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Receiver);
  	 uint8_t readvalue = I2C_Read_NAck();
  	 return readvalue;
   }
@@ -254,6 +355,38 @@ void ADXL345_LowLevel_Init();
 	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1 , I2C_Direction_Transmitter);
 	 I2C_Write(ADXL345_Reg);
 	 I2C_Write(ADXL345_RegValue);
+	 I2C_Stop();
+ }
+
+ uint32_t ADXL345_ReadOffsets(){
+
+	 /** Do a multi byte read. */
+	 uint8_t buffer[3];
+	 uint16_t bytes_read;
+
+	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
+	 I2C_Write(ADXL345_OFSX_REG_ADDR);
+	 I2C_RepeatedStart(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Receiver);
+	 bytes_read = I2C_Read_Buf(buffer,3);
+	 I2C_Stop();
+
+	 while(bytes_read != 3){}
+
+	 /** assemble data */
+	 uint32_t data = ( buffer[2] <<16 | buffer[1] <<8 | buffer[0] );
+
+	 return data;
+ }
+
+ void ADXL345_WriteOffsets(uint8_t ofsx, uint8_t ofsy, uint8_t ofsz){
+	 uint8_t buffer[3];
+	 buffer[0] = ofsx;
+	 buffer[1] = ofsy;
+	 buffer[2] = ofsz;
+
+	 I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
+	 I2C_Write(ADXL345_OFSX_REG_ADDR);
+	 I2C_Write_Buf(buffer,3);
 	 I2C_Stop();
  }
 

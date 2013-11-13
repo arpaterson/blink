@@ -468,6 +468,15 @@
  void ADXL345_Calibrate();
  void ADXL345_Self_Test();
  void ADXL345_Init(ADXL345_InitTypeDef *ADXL345_InitStruct);
+
+ int16_t ADXL345_ReadX();
+ int16_t ADXL345_ReadY();
+ int16_t ADXL345_ReadZ();
+ void ADXL345_ReadXYZ(int16_t data[]);
+
+ uint32_t ADXL345_ReadOffsets();
+ void ADXL345_WriteOffsets(uint8_t offsx, uint8_t offsy, uint8_t offsz);
+
  uint8_t ADXL345_ReadReg(uint8_t ADXL345_Reg);
  void ADXL345_WriteReg(uint8_t ADXL345_Reg, uint16_t ADXL345_RegValue);
 

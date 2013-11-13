@@ -70,42 +70,29 @@ int main(void){
 	ADXL345_InitStruct.Interrupt_Enable = 	(ADXL345_INT_ENABLE_DATA_READY_ENABLE);
 	ADXL345_Init(&ADXL345_InitStruct);
 
+	//read devid
 	uint8_t devid;
-	uint16_t datax;
-	uint8_t datax1; //high byte
-	uint8_t datax0; //low byte
+	devid = ADXL345_ReadReg(ADXL345_DEVID_REG_ADDR);
+	printf("DEVID : %i ", devid);
 
-	uint8_t datay1; //high byte
-	uint8_t datay0; //low byte
+	LCD_SetTextColor(Green);
 
-	uint8_t dataz1; //high byte
-	uint8_t dataz0; //low byte
+	int16_t xyzdata[3];
+	uint16_t xpos = 160;
+	uint16_t ypos = 120;
+	uint16_t rad = 30;
 
 	while (1)
 	{
-		devid = ADXL345_ReadReg(ADXL345_DEVID_REG_ADDR);
-		//printf("DEVID : %s ", devid);
+		xpos += xyzdata[0]/200;
+		ypos += xyzdata[1]/200;
 
-		// these must be a multi byte read for coherency. todo: implement
-		//	and in an ISR triggered by a pin interupt connected to INT1 or INT2 pins of ADXL345.
-		datax0 = ADXL345_ReadReg(ADXL345_DATAX0_REG_ADDR);
-		datax1 = ADXL345_ReadReg(ADXL345_DATAX1_REG_ADDR);
-		printf("%i	", datax1*4); //full res mode maintains 4mg/LSB. range bits set range.
-		printf("%i	", datax0*4); //full res mode maintains 4mg/LSB. range bits set range.
 
-		// these must be a multi byte read for coherency. todo: implement
-		//	and in an ISR triggered by a pin interupt connected to INT1 or INT2 pins of ADXL345.
-		datay0 = ADXL345_ReadReg(ADXL345_DATAY0_REG_ADDR);
-		datay1 = ADXL345_ReadReg(ADXL345_DATAY1_REG_ADDR);
-		printf("%i	", datay1*4); //full res mode maintains 4mg/LSB. range bits set range.
-		printf("%i	", datay0*4); //full res mode maintains 4mg/LSB. range bits set range.
+		LCD_Clear(Black);
+		LCD_DrawCircle(xpos, ypos, rad);
 
-		// these must be a multi byte read for coherency. todo: implement
-		//	and in an ISR triggered by a pin interupt connected to INT1 or INT2 pins of ADXL345.
-		dataz0 = ADXL345_ReadReg(ADXL345_DATAZ0_REG_ADDR);
-		dataz1 = ADXL345_ReadReg(ADXL345_DATAZ1_REG_ADDR);
-		printf("%i	", dataz1*4); //full res mode maintains 4mg/LSB. range bits set range.
-		printf("%i\n\r", dataz0*4); //full res mode maintains 4mg/LSB. range bits set range.
+		ADXL345_ReadXYZ(xyzdata);
+		printf("%i %i %i \n\r", xyzdata[0], xyzdata[1],xyzdata[2]);
 
 	}
 }

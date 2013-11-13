@@ -17,7 +17,7 @@
 
 // Default speed is 100kHz, you may define your own to the compiler
 #ifndef I2Cx_ClockSpeed
- #define I2Cx_ClockSpeed						100000
+ #define I2Cx_ClockSpeed						5000
 #endif
 // or enable fast mode
 #ifdef USE_I2C_FASTMODE
