@@ -75,24 +75,14 @@ int main(void){
 	devid = ADXL345_ReadReg(ADXL345_DEVID_REG_ADDR);
 	printf("DEVID : %i ", devid);
 
-	//set xyz offset (debugging multibyte write).
-	uint8_t ofsx = 0x08;
-	uint8_t ofsy = 0x07;
-	uint8_t ofsz = 0x01;
-	ADXL345_WriteOffsets(ofsx,ofsy,ofsz);
+	int16_t xyzdata[3];
 
-	//read data (multibyte read)
-	uint32_t offsets;
-	uint8_t nofsx = 0x03;
-	uint8_t nofsy = 0x03;
-	uint8_t nofsz = 0x03;
 	while (1)
 	{
-		offsets = ADXL345_ReadOffsets();
-		nofsx = ((offsets & 0x000000FF) );
-		nofsy = ((offsets & 0x0000FF00) >> 8 );
-		nofsz = ((offsets & 0x00FF0000) >> 16	);
-		printf("%i	%i	%i	\n\r", nofsx,nofsy,nofsz); //full res mode maintains 4mg/LSB. range bits set range.
+
+		ADXL345_ReadXYZ(xyzdata);
+		printf("%i %i %i \n\r", xyzdata[0], xyzdata[1],xyzdata[2]);
+
 	}
 }
 

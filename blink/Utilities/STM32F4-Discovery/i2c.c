@@ -54,7 +54,7 @@
 	  I2C_InitStructure.I2C_Mode = 				I2C_Mode_I2C;		//I2C Mode
 	  I2C_InitStructure.I2C_DutyCycle = 		I2C_DutyCycle_2;	//Standard 50% duty cycle
 	  I2C_InitStructure.I2C_OwnAddress1 =		0x00; 				//Own address not relevant in master mode.
-	  I2C_InitStructure.I2C_Ack =				I2C_Ack_Disable; 	//Disable acknowledge when reading, change later on?
+	  I2C_InitStructure.I2C_Ack =				I2C_Ack_Enable; 	//Disable acknowledge when reading, change later on?
 	  I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
 	  I2C_Init(I2Cx, &I2C_InitStructure);
 
@@ -85,11 +85,12 @@
  }
 
  void I2C_RepeatedStart(uint8_t address, uint8_t direction){
-	 I2C_AcknowledgeConfig(I2Cx,ENABLE);
 	 //wait for i2c bus to be free
 	 //while(I2C_GetFlagStatus(I2Cx,I2C_FLAG_BUSY)){}
 	 //send start
 	 I2C_GenerateSTART(I2Cx, ENABLE);
+	 //
+	 while(!I2C_GetFlagStatus(I2Cx, I2C_FLAG_SB));
 	 //wait for slave to acknowledge (I2C EV5)
 	 while(!I2C_CheckEvent(I2Cx, I2C_EVENT_MASTER_MODE_SELECT)){}
 	 // send slave address
@@ -154,6 +155,7 @@
 
  uint32_t I2C_Read_Buf(uint8_t* buf_ptr, uint32_t len){
 	 uint32_t nbytes = 0;
+	 I2C_AcknowledgeConfig(I2Cx, ENABLE);
 
 	     for (nbytes = 0; nbytes < (int) len; nbytes++) {
 	         /* Send NACK on the last byte */
