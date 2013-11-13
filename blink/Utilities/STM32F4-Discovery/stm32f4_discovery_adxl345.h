@@ -472,6 +472,7 @@
  int16_t ADXL345_ReadX();
  int16_t ADXL345_ReadY();
  int16_t ADXL345_ReadZ();
+ void ADXL345_ReadXYZ(int16_t data[]);
 
  uint32_t ADXL345_ReadOffsets();
  void ADXL345_WriteOffsets(uint8_t offsx, uint8_t offsy, uint8_t offsz);

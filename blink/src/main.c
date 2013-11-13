@@ -75,10 +75,21 @@ int main(void){
 	devid = ADXL345_ReadReg(ADXL345_DEVID_REG_ADDR);
 	printf("DEVID : %i ", devid);
 
+	LCD_SetTextColor(Green);
+
 	int16_t xyzdata[3];
+	uint16_t xpos = 160;
+	uint16_t ypos = 120;
+	uint16_t rad = 30;
 
 	while (1)
 	{
+		xpos += xyzdata[0]/200;
+		ypos += xyzdata[1]/200;
+
+
+		LCD_Clear(Black);
+		LCD_DrawCircle(xpos, ypos, rad);
 
 		ADXL345_ReadXYZ(xyzdata);
 		printf("%i %i %i \n\r", xyzdata[0], xyzdata[1],xyzdata[2]);
