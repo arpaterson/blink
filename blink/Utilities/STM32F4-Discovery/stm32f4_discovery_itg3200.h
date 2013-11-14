@@ -39,6 +39,17 @@
    */
 
  /**
+  * \struct ITG3200_InitTypeDef
+  * Should contain minimum complete setup defaults
+  */
+ typedef struct
+ {
+	 uint8_t Data_Format;
+	 uint8_t Power_Mode;
+	 uint8_t Interrupt_Enable;
+ }ITG3200_InitTypeDef;
+
+ /**
    * @}
    */
 
@@ -141,7 +152,16 @@
  /** @defgroup STM32F4_DISCOVERY_ITG3200_Exported_Functions
    * @{
    */
+ void ITG3200_Init(ITG3200_InitTypeDef *ITG3200_InitStruct);
+ uint8_t ITG3200_ReadReg(uint8_t ITG3200_Reg);
+ void ITG3200_WriteReg(uint8_t ITG3200_Reg, uint16_t ITG3200_RegValue);
 
+
+ void I2C_Start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
+ void I2C_Write(I2C_TypeDef* I2Cx, uint8_t data);
+ void I2C_Stop(I2C_TypeDef* I2Cx);
+ uint8_t I2C_Read_Ack(I2C_TypeDef* I2Cx);
+ uint8_t I2C_Read_NAck(I2C_TypeDef* I2Cx);
  /**
    * @}
    */
