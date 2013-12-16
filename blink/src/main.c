@@ -62,30 +62,30 @@ int main(void){
 	printf("\n\rUSART Printf Example: retarget the C library printf function to the USART\n\r");
 
 	ITG3200_InitTypeDef ITG3200_InitStruct;
-	//ADXL345_InitStruct.Output_Data_Rate = 	ADXL345_BW_RATE_400;
-	ITG3200_InitStruct.Data_Format =		(	ADXL345_DATAFORMAT_Range_PLUS_MINUS_16g | \
-												ADXL345_DATAFORMAT_FULL_RES_ENABLE
-												);
-	ITG3200_InitStruct.Power_Mode = 		(ADXL345_POWER_CTL_Measure_ENABLE | ADXL345_POWER_CTL_Wakeup_1Hz);
-	ITG3200_InitStruct.Interrupt_Enable = 	(ADXL345_INT_ENABLE_DATA_READY_ENABLE);
+	ITG3200_InitStruct.Sample_Rate_Divider = 9;
+	ITG3200_InitStruct.Full_Scale = ITG32000_DLPF_FS_FS_SEL_PLUS_MINUS_2000;
+	ITG3200_InitStruct.Low_Pass_Freq = ITG3200_DLPF_FS_DLPF_CFG_5Hz;
+	ITG3200_InitStruct.Interrupt_Config = ITG3200_INT_CFG_RAW_RDY_ENABLE;
+	//ITG3200_InitStruct.Power_Config =
+	ITG3200_InitStruct.Clock_Config = ITG3200_POWER_MGMT_CLK_SEL_INT_OSC;
 	ITG3200_Init(&ITG3200_InitStruct);
 
 	uint8_t devid;
-	uint16_t datax;
-	uint8_t datax1; //high byte
-	uint8_t datax0; //low byte
+	devid = ITG3200_ReadReg(ITG3200_WHO_AM_I_REG_ADDR);
 
-	uint8_t datay1; //high byte
-	uint8_t datay0; //low byte
+	printf("DEVID : %i ", devid);
 
-	uint8_t dataz1; //high byte
-	uint8_t dataz0; //low byte
+	int i;
 
 	while (1)
 	{
-		devid = ITG3200_ReadReg(ITG3200_WHO_AM_I_REG_ADDR);
+		for(i = 0; i < 1000; i++){
 
-		printf("DEVID : %s ", devid);
+		}
+
+		devid = ITG3200_ReadReg(ITG3200_WHO_AM_I_REG_ADDR);
+		printf("DEVID : %i \r\n", devid);
+
 
 	}
 }

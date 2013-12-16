@@ -22,6 +22,7 @@
 
  /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
+#include "i2c.h"
 
  /** @addtogroup Utilities
    * @{
@@ -75,28 +76,23 @@
  #define ADXL345_I2C_7BIT_ADDRESS			ADXL345_7BIT_ADDRESS_ALT
 #endif
 
-#define ADXL345_I2C_DATA_TRANSFER_MODE		100000
-#ifdef ADXL345_USE_I2C_FASTMODE
- #define ADXL345_I2C_DATA_TRANSFER_MODE		400000
-#endif
-
 /**
 * @defgroup ADXL345_I2C_Interface_Pins
 */
-#define ADXL345_I2C							I2C1
-#define ADXL345_I2C_CLK						RCC_APB1Periph_I2C1
+//#define ADXL345_I2C							I2C1
+//#define ADXL345_I2C_CLK						RCC_APB1Periph_I2C1
 
-#define ADXL345_I2C_SCL_PIN					GPIO_Pin_6
-#define ADXL345_I2C_SCL_GPIO_PORT     	  	GPIOB
-#define ADXL345_I2C_SCL_GPIO_CLK      	  	RCC_AHB1Periph_GPIOB
-#define ADXL345_I2C_SCL_SOURCE          	GPIO_PinSource6
-#define ADXL345_I2C_SCL_AF            		GPIO_AF_I2C1
+//#define ADXL345_I2C_SCL_PIN					GPIO_Pin_6
+//#define ADXL345_I2C_SCL_GPIO_PORT     	  	GPIOB
+//#define ADXL345_I2C_SCL_GPIO_CLK      	  	RCC_AHB1Periph_GPIOB
+//#define ADXL345_I2C_SCL_SOURCE          	GPIO_PinSource6
+//#define ADXL345_I2C_SCL_AF            		GPIO_AF_I2C1
 
-#define ADXL345_I2C_SDA_PIN					GPIO_Pin_7
-#define ADXL345_I2C_SDA_GPIO_PORT      		GPIOB
-#define ADXL345_I2C_SDA_GPIO_CLK        	RCC_AHB1Periph_GPIOB
-#define ADXL345_I2C_SDA_SOURCE          	GPIO_PinSource7
-#define ADXL345_I2C_SDA_AF              	GPIO_AF_I2C1
+//#define ADXL345_I2C_SDA_PIN					GPIO_Pin_7
+//#define ADXL345_I2C_SDA_GPIO_PORT      		GPIOB
+//#define ADXL345_I2C_SDA_GPIO_CLK        	RCC_AHB1Periph_GPIOB
+//#define ADXL345_I2C_SDA_SOURCE          	GPIO_PinSource7
+//#define ADXL345_I2C_SDA_AF              	GPIO_AF_I2C1
 
 #define ADXL345_I2C_INT1_PIN            	GPIO_Pin_9				/*PB.9*/ 	//can this pin be used to drive an external interrupt EXTI?
 #define ADXL345_I2C_INT1_GPIO_PORT      	GPIOB
@@ -472,15 +468,20 @@
  void ADXL345_Calibrate();
  void ADXL345_Self_Test();
  void ADXL345_Init(ADXL345_InitTypeDef *ADXL345_InitStruct);
+
+ int16_t ADXL345_ReadX();
+ int16_t ADXL345_ReadY();
+ int16_t ADXL345_ReadZ();
+ void ADXL345_ReadXYZ(int16_t data[]);
+
+ uint32_t ADXL345_ReadOffsets();
+ void ADXL345_WriteOffsets(uint8_t offsx, uint8_t offsy, uint8_t offsz);
+
  uint8_t ADXL345_ReadReg(uint8_t ADXL345_Reg);
  void ADXL345_WriteReg(uint8_t ADXL345_Reg, uint16_t ADXL345_RegValue);
 
 
- void I2C_Start(I2C_TypeDef* I2Cx, uint8_t address, uint8_t direction);
- void I2C_Write(I2C_TypeDef* I2Cx, uint8_t data);
- void I2C_Stop(I2C_TypeDef* I2Cx);
- uint8_t I2C_Read_Ack(I2C_TypeDef* I2Cx);
- uint8_t I2C_Read_NAck(I2C_TypeDef* I2Cx);
+
 
  /**
  * @brief Uncomment the line below if you want to use user defined Delay function
