@@ -61,38 +61,31 @@ int main(void){
 	/* Output a message on Hyperterminal using printf function */
 	printf("\n\rUSART Printf Example: retarget the C library printf function to the USART\n\r");
 
-	ADXL345_InitTypeDef ADXL345_InitStruct;
-	//ADXL345_InitStruct.Output_Data_Rate = 	ADXL345_BW_RATE_400;
-	ADXL345_InitStruct.Data_Format =		(	ADXL345_DATAFORMAT_Range_PLUS_MINUS_16g | \
-												ADXL345_DATAFORMAT_FULL_RES_ENABLE
-												);
-	ADXL345_InitStruct.Power_Mode = 		(ADXL345_POWER_CTL_Measure_ENABLE | ADXL345_POWER_CTL_Wakeup_1Hz);
-	ADXL345_InitStruct.Interrupt_Enable = 	(ADXL345_INT_ENABLE_DATA_READY_ENABLE);
-	ADXL345_Init(&ADXL345_InitStruct);
+	ITG3200_InitTypeDef ITG3200_InitStruct;
+	ITG3200_InitStruct.Sample_Rate_Divider = 9;
+	ITG3200_InitStruct.Full_Scale = ITG32000_DLPF_FS_FS_SEL_PLUS_MINUS_2000;
+	ITG3200_InitStruct.Low_Pass_Freq = ITG3200_DLPF_FS_DLPF_CFG_5Hz;
+	ITG3200_InitStruct.Interrupt_Config = ITG3200_INT_CFG_RAW_RDY_ENABLE;
+	//ITG3200_InitStruct.Power_Config =
+	ITG3200_InitStruct.Clock_Config = ITG3200_POWER_MGMT_CLK_SEL_INT_OSC;
+	ITG3200_Init(&ITG3200_InitStruct);
 
-	//read devid
 	uint8_t devid;
-	devid = ADXL345_ReadReg(ADXL345_DEVID_REG_ADDR);
+	devid = ITG3200_ReadReg(ITG3200_WHO_AM_I_REG_ADDR);
+
 	printf("DEVID : %i ", devid);
 
-	LCD_SetTextColor(Green);
-
-	int16_t xyzdata[3];
-	uint16_t xpos = 160;
-	uint16_t ypos = 120;
-	uint16_t rad = 30;
+	int i;
 
 	while (1)
 	{
-		xpos += xyzdata[0]/200;
-		ypos += xyzdata[1]/200;
+		for(i = 0; i < 1000; i++){
 
+		}
 
-		LCD_Clear(Black);
-		LCD_DrawCircle(xpos, ypos, rad);
+		devid = ITG3200_ReadReg(ITG3200_WHO_AM_I_REG_ADDR);
+		printf("DEVID : %i \r\n", devid);
 
-		ADXL345_ReadXYZ(xyzdata);
-		printf("%i %i %i \n\r", xyzdata[0], xyzdata[1],xyzdata[2]);
 
 	}
 }
