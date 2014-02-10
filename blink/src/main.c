@@ -60,33 +60,12 @@ int main(void){
 	STM32f4_Discovery_Debug_Init();
 	/* Output a message on Hyperterminal using printf function */
 	printf("\n\rUSART Printf Example: retarget the C library printf function to the USART\n\r");
-
-	ITG3200_InitTypeDef ITG3200_InitStruct;
-	ITG3200_InitStruct.Sample_Rate_Divider = 9;
-	ITG3200_InitStruct.Full_Scale = ITG32000_DLPF_FS_FS_SEL_PLUS_MINUS_2000;
-	ITG3200_InitStruct.Low_Pass_Freq = ITG3200_DLPF_FS_DLPF_CFG_5Hz;
-	ITG3200_InitStruct.Interrupt_Config = ITG3200_INT_CFG_RAW_RDY_ENABLE;
-	//ITG3200_InitStruct.Power_Config =
-	ITG3200_InitStruct.Clock_Config = ITG3200_POWER_MGMT_CLK_SEL_INT_OSC;
-	ITG3200_Init(&ITG3200_InitStruct);
-
-	uint8_t devid;
-	devid = ITG3200_ReadReg(ITG3200_WHO_AM_I_REG_ADDR);
-
-	printf("DEVID : %i ", devid);
-
 	int i;
 
 	while (1)
 	{
 		for(i = 0; i < 1000; i++){
-
 		}
-
-		devid = ITG3200_ReadReg(ITG3200_WHO_AM_I_REG_ADDR);
-		printf("DEVID : %i \r\n", devid);
-
-
 	}
 }
 
