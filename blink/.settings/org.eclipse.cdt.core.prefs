@@ -4,7 +4,7 @@ environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.162
 environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1624889855/CWD/value=${workspace_loc}\\${ProjName}\\Debug
 environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1624889855/PATH/delimiter=;
 environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1624889855/PATH/operation=replace
-environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1624889855/PATH/value=C\:\\Program Files (x86)\\CodeSourcery\\Sourcery_CodeBench_Lite_for_ARM_EABI\\bin
+environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1624889855/PATH/value=C\:\\Users\\Anthony.Paterson@opus.co\\MentorGraphics\\Sourcery_CodeBench_Lite_for_ARM_EABI\\bin
 environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1624889855/PWD/delimiter=;
 environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1624889855/PWD/operation=replace
 environment/project/org.eclipse.cdt.cross.arm.gnu.sourcery.windows.elf.debug.1624889855/PWD/value=${workspace_loc}\\${ProjName}\\Debug
