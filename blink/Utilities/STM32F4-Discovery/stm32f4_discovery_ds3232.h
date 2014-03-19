@@ -94,12 +94,246 @@
   * 		Default value:.
   * 		Fixed value.
    */
-#define DS3232_WHO_AM_I_REG_ADDR				((uint8_t)	0x00)	// Read/Write. Yes. You can change the ID of this device. Power on Reset value is 0bx110100x
+//#define DS3232_WHO_AM_I_REG_ADDR				((uint8_t)	0x00)	// Read/Write. Yes. You can change the ID of this device. Power on Reset value is 0bx110100x
 
 
  /********************************************************************************/
+#define DS3232_SECONDS_REG_ADDR         ((uint8_t)      0x00)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
 
  /********************************************************************************/
+#define DS3232_MINUTES_REG_ADDR         ((uint8_t)      0x01)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_HOURS_REG_ADDR           ((uint8_t)      0x02)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_DAY_REG_ADDR             ((uint8_t)      0x03)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_DATE_REG_ADDR            ((uint8_t)      0x04)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_MONTH_CENTURY_REG_ADDR   ((uint8_t)      0x05)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_YEAR_REG_ADDR            ((uint8_t)      0x06)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_ALARM1_SECONDS_REG_ADDR  ((uint8_t)      0x07)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_ALARM1_MINUTES_REG_ADDR  ((uint8_t)      0x08)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_ALARM1_HOURS_REG_ADDR    ((uint8_t)      0x09)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_ALARM1_DAY_DATE_REG_ADDR ((uint8_t)      0x0A)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+
+ /********************************************************************************/
+#define DS3232_ALARM2_MINUTES_REG_ADDR  ((uint8_t)      0x0B)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_ALARM2_HOURS_REG_ADDR    ((uint8_t)      0x0C)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_ALARM2_DAY_DATE_REG_ADDR ((uint8_t)      0x0D)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+
+ /********************************************************************************/
+#define DS3232_CONTROL_REG_ADDR         ((uint8_t)      0x0E)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_CTRL_STATUS_REG_ADDR     ((uint8_t)      0x0F)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_AGING_OFFSET_REG_ADDR    ((uint8_t)      0x10)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_TEMP_MSB_REG_ADDR        ((uint8_t)      0x11)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+#define DS3232_TEMP_LSB_REG_ADDR        ((uint8_t)      0x12)
+
+ //BIT7
+ //BIT6
+ //BIT5
+ //BIT4
+ //BIT3
+ //BIT2
+ //BIT1
+ //BIT0
+
+ /********************************************************************************/
+// RESERVED FOR TEST ADDR 0x13 ALL BITS
+
+ /********************************************************************************/
+#define DS3232_SRAM_START_ADDR          ((uint8_t)      0x14)
+#define DS3232_SRAM_END_ADDR            0x0FF
+
 
  /**
    * @}

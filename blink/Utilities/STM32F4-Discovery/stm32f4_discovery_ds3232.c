@@ -87,7 +87,7 @@ void DS3232_LowLevel_Init();
 void DS3232_Init(DS3232_InitTypeDef *DS3232_InitStruct){
 
 	 /*
-	  * Power up sequencing:
+	  * Power up sequencing: Refer Page 5 of datasheet
 	  *
 	  */
 
