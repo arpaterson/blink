@@ -237,32 +237,123 @@
  /********************************************************************************/
 #define DS3232_CTRL_STATUS_REG_ADDR     ((uint8_t)      0x0F)
 
- ///BIT7        OSF
- ///BIT6        BB32kHz
- ///BIT5        CRATE1
- ///BIT4        CRATE0
- ///BIT3        EN32kHz
- ///BIT2        BSY
- ///BIT1        A2F
- ///BIT0        A1F
+/**
+ * Bit 7: Oscillator Stop Flag (OSF).
+ * A logic 1 in this bit indicates that the oscillator either is stopped or was
+ * stopped for some period and may be used to judge the validity of the
+ * time keeping data. This bit is set to logic 1 any time that the oscillator
+ * stops. The following are examples of conditions that can cause the OSF bit to
+ * be set:
+ *      1) The first time power is applied.
+ *      2) The voltages present on both VCC and VBAT are
+ *         insufficient to support oscillation.
+ *      3) The EOSC bit is turned off in battery-backed mode.
+ *      4) External influences on the crystal (i.e., noise, leakage,
+ *         etc.).
+ * This bit remains at logic 1 until written to logic 0.
+ *
+ * @param DS3232_InitStruct
+ */
+ #define DS3232_CTRL_STATUS_OSC_STOP_F   ((uint8_t)      0x80)
+
+/**
+ * Bit 6: Battery-Backed 32kHz Output (BB32kHz).
+ * This bit enables the 32kHz output when powered from VBAT
+ * (provided EN32kHz is enabled). If BB32kHz = 0, the
+ * 32kHz output is low when the part is powered by VBAT.
+ *
+ * @param DS3232_InitStruct
+ */
+ #define DS3232_CTRL_STATUS_BB32kHz_ENABLE   ((uint8_t)      0x40)
+
+/**
+ * Bits 5 and 4: Conversion Rate (CRATE1 and
+ * CRATE0). These two bits control the sample rate of the
+ * TCXO. The sample rate determines how often the temperature
+ * sensor makes a conversion and applies compensation
+ * to the oscillator. Decreasing the sample rate
+ * decreases the overall power consumption by decreasing
+ * the frequency at which the temperature sensor
+ * operates. However, significant temperature changes
+ * that occur between samples may not be completely
+ * compensated for, which reduce overall accuracy.
+ * When a new conversion rate is written to the register, it
+ * may take up to the new conversion rate time before the
+ * conversions occur at the new rate.
+ *
+ * @param DS3232_InitStruct
+ */
+#define DS3232_CTRL_STATUS_CRATE_512    ((uint8_t)      0x30)
+#define DS3232_CTRL_STATUS_CRATE_256    ((uint8_t)      0x20)
+#define DS3232_CTRL_STATUS_CRATE_128    ((uint8_t)      0x10)
+#define DS3232_CTRL_STATUS_CRATE_64     ((uint8_t)      0x00)
+
+/**
+ * Bit 3: Enable 32kHz Output (EN32kHz).
+ * This bit indicates
+ * the status of the 32kHz pin. When set to logic 1,
+ * the 32kHz pin is enabled and outputs a 32.768kHz
+ * square-wave signal. When set to logic 0, the 32kHz pin
+ * goes low. The initial power-up state of this bit is logic 1,
+ * and a 32.768kHz square-wave signal appears at the
+ * 32kHz pin after a power source is applied to the DS3232
+ * (if the oscillator is running).
+ * **/
+#define DS3232_CTRL_STATUS_32kHz_ENABLE ((uint8_t)      0x04
+
+ /**
+  * Bit 2: Busy (BSY).
+  * This bit indicates the device is busy
+  * executing TCXO functions. It goes to logic 1 when the
+  * conversion signal to the temperature sensor is asserted
+  * and then is cleared when the conversion is complete.
+  *
+  * @param DS3232_InitStruct
+  */
+ #define DS3232_CTRL_STATUS_BSY_F
+
+ /**
+  * Bit 1: Alarm 2 Flag (A2F).
+  * A logic 1 in the alarm 2 flag
+  * bit indicates that the time matched the alarm 2 registers.
+  * If the A2IE bit is logic 1 and the INTCN bit is set to
+  * logic 1, the INT/SQW pin is also asserted. A2F is
+  * cleared when written to logic 0. This bit can only be
+  * written to logic 0. Attempting to write to logic 1 leaves
+  * the value unchanged.
+  *
+  * @param DS3232_InitStruct
+  */
+#define DS3232_CTRL_STATUS_Alarm2_F
+
+ /**
+  * Bit 0: Alarm 1 Flag (A1F).
+  * A logic 1 in the alarm 1 flag
+  * bit indicates that the time matched the alarm 1 registers.
+  * If the A1IE bit is logic 1 and the INTCN bit is set to
+  * logic 1, the INT/SQW pin is also asserted. A1F is
+  * cleared when written to logic 0. This bit can only be
+  * written to logic 0. Attempting to write to logic 1 leaves
+  * the value unchanged.
+  *
+  * @param DS3232_InitStruct
+  */
+#define DS3232_CTRL_STATUS_Alarm1_F///BIT0        A1F
 
  /********************************************************************************/
 #define DS3232_AGING_OFFSET_REG_ADDR    ((uint8_t)      0x10)
 
- ///BIT7        SIGN
- ///BIT6:0      DATA
+ ///BIT7:0      SIGNED DATA, Two's Comp Format
 
  /********************************************************************************/
 #define DS3232_TEMP_MSB_REG_ADDR        ((uint8_t)      0x11)
 
- ///BIT7        SIGN
- ///BIT6:0      DATA
+ ///BIT7:0      SIGNED DATA, Two's Comp Format, MSB
 
  /********************************************************************************/
 #define DS3232_TEMP_LSB_REG_ADDR        ((uint8_t)      0x12)
 
- ///BIT7        DATA
- ///BIT6        DATA
+ ///BIT7:6      SIGNED DATA, Two's Comp Format, LSBits
  ///BIT5:0      000000
 
  /********************************************************************************/
