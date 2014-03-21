@@ -86,8 +86,21 @@ void DS3232_LowLevel_Init();
   */
 void DS3232_Init(DS3232_InitTypeDef *DS3232_InitStruct){
 
-	 /*
-	  * Power up sequencing: Refer Page 5 of datasheet
+	 /**
+	  * Power up sequencing: Refer Page to the device datasheet
+	  *
+	  *     Note:   This is a battery backed device "Power on Reset"
+	  *             is defined as the first the device is
+	  *             powered by Vcc or Vbat.
+	  *
+	  *             Additionally:
+	  *
+	  *             If first power up, The oscillator will not start,
+	  *             and no temp conversion and capacitance update
+          *             will take place UNTIL Vcc > Vpf.
+          *             Once Vcc > Vpf, the oscillator will start.
+          *             If not first power up, oscillator will run
+          *             on Vbat unless !EOSC is set to 1.
 	  *
 	  */
 
@@ -95,9 +108,30 @@ void DS3232_Init(DS3232_InitTypeDef *DS3232_InitStruct){
 	  /* Configure the low level interface ---------------------------------------*/
 	  DS3232_LowLevel_Init();
 
-	  /* Initialisation command sequence -----------------------------------------
+	  /** Initialisation command sequence -----------------------------------------
 	   * 	Minimum initialisation sequence:
-	   * 		1.	Vs = ON. Vddio = ON
+	   *
+	   *            Note the RTC does not power down with the rest of the
+	   * 		        system like other devices.
+	   *
+	   * 		1.      !IMPORTANT! Check oscillator has NOT been stopped
+	   * 		                (OSF==0 in CTRL_STATUS register).
+	   * 		                fire error handler if OSF==1,
+	   * 		                perhaps report !EOSC bit also
+	   * 		                write OSF=0 when error has been handled.
+	   * 		                Check Vcc > Vpf?
+	   *
+           *                    Check Vbat?,
+           *                    Check if temp conversion taking/taken place
+           *                    (check BSY==0 for periodic conversion,
+           *                    check CONV==0 for user requested conversions)
+           *                    Perform a conversion if none observed?
+           *                    Wait for completion (wait on CONV==0 and BSY==0)
+	   * 		        - Set / get time registers
+	   * 		        - Alarms ?
+	   * 		        - !INT/SQW output config (bit 6 control register)
+	   * 		        - Set 12/24 hour mode (bit 6 of hour register)
+	   * 		        -
 	   *--------------------------------------------------------------------------*/
 
 
