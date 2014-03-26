@@ -23,6 +23,7 @@
  /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx.h"
 #include "i2c.h"
+#include "string.h"
 
  /** @addtogroup Utilities
    * @{
@@ -48,12 +49,25 @@
  {
    //Modes
    uint8_t DS3232_CONTROL_SQW_RATE;
-
-   //Values
-   uint8_t Current_Date_BCD;
-   uint8_t Current_Time_BCD;
-
  }DS3232_InitTypeDef;
+
+ typedef struct
+ {
+   uint8_t Seconds;
+   uint8_t Minutes;
+   uint8_t Hours;
+   uint8_t PM;
+   uint8_t Mode12Hour;
+ }DS3232_TimeTypeDef;
+
+ typedef struct
+ {
+   uint8_t Weekday;
+   uint8_t Monthday;
+   uint8_t Month;
+   uint8_t Year;
+   uint8_t Century_flag;
+ }DS3232_DateTypeDef;
 
  /**
    * @}
@@ -72,7 +86,7 @@
 #define	DS3232_I2C_7BIT_ADDRESS                 ((uint8_t) 0x68)
 
  /**
- * @defgroup DS3232_I2C_Interface_Pins
+ * @defgroup DS3232_Interface_Pins
  * @{
  */
 
@@ -590,10 +604,33 @@
    * @{
    */
  void DS3232_Init(DS3232_InitTypeDef *DS3232_InitStruct);
+ void DS3232_Set_Mode12Hr(); //also overwrites hour data!
+ void DS3232_Set_Mode24Hr(); //also overwrites hour data!
+ float DS3232_Get_Temp_C();
+
+ //make these private
+  uint8_t DS3232_Get_Seconds(uint8_t regdata);
+ uint8_t DS3232_Get_Minutes(uint8_t regdata);
+ uint8_t DS3232_Get_Hours(uint8_t regdata);
+ uint8_t DS3232_Get_Mode12Hr(uint8_t regdata);
+ uint8_t DS3232_Get_PM(uint8_t regdata);
+
+// day, date, year, formatted date strings? return data type appropriate?
+ // get complete time data set in single read!
+ void DS3232_Get_Time(DS3232_TimeTypeDef * TimeStruct);
+ void DS3232_Get_Time_Str(char* timestr, unsigned int strlen);
+
+
+ //make these private
+ uint8_t DS3232_Get_Day(uint8_t regdata);
+
+ void DS3232_Get_Date(DS3232_DateTypeDef * TimeStruct);
+ void DS3232_Get_Date_Str(char* datestr, unsigned int strlen);
 
  uint8_t DS3232_ReadReg(uint8_t DS3232_Reg);
- void DS3232_WriteReg(uint8_t DS3232_Reg, uint16_t DS3232_RegValue);
+ void DS3232_ReadMulti(uint8_t* retbuffer, uint8_t startregaddr, uint32_t count);
 
+ void DS3232_WriteReg(uint8_t DS3232_Reg, uint16_t DS3232_RegValue);
 
  /**
    * @}

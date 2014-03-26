@@ -77,6 +77,122 @@ void DS3232_LowLevel_Init();
    * @{
    */
 
+uint8_t DS3232_Get_Seconds(uint8_t regdata){
+
+  uint8_t tens;
+  uint8_t ones;
+  uint8_t seconds;
+
+  tens = ( (regdata & 0x70 ) >> 4 );
+  ones = regdata & 0x0F;
+  seconds = 10*tens + ones;
+
+  return seconds;
+}
+
+uint8_t DS3232_Get_Minutes(uint8_t regdata){
+
+  uint8_t tens;
+  uint8_t ones;
+  uint8_t minutes;
+
+  tens = ( (regdata & 0x70 ) >> 4 );
+  ones = regdata & 0x0F;
+  minutes = 10*tens + ones;
+
+  return minutes;
+}
+
+uint8_t DS3232_Get_Hours(uint8_t regdata){
+
+  uint8_t tens;
+  uint8_t ones;
+
+  if ( DS3232_Get_Mode12Hr(regdata) ){
+      tens = (regdata & 0x10) >> 4; // bit4 is tens, bit 5 is !am/pm
+  } else{
+      tens = (regdata & 0x30) >> 4; // bit5:4 is tens
+  }
+
+  // Get ones
+  ones = (regdata & 0x0F);
+
+  uint8_t hours = 10*tens + ones;
+  return hours;
+}
+
+uint8_t DS3232_Get_Mode12Hr(uint8_t regdata){
+  uint8_t mode12Hr = (regdata & 0x40) >> 6;
+  return mode12Hr;
+}
+
+uint8_t DS3232_Get_PM(uint8_t regdata){
+  uint8_t PM_flag;
+  if( DS3232_Get_Mode12Hr(regdata) ){
+      PM_flag = (regdata & 0x20) >> 5;
+  }
+  else{
+      PM_flag = 0;
+  }
+  return PM_flag;
+}
+
+
+void DS3232_Get_Time(DS3232_TimeTypeDef * TimeStruct){
+  uint8_t data[7];
+  DS3232_ReadMulti(data, DS3232_SECONDS_REG_ADDR, 7);
+  TimeStruct->PM        =       DS3232_Get_PM(data[2]);
+  TimeStruct->Mode12Hour =       DS3232_Get_Mode12Hr(data[2]);
+  TimeStruct->Hours     =       DS3232_Get_Hours(data[2]);
+  TimeStruct->Minutes   =       DS3232_Get_Minutes(data[1]);
+  TimeStruct->Seconds   =       DS3232_Get_Seconds(data[0]);
+
+}
+
+void DS3232_Get_Time_Str(char* timestr, unsigned int strlen){
+  DS3232_TimeTypeDef TimeStruct;
+  DS3232_Get_Time(&TimeStruct);
+  if( TimeStruct.Mode12Hour && TimeStruct.PM){
+      sprintf(timestr, "%02i:%02i:%02i PM", TimeStruct.Hours, TimeStruct.Minutes, TimeStruct.Seconds);
+  }
+  else if( TimeStruct.Mode12Hour && !TimeStruct.PM ){
+      sprintf(timestr, "%02i:%02i:%02i AM", TimeStruct.Hours, TimeStruct.Minutes, TimeStruct.Seconds);
+  }
+  else{
+      sprintf(timestr, "%02i:%02i:%02i", TimeStruct.Hours, TimeStruct.Minutes, TimeStruct.Seconds);
+  }
+}
+
+uint8_t DS3232_Get_Day(uint8_t regdata){
+    uint8_t day = (regdata & 0x07);
+    return day;
+}
+
+void DS3232_Get_Date(DS3232_DateTypeDef * DateStruct){
+
+}
+
+void DS3232_Get_Date_Str(char * datestr, unsigned int strlen){
+
+}
+
+void DS3232_Set_Mode12Hr(){ //also ovrwrites hour data
+  DS3232_WriteReg(DS3232_HOURS_REG_ADDR, 0x40);
+}
+
+void DS3232_Set_Mode24Hr(){ //also ovrwrites hour data
+  DS3232_WriteReg(DS3232_HOURS_REG_ADDR, 0x00);
+}
+
+float DS3232_Get_Temp_C(){
+  float temp;
+  uint8_t data[2];
+  DS3232_ReadMulti(data, DS3232_TEMP_MSB_REG_ADDR,2);
+  short halfword = (data[0] << 8 ) | (data[1]);
+  temp = halfword / 4;
+  return temp;
+}
+
 /**
   * @brief
   * @param
@@ -167,12 +283,10 @@ void DS3232_LowLevel_Init(){
 
 
 /**
-  * @brief
-  * @param
-  * @param
-  * @param
-  * @retval
-  */
+ *
+ * @param DS3232_Reg
+ * @return
+ */
 uint8_t DS3232_ReadReg(uint8_t DS3232_Reg){
 	 //Send request for register contents.
 	 I2C_Start(DS3232_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
@@ -183,20 +297,46 @@ uint8_t DS3232_ReadReg(uint8_t DS3232_Reg){
 }
 
 /**
-  * @brief
-  * @param
-  * @param
-  * @param
-  * @retval
+ *
+ * @param retbuffer
+ * @param startregaddr
+ * @param count
+ */
+void DS3232_ReadMulti(uint8_t* retbuffer, uint8_t startregaddr, uint32_t count){
+  /*
+                    I2C_Start(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
+                   I2C_Write(ADXL345_DATAX0_REG_ADDR);
+                   I2C_RepeatedStart(ADXL345_I2C_7BIT_ADDRESS<<1, I2C_Direction_Receiver);
+                   bytes_read = I2C_Read_Buf(buffer,2);
+                   I2C_Stop();
   */
+
+  //this should be moved to i2c source files
+  //write target reg address
+  uint8_t buffer[count];
+  uint16_t bytes_read; //may not need to be as big as uint16_t
+
+  I2C_Start(DS3232_I2C_7BIT_ADDRESS<<1, I2C_Direction_Transmitter);
+  I2C_Write(startregaddr);
+  I2C_RepeatedStart(DS3232_I2C_7BIT_ADDRESS<<1, I2C_Direction_Receiver);
+  bytes_read = I2C_Read_Buf(buffer, count);
+  //I2C_Stop(); not needed Read_Buf generates a stop. is readbuf using repeated starts?
+
+  memcpy(retbuffer,buffer,count);
+
+}
+
+/**
+ *
+ * @param DS3232_Reg
+ * @param DS3232_RegValue
+ */
 void DS3232_WriteReg(uint8_t DS3232_Reg, uint16_t DS3232_RegValue){
 	 I2C_Start(DS3232_I2C_7BIT_ADDRESS<<1 , I2C_Direction_Transmitter);
 	 I2C_Write(DS3232_Reg);
 	 I2C_Write(DS3232_RegValue);
 	 I2C_Stop();
 }
-
-
 
 
  /**

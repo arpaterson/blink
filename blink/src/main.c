@@ -55,23 +55,55 @@ int main(void){
 
 
 	STM32f4_Discovery_LCD_Init();
-	LCD_RGB_Test();
+
+	LCD_SetBackColor(LCD_COLOR_BLUE);
+	LCD_SetTextColor(LCD_COLOR_WHITE);
+	unsigned char titlestr[] = "DS3232 test";
+	LCD_ClearLine(Line0);
+	LCD_DisplayStringLine(Line0,titlestr);
 
 	STM32f4_Discovery_Debug_Init();
-	/* Output a message on Hyperterminal using printf function */
-	printf("\n\rUSART Printf Example: retarget the C library printf function to the USART\n\r");
+
+	DS3232_InitTypeDef DS3232_InitStruct;
+	DS3232_InitStruct.DS3232_CONTROL_SQW_RATE = DS3232_CONTROL_SQW_RATE_1Hz;
+	DS3232_Init(&DS3232_InitStruct);
+	DS3232_Set_Mode12Hr();
+	printf("Clock initialization completed");
+
 
 	int i;
+	int sec;
+	int min;
+	int hour;
+
+	char timestr[21] = "timestr init 1";
+	char datestr[21] = "datestr init 1";
+	//printf ("%i",strlen(datestr)); printf("\r\n");
+	char tempstr[21] = "tempstr init";
 
 	while (1)
 	{
-		for(i = 0; i < 1000; i++){
+		for(i = 0; i < 1000000; i++){
 
 		}
 
+		LCD_ClearLine(Line1);
+		DS3232_Get_Date_Str(datestr, strlen(datestr));
+		LCD_DisplayStringLine(Line1,datestr);
 
-		printf("rtc");
+		LCD_ClearLine(Line2);
+		DS3232_Get_Time_Str(timestr ,strlen(timestr));
+		LCD_DisplayStringLine(Line2,timestr);
 
+		//LCD_ClearLine(Line3);
+		//sprintf(tempstr,"%i", 2);
+		//LCD_DisplayStringLine(Line3,tempstr);
+
+		printf(datestr); printf("\t");
+		//printf ("%i",strlen(datestr));
+		printf(timestr); printf("\t");
+		//printf(tempstr); printf("\t");
+		printf("\r\n");
 
 	}
 }

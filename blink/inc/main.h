@@ -29,6 +29,7 @@
 #include "stm32f4_discovery_debug.h"
 #include "stm32f4_discovery_ADXL345.h"
 #include "stm32f4_discovery_itg3200.h"
+#include "stm32f4_discovery_ds3232.h"
 #include <stdio.h>
 
 /* Exported types ------------------------------------------------------------*/
