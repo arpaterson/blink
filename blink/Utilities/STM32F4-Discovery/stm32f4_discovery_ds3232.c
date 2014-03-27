@@ -163,17 +163,55 @@ void DS3232_Get_Time_Str(char* timestr, unsigned int strlen){
   }
 }
 
-uint8_t DS3232_Get_Day(uint8_t regdata){
-    uint8_t day = (regdata & 0x07);
-    return day;
+uint8_t DS3232_Get_Weekday(uint8_t regdata){
+  uint8_t weekday = (regdata & 0x07);
+  return weekday;
 }
 
-void DS3232_Get_Date(DS3232_DateTypeDef * DateStruct){
+uint8_t DS3232_Get_Monthday(uint8_t regdata){
+  uint8_t monthday;
+  uint8_t tens = (regdata & 0x30) >> 4;
+  uint8_t ones = (regdata & 0x0F);
+  monthday = 10*tens + ones;
+  return monthday;
+}
 
+uint8_t DS3232_Get_Month(uint8_t regdata){
+  uint8_t month;
+  uint8_t tens = (regdata & 0x10) >> 4;
+  uint8_t ones = (regdata & 0x0F);
+  month = 10* tens + ones;
+  return month;
+}
+
+uint8_t DS3232_Get_Year(uint8_t regdata){
+  uint8_t year;
+  uint8_t tens = (regdata & 0xF0) >> 4;
+  uint8_t ones = (regdata & 0x0F);
+  year = 10* tens + ones;
+  return year;
+}
+
+uint8_t DS3232_Get_Century_flag(uint8_t regdata){
+  uint8_t cflag = (regdata & 0x80 ) >> 7;
+  return cflag;
+}
+
+
+void DS3232_Get_Date(DS3232_DateTypeDef * DateStruct){
+  uint8_t data[4];
+  DS3232_ReadMulti(data, DS3232_DAY_REG_ADDR, 4);
+  DateStruct->Weekday =         DS3232_Get_Weekday(data[0]);
+  DateStruct->Monthday =        DS3232_Get_Monthday(data[1]);
+  DateStruct->Month =           DS3232_Get_Month(data[2]);
+  DateStruct->Year =            DS3232_Get_Year(data[3]);
+  DateStruct->Century_flag =    DS3232_Get_Century_flag(data[3]);
 }
 
 void DS3232_Get_Date_Str(char * datestr, unsigned int strlen){
-
+  DS3232_DateTypeDef DateStruct;
+  DS3232_Get_Date(&DateStruct);
+  sprintf(datestr,"%2i-%2i-%2i",DateStruct.Monthday,DateStruct.Month,DateStruct.Year);
 }
 
 void DS3232_Set_Mode12Hr(){ //also ovrwrites hour data
@@ -184,12 +222,20 @@ void DS3232_Set_Mode24Hr(){ //also ovrwrites hour data
   DS3232_WriteReg(DS3232_HOURS_REG_ADDR, 0x00);
 }
 
-float DS3232_Get_Temp_C(){
-  float temp;
+double DS3232_Get_Temp_C(){
+  double temp;
   uint8_t data[2];
   DS3232_ReadMulti(data, DS3232_TEMP_MSB_REG_ADDR,2);
-  short halfword = (data[0] << 8 ) | (data[1]);
-  temp = halfword / 4;
+
+//  int8_t ones = (int8_t)(data[0]);
+//  int8_t quarters = ((data[0] & 0x80) | (data[1])) / 128;
+//  temp = ones + quarters/4;
+
+  uint16_t halfword = (data[0] <<8)|(data[1]);
+  int16_t unscaled = (int16_t)(halfword);
+  int16_t rescaled = unscaled /64;
+  temp = rescaled/4.0;
+
   return temp;
 }
 

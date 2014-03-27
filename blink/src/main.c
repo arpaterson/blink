@@ -75,11 +75,14 @@ int main(void){
 	int sec;
 	int min;
 	int hour;
+	double temp;
+	int tempones; //needed as printf won't format floats
+	int temphundredths; //needed as printf won't format floats
 
 	char timestr[21] = "timestr init 1";
 	char datestr[21] = "datestr init 1";
 	//printf ("%i",strlen(datestr)); printf("\r\n");
-	char tempstr[21] = "tempstr init";
+	char tempstr[21] = "tempstr init 1";
 
 	while (1)
 	{
@@ -95,14 +98,17 @@ int main(void){
 		DS3232_Get_Time_Str(timestr ,strlen(timestr));
 		LCD_DisplayStringLine(Line2,timestr);
 
-		//LCD_ClearLine(Line3);
-		//sprintf(tempstr,"%i", 2);
-		//LCD_DisplayStringLine(Line3,tempstr);
+		LCD_ClearLine(Line3);
+		temp = DS3232_Get_Temp_C();
+		tempones = (int)temp;
+		temphundredths = (int)((temp - tempones)*100);
+		sprintf(tempstr,"%2i.%2i C", tempones, temphundredths);
+		LCD_DisplayStringLine(Line3,tempstr);
 
-		printf(datestr); printf("\t");
+		printf(datestr); printf("   ");
 		//printf ("%i",strlen(datestr));
-		printf(timestr); printf("\t");
-		//printf(tempstr); printf("\t");
+		printf(timestr); printf("   ");
+		printf(tempstr); printf("   ");
 		printf("\r\n");
 
 	}

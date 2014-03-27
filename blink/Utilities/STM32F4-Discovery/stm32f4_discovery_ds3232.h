@@ -606,7 +606,7 @@
  void DS3232_Init(DS3232_InitTypeDef *DS3232_InitStruct);
  void DS3232_Set_Mode12Hr(); //also overwrites hour data!
  void DS3232_Set_Mode24Hr(); //also overwrites hour data!
- float DS3232_Get_Temp_C();
+ double DS3232_Get_Temp_C();
 
  //make these private
   uint8_t DS3232_Get_Seconds(uint8_t regdata);
@@ -624,7 +624,14 @@
  //make these private
  uint8_t DS3232_Get_Day(uint8_t regdata);
 
- void DS3232_Get_Date(DS3232_DateTypeDef * TimeStruct);
+ uint8_t DS3232_Get_Weekday(uint8_t regdata);
+ uint8_t DS3232_Get_Monthday(uint8_t regdata);
+ uint8_t DS3232_Get_Month(uint8_t regdata);
+ uint8_t DS3232_Get_Year(uint8_t regdata);
+ uint8_t DS3232_Get_Century_flag(uint8_t regdata);
+
+
+ void DS3232_Get_Date(DS3232_DateTypeDef * DateStruct);
  void DS3232_Get_Date_Str(char* datestr, unsigned int strlen);
 
  uint8_t DS3232_ReadReg(uint8_t DS3232_Reg);
