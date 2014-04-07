@@ -54,37 +54,89 @@ int main(void){
 	 */
 
 
-	STM32f4_Discovery_LCD_Init();
-	LCD_RGB_Test();
+        STM32f4_Discovery_LCD_Init();
 
-	STM32f4_Discovery_Debug_Init();
-	/* Output a message on Hyperterminal using printf function */
-	printf("\n\rUSART Printf Example: retarget the C library printf function to the USART\n\r");
+        STM32f4_Discovery_Debug_Init();
 
-	ITG3200_InitTypeDef ITG3200_InitStruct;
+        ITG3200_InitTypeDef ITG3200_InitStruct;
 	ITG3200_InitStruct.Sample_Rate_Divider = 9;
 	ITG3200_InitStruct.Full_Scale = ITG32000_DLPF_FS_FS_SEL_PLUS_MINUS_2000;
 	ITG3200_InitStruct.Low_Pass_Freq = ITG3200_DLPF_FS_DLPF_CFG_5Hz;
 	ITG3200_InitStruct.Interrupt_Config = ITG3200_INT_CFG_RAW_RDY_ENABLE;
-	//ITG3200_InitStruct.Power_Config =
+	ITG3200_InitStruct.Power_Config = ITG3200_POWER_MGMT_H_RESET_ENABLE;
 	ITG3200_InitStruct.Clock_Config = ITG3200_POWER_MGMT_CLK_SEL_INT_OSC;
 	ITG3200_Init(&ITG3200_InitStruct);
+	printf("Gyro initialization completed\r\n");
 
 	uint8_t devid;
-	devid = ITG3200_ReadReg(ITG3200_WHO_AM_I_REG_ADDR);
-
-	printf("DEVID : %i ", devid);
-
 	int i;
+	uint16_t fs_range;
+	uint8_t dlpf_cutoff;
+	uint8_t srdiv;
+	ITG3200_DataPointTypeDef ITG3200_DataPoint;
+	unsigned char titlestr[21];
+	char string1[21];
+	char string2[21];
+	char string3[21];
+	char string4[21];
+	char string5[21];
+	char string6[21];
+	char string7[21];
+
+
+	devid = ITG3200_Get_DevID();
+	printf("DEVID : %i \r\n", devid);
+
+	LCD_SetBackColor(LCD_COLOR_BLUE);
+	LCD_SetTextColor(LCD_COLOR_WHITE);
+
+
+	LCD_ClearLine(Line0);
+	sprintf(titlestr, "ITG3200 DevID: 0x%X", devid);
+	LCD_DisplayStringLine(Line0,titlestr);
+
+	fs_range = ITG3200_Get_Fullscale_Range();
+	LCD_ClearLine(Line1);
+	sprintf(string1,"FSR:%i", fs_range);
+	LCD_DisplayStringLine(Line1,string1);
+
+	dlpf_cutoff = ITG3200_Get_DLPF_Bandwidth_Hz();
+	LCD_ClearLine(Line2);
+	sprintf(string2,"DLPF:%i", dlpf_cutoff);
+	LCD_DisplayStringLine(Line2,string2);
+
+	srdiv = ITG3200_Get_Sample_Rate_Divider();
+	LCD_ClearLine(Line3);
+	sprintf(string3,"SRDIV:%i", srdiv);
+	LCD_DisplayStringLine(Line3,string3);
+
+	LCD_SetBackColor(LCD_COLOR_GREEN);
 
 	while (1)
 	{
-		for(i = 0; i < 1000; i++){
+		for(i = 0; i < 1000000; i++){
 
 		}
 
-		devid = ITG3200_ReadReg(ITG3200_WHO_AM_I_REG_ADDR);
-		printf("DEVID : %i \r\n", devid);
+		ITG3200_DataPoint = ITG3200_Get_DataPoint();
+
+		LCD_ClearLine(Line4);
+		sprintf(string4,"T:%i", ITG3200_DataPoint.Temp);
+		LCD_DisplayStringLine(Line4,string4);
+
+		LCD_ClearLine(Line5);
+		sprintf(string5,"X:%i", ITG3200_DataPoint.X);
+		LCD_DisplayStringLine(Line5,string5);
+
+		LCD_ClearLine(Line6);
+		sprintf(string6,"Y:%i", ITG3200_DataPoint.Y);
+		LCD_DisplayStringLine(Line6,string6);
+
+		LCD_ClearLine(Line7);
+		sprintf(string7,"Z:%i", ITG3200_DataPoint.Z);
+		LCD_DisplayStringLine(Line7,string7);
+
+		printf("DEVID:%X T:%i X:%i Y:%i Z:%i\r\n", devid, ITG3200_DataPoint.Temp, ITG3200_DataPoint.X, ITG3200_DataPoint.Y, ITG3200_DataPoint.Z);
 
 
 	}
