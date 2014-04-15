@@ -56,6 +56,14 @@
 
  }ITG3200_InitTypeDef;
 
+ typedef struct
+ {
+         int16_t X;
+         int16_t Y;
+         int16_t Z;
+         int16_t Temp;
+ }ITG3200_DataPointTypeDef;
+
  /**
    * @}
    */
@@ -198,11 +206,32 @@
  /** @defgroup STM32F4_DISCOVERY_ITG3200_Exported_Functions
    * @{
    */
- void ITG3200_Init(ITG3200_InitTypeDef *ITG3200_InitStruct);
 
+ uint8_t ITG3200_Get_DevID();
+ void ITG3200_Set_DevID(uint8_t id);
+
+ int16_t ITG3200_Get_Temp();
+
+ ITG3200_DataPointTypeDef ITG3200_Get_DataPoint();
+
+ uint16_t ITG3200_Calc_Sample_Rate();
+
+ uint8_t ITG3200_Get_Sample_Rate_Divider();
+ void ITG3200_Set_Sample_Rate_Divider(uint8_t value);
+
+ uint8_t ITG3200_Get_DLPF_Bandwidth_Hz();
+ void ITG3200_Set_DLPF_Bandwidth(uint8_t newDLPFbits);
+
+ uint16_t ITG3200_Get_Fullscale_Range();
+ void ITG3200_Set_Fullscale_Range(uint8_t newFS_SELbits);
+
+
+//make these private
  uint8_t ITG3200_ReadReg(uint8_t ITG3200_Reg);
+ void ITG3200_ReadMulti(uint8_t* retbuffer, uint8_t startregaddr, uint32_t count);
  void ITG3200_WriteReg(uint8_t ITG3200_Reg, uint16_t ITG3200_RegValue);
 
+ void ITG3200_Init(ITG3200_InitTypeDef *ITG3200_InitStruct);
 
  /**
    * @}
